@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
 
 # QLUThesis $\LaTeX$ Template
@@ -253,3 +254,5 @@ ps: 本次修改是拿MS Word导出的pdf截屏半透明贴在屏幕上一点点
 3. 摘要部分适配了页眉。
 
 ## ⏳ 待更新内容
+
+- 暂无
