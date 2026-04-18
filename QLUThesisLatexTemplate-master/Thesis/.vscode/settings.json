@@ -52,7 +52,7 @@
             ]
         }
     ],
-    "latex-workshop.latex.recipe.default": "lastUsed",
+    "latex-workshop.latex.recipe.default": "Full build (xelatex+bibtex)",
     "latex-workshop.view.pdf.viewer": "tab"
 
 }

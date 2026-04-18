@@ -14,7 +14,7 @@
 %! ************************************************************* %!
 
 %%%%%%%%%% Package %%%%%%%%%%%%
-% \usepackage{CJK} % 与 ctex/xeCJK 冲突，已禁用
+\usepackage{CJK}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}                       % 支持插图处理
@@ -37,7 +37,7 @@
 \usepackage{titletoc}                       % 控制目录的宏包
 \usepackage{fancyhdr}                       % fancyhdr宏包 支持页眉和页脚的相关定义
 %\usepackage{ctex}                     % 支持中文显示
-% \usepackage{CJKpunct}                       % 与 ctex/xeCJK 冲突，已禁用
+\usepackage{CJKpunct}                       % 精细调整中文的标点符号
 \usepackage{color}                          % 支持彩色
 \usepackage{amsmath}                        % AMSLaTeX宏包 用来排出更加漂亮的公式
 \usepackage{mathtools}                      % 对 amsmath 的功能补充
@@ -57,7 +57,7 @@
 \usepackage[amsmath,thmmarks,hyperref]{ntheorem}  % 定理类环境宏包，其中 amsmath 选项用来兼容 AMS LaTeX 的宏包
 \usepackage{CJKnumb}                        % 提供将阿拉伯数字转换成中文数字的命令
 \usepackage{indentfirst}                    % 首行缩进宏包
-% \usepackage{CJKutf8}                        % 与 ctex/xeCJK 冲突，已禁用
+\usepackage{CJKutf8}                        % 用在UTF8编码环境下，它可以自动调用CJK，同时针对UTF8编码作了设置
 %\usepackage{hypbmsec}                      % 用来控制书签中标题显示内容
 %画图
 \usepackage{pgfplots}
