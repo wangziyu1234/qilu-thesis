@@ -1,0 +1,4 @@
+# Local backup export artifacts
+bundle/
+bundle-test/
+*.bundle
