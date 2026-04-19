@@ -5,12 +5,8 @@
 {国家邮政局}.
 {2024年邮政行业发展统计公报}.
 2025.
-\url{https://www.spb.gov.cn/gjyzj/c100276/202505/1cc8240e52ee42079d362416fccec8b4.shtml}[EB/OL]. (2025-05-22) [2026-04-18].
-
-\bibitem{Chand2025SmartCityMobileRobots}
-Chand~R, Sharma~B, Kumar~S~A.
-Systematic review of mobile robots applications in smart cities with future directions~[J].
-Journal of Industrial Information Integration, 2025, 45:  100821.
+\url{https://www.spb.gov.cn/gjyzj/c100276/202505/1cc8240e52ee42079d362416fccec8b4.shtml}[EB/OL].
+  (2025-05-22) [2026-04-18].
 
 \bibitem{黄晓宇2023基于}
 黄晓宇, 孙勇智, 李津蓉, \emph{et~al}.
@@ -19,7 +15,8 @@ Journal of Industrial Information Integration, 2025, 45:  100821.
 
 \bibitem{cao2023robot}
 Cao~M, Zhao~W, Chen~Z.
-Robot path planning by fusing particle swarm algorithm and improved grey wolf algorithm~[J].
+Robot path planning by fusing particle swarm algorithm and improved grey wolf
+  algorithm~[J].
 Journal of System Simulation, 2023, 35~(8):  1768--1775.
 
 \bibitem{白宇鑫2025基于改进哈里斯鹰算法的机器人路径规划研究}
@@ -49,22 +46,34 @@ Processes, 2022, 10~(12):  2748.
 
 \bibitem{dai2023novel}
 Dai~Y, Yu~J, Zhang~C, \emph{et~al}.
-A novel whale optimization algorithm of path planning strategy for mobile robots: A novel whale optimization algorithm of path planning strategy for mobile robots~[J].
+A novel whale optimization algorithm of path planning strategy for mobile
+  robots: A novel whale optimization algorithm of path planning strategy for
+  mobile robots~[J].
 Applied Intelligence, 2023, 53~(9):  10843--10857.
 
 \bibitem{das2022machine}
 Das~S, Mishra~S~K.
-A machine learning approach for collision avoidance and path planning of mobile robot under dense and cluttered environments~[J].
+A machine learning approach for collision avoidance and path planning of mobile
+  robot under dense and cluttered environments~[J].
 Computers and Electrical Engineering, 2022, 103:  108376.
 
 \bibitem{tao2024mobile}
 Tao~B, Kim~J-H.
-Mobile robot path planning based on bi-population particle swarm optimization with random perturbation strategy~[J].
-Journal of King Saud University-Computer and Information Sciences, 2024, 36~(2):  101974.
+Mobile robot path planning based on bi-population particle swarm optimization
+  with random perturbation strategy~[J].
+Journal of King Saud University-Computer and Information Sciences, 2024,
+  36~(2):  101974.
 
 \bibitem{刘梓博2025基于双变量限幅}
 刘梓博, 陈羽立, 徐梓峰, \emph{et~al}.
-基于双变量限幅 PID 算法的四轮差速转向 AGV 导航控制系统.~[J].
+基于双变量限幅 PID 算法的四轮差速转向 AGV
+  导航控制系统.~[J].
 Transactions of the Chinese Society of Agricultural Engineering, 2025, 41~(5).
+
+\bibitem{Chand2025SmartCityMobileRobots}
+Chand~R, Sharma~B, Kumar~S~A.
+Systematic review of mobile robots applications in smart cities with future
+  directions~[J].
+Journal of Industrial Information Integration, 2025, 45:  100821.
 
 \end{thebibliography}
