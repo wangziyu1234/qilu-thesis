@@ -136,8 +136,11 @@
 \renewcommand{\bottomrule}{\specialrule{1pt}{0pt}{0pt}}
 % 代码导入配置
 \newfontfamily\CodeNewRoman{CodeNewRomanNerdFont}[
-    Path = static/font/,
-    Extension = .otf
+  Path = static/font/CodeNewRoman/,
+  Extension = .otf,
+  UprightFont = CodeNewRomanNerdFont-Regular,
+  BoldFont = CodeNewRomanNerdFont-Bold,
+  ItalicFont = CodeNewRomanNerdFont-Italic
 ]
 \def\lstbasicfont{\CodeNewRoman\footnotesize}
 \definecolor{grey}{rgb}{0.8,0.8,0.8}

@@ -2,3 +2,25 @@
 bundle/
 bundle-test/
 *.bundle
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.thm
+
+# Local heavy font downloads (keep local, do not sync to git)
+QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/
+QLUThesisLatexTemplate-master/Thesis/static/font/CodeNewRoman.zip
+QLUThesisLatexTemplate-master/Thesis/static/font/CodeNewRoman/
+QLUThesisLatexTemplate-master/Thesis/static/font/SourceHanSansSC/
+QLUThesisLatexTemplate-master/Thesis/static/font/SourceHanSerifSC/
+
+# Local backup files
+*.bak
