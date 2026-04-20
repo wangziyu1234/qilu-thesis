@@ -38,21 +38,22 @@
 \contentsline {subsection}{\numberline {4.1.2}电源控制部分}{21}{section*.58}%
 \contentsline {section}{\numberline {4.2}电机，传感器等部件选型与设计}{22}{section*.61}%
 \contentsline {subsection}{\numberline {4.2.1}电机选型与设计}{22}{section*.62}%
-\contentsline {section}{\numberline {4.3}控制电路设计}{22}{section*.63}%
-\contentsline {chapter}{\numberline {第5章\hspace {.3em}}AGV运动学建模与仿真}{23}{section*.64}%
-\contentsline {section}{\numberline {5.1}差速驱动底盘运动学方程推导}{23}{section*.65}%
-\contentsline {section}{\numberline {5.2}MATLAB/Simulink仿真模型搭建}{23}{section*.66}%
-\contentsline {section}{\numberline {5.3}典型运动轨迹仿真与分析}{23}{section*.67}%
-\contentsline {chapter}{\numberline {第6章\hspace {.3em}}AGV运动控制算法分析}{24}{section*.68}%
-\contentsline {section}{\numberline {6.1}PID控制算原理}{24}{section*.69}%
-\contentsline {section}{\numberline {6.2}双轮差速PID控制器设计}{24}{section*.70}%
-\contentsline {section}{\numberline {6.3}基本运动控制实现}{24}{section*.71}%
-\contentsline {section}{\numberline {6.4}控制效果仿真验证}{24}{section*.72}%
-\contentsline {chapter}{\numberline {第7章\hspace {.3em}}结论}{25}{section*.73}%
-\contentsline {section}{\numberline {7.1}全文工作总结}{25}{section*.74}%
-\contentsline {section}{\numberline {7.2}不足和改进方向}{25}{section*.75}%
-\contentsline {section}{\numberline {7.3}应用前景展望}{25}{section*.76}%
-\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{参考文献}}{26}{section*.79}%
-\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{致\hskip 2em\relax 谢}}{27}{section*.80}%
-\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{附\hskip 2em\relax 录}}{27}{section*.82}%
+\contentsline {subsection}{\numberline {4.2.2}减速器选型与设计}{25}{section*.65}%
+\contentsline {section}{\numberline {4.3}控制电路设计}{26}{section*.67}%
+\contentsline {chapter}{\numberline {第5章\hspace {.3em}}AGV运动学建模与仿真}{27}{section*.68}%
+\contentsline {section}{\numberline {5.1}差速驱动底盘运动学方程推导}{27}{section*.69}%
+\contentsline {section}{\numberline {5.2}MATLAB/Simulink仿真模型搭建}{27}{section*.70}%
+\contentsline {section}{\numberline {5.3}典型运动轨迹仿真与分析}{27}{section*.71}%
+\contentsline {chapter}{\numberline {第6章\hspace {.3em}}AGV运动控制算法分析}{28}{section*.72}%
+\contentsline {section}{\numberline {6.1}PID控制算原理}{28}{section*.73}%
+\contentsline {section}{\numberline {6.2}双轮差速PID控制器设计}{28}{section*.74}%
+\contentsline {section}{\numberline {6.3}基本运动控制实现}{28}{section*.75}%
+\contentsline {section}{\numberline {6.4}控制效果仿真验证}{28}{section*.76}%
+\contentsline {chapter}{\numberline {第7章\hspace {.3em}}结论}{29}{section*.77}%
+\contentsline {section}{\numberline {7.1}全文工作总结}{29}{section*.78}%
+\contentsline {section}{\numberline {7.2}不足和改进方向}{29}{section*.79}%
+\contentsline {section}{\numberline {7.3}应用前景展望}{29}{section*.80}%
+\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{参考文献}}{30}{section*.83}%
+\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{致\hskip 2em\relax 谢}}{31}{section*.84}%
+\contentsline {chapter}{\fontsize {14pt}{14pt}\selectfont \CJKfamily {simhei}{附\hskip 2em\relax 录}}{31}{section*.86}%
 \contentsfinish 

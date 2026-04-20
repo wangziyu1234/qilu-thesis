@@ -381,9 +381,145 @@
     \section{电机，传感器等部件选型与设计}
          \xfbody{
           \subsection{电机选型与设计}
-                    \xfbody{在AGV小车的电机选型过程中，由于我们的AGV需要精准的控制，更好的定位精度\par
+                    \xfbody{在AGV小车的电机选型过程中，由于本设计采用差速驱动方式，且搬运小车需要较好的定位精度与低速平稳性，因此驱动电机不仅要满足足够的牵引力，还应具备良好的调速性能和一定的功率裕量。根据设计要求，搬运车最大牵引线速度为30m/min，驱动轮直径为150mm，则驱动轮转速可由式\eqref{eq:4-2-1}计算得到：
+
+                    \begin{equation}
+                    N = \frac{V}{\pi D}
+                    \label{eq:4-2-1}
+                    \end{equation}
+
+                    其中，$V=30\,\mathrm{m/min}=30000\,\mathrm{mm/min}$，$D=150\,\mathrm{mm}$。为保证计算过程中的单位统一，并便于后续与减速箱输出转速进行对应，这里先将搬运车的最大牵引线速度换算为毫米每分钟，再代入式\eqref{eq:4-2-1}进行计算。驱动轮直径取150mm，既满足车体紧凑布置的要求，也能够在一定程度上兼顾通过性与承载能力。代入可得：
+
+                    \begin{equation}
+                    N = \frac{30\times1000}{\pi\times150} \approx 63.69\,\mathrm{r/min}
+                    \label{eq:4-2-2}
+                    \end{equation}
+
+                    由式\eqref{eq:4-2-2}可知，减速箱输出端对应的转速约为63.69 r/min。进一步分析驱动负载，已知整车自重约为200 kg，额定搬运质量为25 kg，则满载总质量约为225 kg。驱动轮与路面之间的滚动摩擦系数取0.2，按$g\approx10\,\mathrm{m/s^2}$估算，车辆匀速运行时所需克服的滚动摩擦力如式\eqref{eq:4-2-3}所示：
+
+                    \begin{equation}
+                    f = 0.2\times225\times10 = 450\,\mathrm{N}
+                    \label{eq:4-2-3}
+                    \end{equation}
+
+                    由于整车采用双轮差速驱动结构，在匀速行驶状态下，两侧驱动轮能够较为均匀地分担整车载荷，因此每个驱动轮所承担的牵引力可近似视为总牵引力的一半。这样处理不仅便于后续进行驱动轮输出转矩与电机功率的计算，也更符合实际运行过程中左右轮共同驱动的受力特点。单个驱动轮所需牵引力近似为式\eqref{eq:4-2-4}：
+
+                    \begin{equation}
+                    F = \frac{f}{2} = 225\,\mathrm{N}
+                    \label{eq:4-2-4}
+                    \end{equation}
+
+                    以驱动轮半径$R=75\,\mathrm{mm}=0.075\,\mathrm{m}$进行计算时，可将单个驱动轮所需承担的牵引力进一步转换为对应的输出转矩。该参数直接反映了驱动电机在减速箱输出端需要提供的扭矩能力，也是保证AGV在满载工况下平稳起步、匀速行驶以及克服滚动阻力的重要依据。单个驱动轮输出转矩如式\eqref{eq:4-2-5}所示：
+
+                    \begin{equation}
+                    M = F\times R = 225\times0.075 = 16.875\,\mathrm{N\cdot m}
+                    \label{eq:4-2-5}
+                    \end{equation}
+
+                    在得到驱动轮输出转矩之后，还需要进一步估算驱动轮侧的理论机械功率。根据机械功率与转矩、转速之间的对应关系$M=9550\times P_w/n$，可以将前述转矩值与转速值代入计算，从而获得驱动轮在匀速运行工况下所需的理论机械功率。该结果能够直观反映驱动系统在稳定运行阶段的能量需求，也为后续电机功率校核与减速器匹配提供依据。驱动轮侧的理论机械功率如式\eqref{eq:4-2-6}所示：
+
+                    \begin{equation}
+                    P_w = \frac{M\times n}{9550} = \frac{16.875\times63.69}{9550} \approx 0.1125\,\mathrm{kW}
+                    \label{eq:4-2-6}
+                    \end{equation}
+
+                    由于实际传动过程中减速箱、联轴器及轴承等部件都会带来一定的机械损耗，因此理论机械功率并不能直接作为电动机的选型依据。若考虑减速箱与传动机构效率$\eta=0.95$，则电动机所需额定功率还需在理论功率基础上进行修正，以保证电机在启动、加速和负载波动等情况下仍具有足够的功率储备。电动机所需额定功率如式\eqref{eq:4-2-7}所示：
+
+                    \begin{equation}
+                    P_m = \frac{P_w}{\eta} = \frac{0.1125}{0.95} \approx 0.1184\,\mathrm{kW}
+                    \label{eq:4-2-7}
+                    \end{equation}
+
+                    由计算结果可知，理论所需功率约为0.12kW。综合额定功率、输出转矩、控制精度及减速比匹配等因素，本文最终选用额定功率为400 W的伺服电机 SMC80S-0040-30AoK-3DKH 作为驱动电机。该电机额定转速为3000 r/min，额定转矩为1.27 N\cdot m，配合减速箱后可满足驱动轮所需的低速大扭矩输出要求，并为启动、加速和负载波动预留了足够的动力裕量；其理论总减速比如式\eqref{eq:4-2-8}所示：
+
+                    \begin{equation}
+                    i = \frac{3000}{63.69} \approx 47.1
+                    \label{eq:4-2-8}
+                    \end{equation}
+
+                    因此，所选伺服电机能够满足搬运车30 m/min的最高行驶速度要求及满载工况下的牵引需求。相关型号参数如表格\ref{tab:smc_servo}所示。\par
+
+                    \begin{table}[htbp]
+                    \wuhao
+                    \centering
+                    \caption{SMC系列伺服电机技术参数}
+                    \label{tab:smc_servo}
+                    \begin{tabular}{C{1.9cm}C{2.7cm}C{2.5cm}C{2.5cm}C{2.5cm}C{2.5cm}}
+                    \toprule
+                    \multicolumn{2}{c}{伺服电机型号} & \tabincell{c}{SMC60S-\\0020-30\\AoK-3DKH} & \tabincell{c}{SMC60S-\\0040-30\\AoK-3DKH} & \tabincell{c}{SMC80S-\\0040-30\\AoK-3DKH} & \tabincell{c}{SMC80S-0075-30\\AoK-3DKH} \\
+                    \midrule
+                    \multicolumn{2}{c}{适配驱动} & \tabincell{c}{FD123-LA-000\\FD123-CA-000\\FD123-CC-000\\FD123-EA-000} & \tabincell{c}{FD123-LA-000\\FD123-CA-000\\FD123-CC-000\\FD123-EA-000} & \tabincell{c}{FD133-LA-000\\FD133-CA-000\\FD133-CC-000\\FD133-EA-000} & \tabincell{c}{FD133-LA-000\\FD133-CA-000\\FD133-CC-000\\FD133-EA-000} \\
+                    \multicolumn{2}{c}{直流母线电压 $U_{DC}$} & 48 & 48 & 48 & 48 \\
+                    \midrule
+                    \multirow{4}{*}{\tabincell{c}{连续\\特性}} & \tabincell{c}{额定功率 $P_n$(W)} & 200 & 400 & 400 & 750 \\
+                    & \tabincell{c}{额定转矩 $T_n$(Nm)} & 0.64 & 1.27 & 1.27 & 2.39 \\
+                    & \tabincell{c}{额定转速 $n_N$(rpm)} & 3000 & 3000 & 3000 & 3000 \\
+                    & \tabincell{c}{额定电流 $I_n$(A)} & 4.6 & 10 & 9.6 & 21.5 \\
+                    \midrule
+                    & \tabincell{c}{瞬时最大转矩 $T_m$(Nm)} & 1.92 & 3.81 & 3.81 & 7.17 \\
+                    & \tabincell{c}{瞬时最大电流 $I_m$(A)} & 13.8 & 25 & 24 & 64.5 \\
+                    & \tabincell{c}{连续静态转矩 $T_s$(Nm)} & 0.7 & 1.4 & 1.4 & 2.63 \\
+                    & \tabincell{c}{连续静态电流 $I_s$(A)} & 5.06 & 11 & 10.6 & 23.7 \\
+                    & \tabincell{c}{线-线电阻 $R_L$\\($\Omega$)} & 1.1 & 0.42 & 0.22 & 0.1 \\
+                    & \tabincell{c}{线-线电感 $L_L$(mH)} & 2.4 & 0.79 & 1 & 0.46 \\
+                    & \tabincell{c}{机械时间常数(ms)} & 3.22 & 1.84 & 1.65 & 1.79 \\
+                    & \tabincell{c}{反电势常数 $K_e$(V/krpm)} & 9 & 8 & 8 & 6.7 \\
+                    & \multicolumn{1}{c}{位置反馈装置} & \multicolumn{4}{c}{2500ppr 光电式编码器（增量式）} \\
+                    & \multicolumn{1}{c}{冷却方式} & \multicolumn{4}{c}{全封闭，自冷却} \\
+                    \bottomrule
+                    \end{tabular}
+                    \end{table}
+
+                    综上，选用400 W级伺服电机作为驱动电机能够满足本课题对搬运能力、低速稳定性和控制精度的要求，同时为整车运行预留了足够的安全裕量。其电机外形图如图\ref{fig:smc80s}所示。\par
+                    \begin{figure}[htbp]
+                    \centering
+                    \includegraphics[width=0.64\textwidth]{SMC80S-0040-30AoK-3DKH电机外形图.png}
+                    \caption{SMC80S-0040-30AoK-3DKH伺服电机外形图}
+                    \label{fig:smc80s}
+                 \end{figure}
                     }
 
+          \subsection{减速器选型与设计}
+               \xfbody{
+               根据前述计算结果，驱动电机的额定转速为$n_1=3000\,\mathrm{r/min}$，驱动轮在满足整车最高行驶速度要求时对应的转速为$n_2=63.69\,\mathrm{r/min}$。因此，电机输出端与驱动轮之间所需的理论总传动比可按式
+                \begin{equation}
+                i=\frac{n_1}{n_2}=\frac{3000}{63.69}\approx47.10
+               \end{equation}
+               进行计算。由此可见，若要将电机输出转速有效降低到驱动轮所需范围内，同时保证输出扭矩满足满载运行要求，必须配置具有较大减速比的减速器。考虑到AGV小车本身结构紧凑、安装空间有限，而且对传动平稳性、输出精度和维护便利性都有较高要求，因此不宜采用多级串联式减速方案，而应优先选择体积较小、传动效率较高、减速比范围较宽的标准化减速器。
+
+               结合传动比匹配、安装布置和产品系列的可获得性，本文最终选用ZJPX系列精密行星减速机作为电机与驱动轮之间的减速装置。精密行星减速机具有以下优点：
+                \begin{enumerate}
+                    \item 采用齿轮啮合传动，输出扭矩较大，传动效率高，且运行噪声较小，适合对平稳性要求较高的AGV系统；
+                    \item 传动过程中受力分布较均匀，能够改善整机运行的稳定性，降低冲击和振动对机构的影响；
+                    \item 结构紧凑，输入端与输出端的连接方式灵活，便于与伺服电机组合安装，整体装配可靠性高；
+                    \item 日常维护简单，润滑条件较稳定，能够满足AGV长期连续运行的使用需求。
+                    \end{enumerate}
+
+                              ZJPX系列精密行星减速机的主要技术参数如表\ref{tab:zjpx_param}所示。
+                              \begin{table}[htbp]
+                              \wuhao
+                              \centering
+                              \caption{ZJPX行星减速机技术参数}
+                              \label{tab:zjpx_param}
+                              \begin{tabular}{C{1.6cm}C{1.75cm}C{1.75cm}C{1.75cm}C{1.75cm}C{1.2cm}C{1.2cm}}
+                              \toprule
+                              \tabincell{c}{产品\\型号} & ZJPX65 & ZJPX85 & ZJPX115 & ZJPX142 & 单位 & 级数 \\
+                              \midrule
+                              \tabincell{c}{最大\\径向力} & 1550 & 3055 & 4330 & 9480 & N & \multirow{2}{*}{} \\
+                              \tabincell{c}{最大\\轴向力} & 1220 & 2330 & 3300 & 6800 & N & \\
+                              \midrule
+                              \multirow{3}{*}{\tabincell{c}{满载\\效率}} & \multicolumn{4}{c}{95} & \multirow{3}{*}{\%} & 1级 \\
+                              & \multicolumn{4}{c}{93} & & 2级 \\
+                              & \multicolumn{4}{c}{90} & & 3级 \\
+                              \midrule
+                              \tabincell{c}{平均\\寿命} & \multicolumn{4}{c}{20000} & h & \multicolumn{1}{c}{} \\
+                              \bottomrule
+                              \end{tabular}
+                              \end{table}
+
+               根据减速器资料可知，驱动电机经过减速箱后输出扭矩可达到90 N·m。结合整车的安装空间、传动效率以及运行稳定性要求，本文最终确定采用ZJPX115型二级精密行星减速器，其减速比为40。该方案既能够满足驱动轮所需的输出转矩，又能够保证整车在低速运行时具有较好的控制精度和运动平稳性。
+               
+                    }
          }
     \section{控制电路设计}
          \xfbody{
