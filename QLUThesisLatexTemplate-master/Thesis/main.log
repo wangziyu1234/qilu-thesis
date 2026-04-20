@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  20 APR 2026 15:26
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  20 APR 2026 22:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1247,7 +1247,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip133
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 100.
+Package hyperref Info: Option `colorlinks' set `true' on input line 101.
 )
 LaTeX Font Info:    Trying to load font information for T1+txr on input line 23.
  (c:/texlive/2026/texmf-dist/tex/latex/txfonts/t1txr.fd
@@ -1538,35 +1538,35 @@ File: static/figures/AGV.png Graphic file (type bmp)
 ] [2] [3] [4]
 File: static/figures/pid.png Graphic file (type bmp)
 <static/figures/pid.png>
- [5] [6] [7]
+ [5] [6]
 第2章
-[8
+[7
 
 ]
 File: static/figures/danlunqudong.png Graphic file (type bmp)
 <static/figures/danlunqudong.png>
- [9]
 File: static/figures/chasu.png Graphic file (type bmp)
 <static/figures/chasu.png>
+ [8]
 File: static/figures/quanfangwei.png Graphic file (type bmp)
 <static/figures/quanfangwei.png>
- [10] [11] [12]
+ [9] [10]
 第3章
 File: static/figures/dipan.png Graphic file (type bmp)
 <static/figures/dipan.png>
-[13
+[11
 
 ]
 File: static/figures/qudonglun.png Graphic file (type bmp)
 <static/figures/qudonglun.png>
 File: static/figures/lunzi.png Graphic file (type bmp)
 <static/figures/lunzi.png>
- [14]
+ [12]
 File: static/figures/shengjiangzhuangzhi.png Graphic file (type bmp)
 <static/figures/shengjiangzhuangzhi.png>
 File: static/figures/zhaoke.png Graphic file (type bmp)
 <static/figures/zhaoke.png>
- [15] [16]
+ [13] [14]
 LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 225.
 
 
@@ -1577,31 +1577,43 @@ File: static/figures/fangzhen1.png Graphic file (type bmp)
 <static/figures/fangzhen1.png>
 File: static/figures/fangzhen2.png Graphic file (type bmp)
 <static/figures/fangzhen2.png>
+[15]
 File: static/figures/fangzhen3.png Graphic file (type bmp)
 <static/figures/fangzhen3.png>
-[17]
 File: static/figures/fangzhen4.png Graphic file (type bmp)
 <static/figures/fangzhen4.png>
- [18]
+ [16]
 File: static/figures/fangzhen5.png Graphic file (type bmp)
 <static/figures/fangzhen5.png>
 File: static/figures/fangzhen6.png Graphic file (type bmp)
 <static/figures/fangzhen6.png>
- [19] [20]
+ [17] [18]
 第4章
-[21
+File: static/figures/stm32f103c8t6实物图.png Graphic file (type bmp)
+<static/figures/stm32f103c8t6实物图.png>
+[19
 
 ]
+File: static/figures/stm32f103c8t6.png Graphic file (type bmp)
+<static/figures/stm32f103c8t6.png>
+ [20]
+File: static/figures/电源模块.png Graphic file (type bmp)
+<static/figures/电源模块.png>
+
+Missing character: There is no Ω ("3A9) in font t1xr!
+[21]
+Missing character: There is no Ω ("3A9) in font t1xr!
+[22]
 第5章
-[22
-
-]
-第6章
 [23
 
 ]
+第6章
+[24
+
+]
 第7章
-) [24
+) [25
 
 ] (./main.bbl
 
@@ -1634,21 +1646,21 @@ Package fontspec Info:
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;"
 
-) [25
+) [26
 
 
 
 ]
 \openout2 = `pages/tail.aux'.
 
- (./pages/tail.tex [26
+ (./pages/tail.tex [27
 
 
 ] (c:/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 27.
- (./static/code/smile.py)) [27
+ (./static/code/smile.py)) [28
 
 ]
 \tf@thm=\write6
@@ -1665,15 +1677,15 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: EB52053B9E12D9197ADAC51F4815F896;6764.
+(rerunfilecheck)             Checksum: D88E30AF0EA5F29D52D90E891BBED73E;7214.
  ) 
 Here is how much of TeX's memory you used:
- 45569 strings out of 467992
- 1079152 string characters out of 5433177
- 1818427 words of memory out of 5000000
- 73606 multiletter control sequences out of 15000+600000
+ 45645 strings out of 467992
+ 1082741 string characters out of 5433177
+ 1819331 words of memory out of 5000000
+ 73679 multiletter control sequences out of 15000+600000
  736180 words of font info for 324 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  108i,13n,111p,1355b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (34 pages).
+Output written on main.pdf (35 pages).
