@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  21 APR 2026 22:48
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  24 APR 2026 12:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/23720/OneDrive/毕业论文/QLULatex/QLUThesisLatexTemplate-master/Thesis/main
-(c:/Users/23720/OneDrive/毕业论文/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.tex
+**c:/Users/23720/OneDrive/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main
+(c:/Users/23720/OneDrive/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (c:/texlive/2026/texmf-dist/tex/latex/ctex/ctexbook.cls (c:/texlive/2026/texmf-dist/tex/latex/ctex/config/ctexbackend.cfg
@@ -1538,7 +1538,12 @@ File: static/figures/AGV.png Graphic file (type bmp)
 ] [2] [3] [4]
 File: static/figures/pid.png Graphic file (type bmp)
 <static/figures/pid.png>
- [5] [6]
+ [5]
+Underfull \hbox (badness 1910) in paragraph at lines 90--90
+[]\T1/txr/m/n/12 4.AGV \TU/simsun(0)/m/n/12 运 动 学 建 模 与 仿 真：|  建 立 差 速 驱 动 底 盘 运 动 学 模 型，|  并 利 用 \T1/txr/m/n/12 MAT-
+ []
+
+[6]
 第2章
 [7
 
@@ -1561,28 +1566,28 @@ File: static/figures/qudonglun.png Graphic file (type bmp)
 <static/figures/qudonglun.png>
 File: static/figures/lunzi.png Graphic file (type bmp)
 <static/figures/lunzi.png>
+File: static/figures/旋转机构.png Graphic file (type bmp)
+<static/figures/旋转机构.png>
  [12]
-File: static/figures/shengjiangzhuangzhi.png Graphic file (type bmp)
-<static/figures/shengjiangzhuangzhi.png>
 File: static/figures/zhaoke.png Graphic file (type bmp)
 <static/figures/zhaoke.png>
- [13] [14]
-LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 228.
+ [13]
+LaTeX Font Info:    Calculating math sizes for size <10.5> on input line 233.
 
 
 LaTeX Font Warning: Font shape `OML/eur/m/n' in size <10.5> not available
-(Font)              size <10.95> substituted on input line 228.
+(Font)              size <10.95> substituted on input line 233.
 
+[14]
 File: static/figures/fangzhen1.png Graphic file (type bmp)
 <static/figures/fangzhen1.png>
 File: static/figures/fangzhen2.png Graphic file (type bmp)
 <static/figures/fangzhen2.png>
-[15]
 File: static/figures/fangzhen3.png Graphic file (type bmp)
 <static/figures/fangzhen3.png>
 File: static/figures/fangzhen4.png Graphic file (type bmp)
 <static/figures/fangzhen4.png>
- [16]
+ [15] [16]
 File: static/figures/fangzhen5.png Graphic file (type bmp)
 <static/figures/fangzhen5.png>
 File: static/figures/fangzhen6.png Graphic file (type bmp)
@@ -1604,57 +1609,57 @@ Missing character: There is no Ω ("3A9) in font t1xr!
 [21]
 Missing character: There is no Ω ("3A9) in font t1xr!
 [22] [23]
-Overfull \hbox (5.87509pt too wide) in paragraph at lines 452--453
+Overfull \hbox (5.87509pt too wide) in paragraph at lines 457--458
  []|[]| 
  []
 
 
-Overfull \hbox (0.9891pt too wide) in paragraph at lines 458--458
+Overfull \hbox (0.9891pt too wide) in paragraph at lines 463--463
  []|[]| 
  []
 
 
-Overfull \hbox (2.9883pt too wide) in paragraph at lines 459--459
+Overfull \hbox (2.9883pt too wide) in paragraph at lines 464--464
  []|[]| 
  []
 
 
-Overfull \hbox (23.6208pt too wide) in paragraph at lines 462--462
+Overfull \hbox (23.6208pt too wide) in paragraph at lines 467--467
  []|[]| 
  []
 
 
-Overfull \hbox (12.9423pt too wide) in paragraph at lines 463--463
+Overfull \hbox (12.9423pt too wide) in paragraph at lines 468--468
  []|[]| 
  []
 
 
-Overfull \hbox (21.54076pt too wide) in paragraph at lines 464--464
+Overfull \hbox (21.54076pt too wide) in paragraph at lines 469--469
  []|[]| 
  []
 
 
-Overfull \hbox (10.86226pt too wide) in paragraph at lines 465--465
+Overfull \hbox (10.86226pt too wide) in paragraph at lines 470--470
  []|[]| 
  []
 
 
-Overfull \hbox (4.935pt too wide) in paragraph at lines 467--467
+Overfull \hbox (4.935pt too wide) in paragraph at lines 472--472
  []|[]| 
  []
 
 
-Overfull \hbox (8.04913pt too wide) in paragraph at lines 468--468
+Overfull \hbox (8.04913pt too wide) in paragraph at lines 473--473
  []|[]| 
  []
 
 
-Overfull \hbox (28.93799pt too wide) in paragraph at lines 469--469
+Overfull \hbox (28.93799pt too wide) in paragraph at lines 474--474
  []|[]| 
  []
 
 
-Overfull \hbox (32.16582pt too wide) in paragraph at lines 450--474
+Overfull \hbox (32.16582pt too wide) in paragraph at lines 455--479
  [][] 
  []
 
@@ -1663,31 +1668,32 @@ File: static/figures/SMC80S-0040-30AoK-3DKH电机外形图.png Graphic file (typ
 [24] [25]
 File: static/figures/TCRT5000.jpg Graphic file (type bmp)
 <static/figures/TCRT5000.jpg>
+ [26]
 File: static/figures/HC-SR04.jpg Graphic file (type bmp)
 <static/figures/HC-SR04.jpg>
 
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
-Missing character: There is no ‑ ("2011) in font t1xr!
-Missing character: There is no ‑ ("2011) in font t1xr!
-Missing character: There is no ‑ ("2011) in font t1xr!
-[26] [27]
 File: static/figures/B‑CAMS‑IMX.png Graphic file (type bmp)
 <static/figures/B‑CAMS‑IMX.png>
-
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
-[28]
+Missing character: There is no ‑ ("2011) in font t1xr!
+Missing character: There is no ‑ ("2011) in font t1xr!
+Missing character: There is no ‑ ("2011) in font t1xr!
+[27] [28]
 第5章
+File: static/figures/双轮模型.png Graphic file (type bmp)
+<static/figures/双轮模型.png>
 [29
 
-]
+] [30]
 第6章
-[30
+[31
 
 ]
 第7章
-) [31
+) [32
 
 ] (./main.bbl
 
@@ -1720,21 +1726,21 @@ Package fontspec Info:
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;"
 
-) [32
+) [33
 
 
 
 ]
 \openout2 = `pages/tail.aux'.
 
- (./pages/tail.tex [33
+ (./pages/tail.tex [34
 
 
 ] (c:/texlive/2026/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2025/11/14 1.11b listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 27.
- (./static/code/smile.py)) [34
+ (./static/code/smile.py)) [35
 
 ]
 \tf@thm=\write6
@@ -1751,15 +1757,15 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6ED7EB452B097D4610C8A25295F110F8;7647.
+(rerunfilecheck)             Checksum: 4FC6753DE38F00A693205ADDCFAAD214;7567.
  ) 
 Here is how much of TeX's memory you used:
- 45720 strings out of 467992
- 1085275 string characters out of 5433177
- 1820249 words of memory out of 5000000
- 73749 multiletter control sequences out of 15000+600000
+ 45739 strings out of 467992
+ 1085506 string characters out of 5433177
+ 1820597 words of memory out of 5000000
+ 73767 multiletter control sequences out of 15000+600000
  736180 words of font info for 324 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 108i,18n,111p,1355b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,18n,111p,1358b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (41 pages).
+Output written on main.pdf (42 pages).
