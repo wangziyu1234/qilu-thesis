@@ -36,12 +36,12 @@
 \contentsline {chapter}{\numberline {第4章\hspace {.3em}}AGV电气系统设计}{19}{section*.54}%
 \contentsline {section}{\numberline {4.1}电气系统总体架构}{19}{section*.55}%
 \contentsline {subsection}{\numberline {4.1.1}AGV小车主控制器选择}{19}{section*.56}%
-\contentsline {subsection}{\numberline {4.1.2}电源控制部分}{21}{section*.60}%
-\contentsline {section}{\numberline {4.2}电机，传感器等部件选型}{22}{section*.63}%
-\contentsline {subsection}{\numberline {4.2.1}电机选型}{22}{section*.64}%
-\contentsline {subsection}{\numberline {4.2.2}减速器选型}{25}{section*.67}%
-\contentsline {subsection}{\numberline {4.2.3}传感器选型}{26}{section*.69}%
-\contentsline {section}{\numberline {4.3}控制电路设计}{28}{section*.73}%
+\contentsline {section}{\numberline {4.2}电机，传感器等部件选型}{21}{section*.60}%
+\contentsline {subsection}{\numberline {4.2.1}电机选型}{21}{section*.61}%
+\contentsline {subsection}{\numberline {4.2.2}减速器选型}{24}{section*.64}%
+\contentsline {subsection}{\numberline {4.2.3}传感器选型}{25}{section*.66}%
+\contentsline {section}{\numberline {4.3}控制电路设计}{27}{section*.70}%
+\contentsline {subsection}{\numberline {4.3.1}STM32F103C8T6最小系统}{27}{section*.71}%
 \contentsline {chapter}{\numberline {第5章\hspace {.3em}}AGV运动学建模与仿真}{29}{section*.74}%
 \contentsline {section}{\numberline {5.1}差速驱动底盘运动学方程推导}{29}{section*.75}%
 \contentsline {section}{\numberline {5.2}MATLAB/Simulink仿真模型搭建}{30}{section*.77}%

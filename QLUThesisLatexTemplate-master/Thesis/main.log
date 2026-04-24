@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  24 APR 2026 12:56
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.4.19)  24 APR 2026 21:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/23720/OneDrive/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main
-(c:/Users/23720/OneDrive/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.tex
+**d:/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main
+(d:/毕业论文/代码/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-03-20>
 (c:/texlive/2026/texmf-dist/tex/latex/ctex/ctexbook.cls (c:/texlive/2026/texmf-dist/tex/latex/ctex/config/ctexbackend.cfg
@@ -1601,87 +1601,84 @@ File: static/figures/stm32f103c8t6实物图.png Graphic file (type bmp)
 ]
 File: static/figures/stm32f103c8t6.png Graphic file (type bmp)
 <static/figures/stm32f103c8t6.png>
- [20]
-File: static/figures/电源模块.png Graphic file (type bmp)
-<static/figures/电源模块.png>
-
-Missing character: There is no Ω ("3A9) in font t1xr!
-[21]
-Missing character: There is no Ω ("3A9) in font t1xr!
-[22] [23]
-Overfull \hbox (5.87509pt too wide) in paragraph at lines 457--458
+ [20] [21]
+Overfull \hbox (5.87509pt too wide) in paragraph at lines 423--424
  []|[]| 
  []
 
 
-Overfull \hbox (0.9891pt too wide) in paragraph at lines 463--463
+Overfull \hbox (0.9891pt too wide) in paragraph at lines 429--429
  []|[]| 
  []
 
 
-Overfull \hbox (2.9883pt too wide) in paragraph at lines 464--464
+Overfull \hbox (2.9883pt too wide) in paragraph at lines 430--430
  []|[]| 
  []
 
 
-Overfull \hbox (23.6208pt too wide) in paragraph at lines 467--467
+Overfull \hbox (23.6208pt too wide) in paragraph at lines 433--433
  []|[]| 
  []
 
 
-Overfull \hbox (12.9423pt too wide) in paragraph at lines 468--468
+Overfull \hbox (12.9423pt too wide) in paragraph at lines 434--434
  []|[]| 
  []
 
 
-Overfull \hbox (21.54076pt too wide) in paragraph at lines 469--469
+Overfull \hbox (21.54076pt too wide) in paragraph at lines 435--435
  []|[]| 
  []
 
 
-Overfull \hbox (10.86226pt too wide) in paragraph at lines 470--470
+Overfull \hbox (10.86226pt too wide) in paragraph at lines 436--436
  []|[]| 
  []
 
 
-Overfull \hbox (4.935pt too wide) in paragraph at lines 472--472
+Overfull \hbox (4.935pt too wide) in paragraph at lines 438--438
  []|[]| 
  []
 
 
-Overfull \hbox (8.04913pt too wide) in paragraph at lines 473--473
+Overfull \hbox (8.04913pt too wide) in paragraph at lines 439--439
  []|[]| 
  []
 
 
-Overfull \hbox (28.93799pt too wide) in paragraph at lines 474--474
+Overfull \hbox (28.93799pt too wide) in paragraph at lines 440--440
  []|[]| 
  []
 
 
-Overfull \hbox (32.16582pt too wide) in paragraph at lines 455--479
+Overfull \hbox (32.16582pt too wide) in paragraph at lines 421--445
  [][] 
  []
 
 File: static/figures/SMC80S-0040-30AoK-3DKH电机外形图.png Graphic file (type bmp)
 <static/figures/SMC80S-0040-30AoK-3DKH电机外形图.png>
-[24] [25]
+[22] [23] [24]
 File: static/figures/TCRT5000.jpg Graphic file (type bmp)
 <static/figures/TCRT5000.jpg>
- [26]
 File: static/figures/HC-SR04.jpg Graphic file (type bmp)
 <static/figures/HC-SR04.jpg>
-
+ [25]
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
-File: static/figures/B‑CAMS‑IMX.png Graphic file (type bmp)
-<static/figures/B‑CAMS‑IMX.png>
+File: static/figures/B-CAMS-IMX.png Graphic file (type bmp)
+<static/figures/B-CAMS-IMX.png>
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
 Missing character: There is no ‑ ("2011) in font t1xr!
-[27] [28]
+File: static/figures/最小系统原理图.png Graphic file (type bmp)
+<static/figures/最小系统原理图.png>
+[26]
+File: static/figures/电源滤波.png Graphic file (type bmp)
+<static/figures/电源滤波.png>
+ [27] [28]
 第5章
 File: static/figures/双轮模型.png Graphic file (type bmp)
 <static/figures/双轮模型.png>
@@ -1757,15 +1754,15 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.28pt have occurred.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4FC6753DE38F00A693205ADDCFAAD214;7567.
+(rerunfilecheck)             Checksum: ADC9C7AAA99F57B7572A792CB44AA401;7616.
  ) 
 Here is how much of TeX's memory you used:
- 45739 strings out of 467992
- 1085506 string characters out of 5433177
- 1820597 words of memory out of 5000000
- 73767 multiletter control sequences out of 15000+600000
+ 45752 strings out of 467992
+ 1085793 string characters out of 5433177
+ 1820674 words of memory out of 5000000
+ 73779 multiletter control sequences out of 15000+600000
  736180 words of font info for 324 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 108i,18n,111p,1358b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,18n,111p,1337b,957s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on main.pdf (42 pages).
