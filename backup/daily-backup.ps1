@@ -24,7 +24,7 @@ if ($LASTEXITCODE -ne 0 -or $insideRepo -ne "true") {
 }
 
 if ([string]::IsNullOrWhiteSpace($CommitMessage)) {
-    $CommitMessage = "backup: " + (Get-Date -Format "yyyy-MM-dd HH:mm")
+    $CommitMessage = Get-Date -Format "yyyyMMdd-HHmmss"
 }
 
 Run-Git add -A
