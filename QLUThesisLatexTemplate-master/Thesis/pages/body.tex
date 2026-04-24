@@ -16,17 +16,17 @@
 \chapter{引言}
     \section{研究背景和意义}
            \xfbody{根据商务部发布的中国新电商发展报告(2025)\cite{spb2024_bulletin_20250522}可以看出，2024年中国网络零售额达15.5万亿元，同比增长7.2\%，拉动社会消费品零售总额增长1.7个百分点，连续12年稳居全球最大网络零售市场如图\ref{fig:kuaidi1}所示。随着电商行业的快速发展，仓储物流成为制约电商发展的重要瓶颈之一。传统的人工仓储模式效率低下，难以满足日益增长的订单需求和复杂的仓储环境。因此，智能仓储自主移动机器人作为一种新兴的仓储自动化解决方案，受到了广泛关注。它们能够在仓库中自主导航、搬运货物，提高仓储效率和准确性，降低人力成本。\par
-            \begin{figure}[htbp]
+            \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{kuaidi1.png}
+                \includegraphics[width=0.42\textwidth]{kuaidi1.png}
                 \caption{2020-2024年人均用邮支出、快递支出和快递使用量情况}
                 \label{fig:kuaidi1}
              \end{figure}
         
            智能仓储自主移动机器人以自动引导小车（Automated Guided Vehicle，AGV）为代表，具有自动导航、路径规划、货物识别和搬运等功能。它们能够在复杂的仓储环境中自主移动，避免障碍物，提高仓储效率和准确性。智能仓储机器人不仅能够提升仓储效率，还能够降低人力成本，减少劳动强度，提高工作安全性。如图\ref{fig:AGV}为AGV小车工作示意图。因此，研究智能仓储自主移动机器人拥有重要的理论意义和实际应用价值。通过深入研究智能仓储机器人，可以推动仓储自动化技术的发展，提高仓储效率和服务质量，促进电商行业的持续发展。同时，智能仓储机器人也可以应用于其他领域，如制造业、医疗等，具有广泛的应用前景。统计数据显示，2019年中国AGV机器人行业市场规模48.27亿元，2024年中国AGV机器人行业市场规模95.49亿元。
-        \begin{figure}[htbp]
+        \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{AGV.png}
+                \includegraphics[width=0.42\textwidth]{AGV.png}
                 \caption{AGV小车工作示意图}
                 \label{fig:AGV}
              \end{figure}
@@ -66,9 +66,9 @@
                将建立仓储搬运机器人的差速驱动底盘运动学模型。差速驱动底盘通常由两个独立驱动轮和若干万向轮组成，通过控制左右轮速度差实现直行、转向和原地调头等基本运动。\par
                通过MATLAB/Simulink进行轨迹仿真与性能验证，分析机器人在不同路径规划算法下的运动性能，包括轨迹跟踪误差、速度和加速度等关键指标，以评估设计方案的有效性和优化空间。\par
                本文采用PID控制方法。PID控制通过对目标值与反馈值之间的误差进行比例、积分和微分调节，实现对机器人运动状态的实时修正，控制框图如图\ref{fig:pid}所示。\par
-               \begin{figure}[htbp]
+               \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{pid.png}
+                \includegraphics[width=0.42\textwidth]{pid.png}
                 \caption{PID控制示意图}
                 \label{fig:pid}
              \end{figure}
@@ -101,7 +101,7 @@
          自动循迹能力：最大外形尺寸控制在$1 \times 1 \times 1\,\mathrm{m}$，保证在狭窄通道与密集货架间的灵活通行的同时满足大量物品运输的要求\par
          结构组成：整车包括载物装置、行走装置、避障装置等核心模块，形成完整的智能搬运系统。具备多种传感器，提升了环境感知能力，提高其在复杂环境中移动的能力。\par
          载重能力：最大承载重量不超过25kg，适用于轻型物料的仓储搬运场景。 \par
-         智能避障与导航：通过传感器融合技术（如红外、超声波、视觉模块），实现对环境的实时感知与动态避障，保证在复杂仓储环境下的安全运行。\par
+         智能避障与导航：通过传感器融合技术（如红外、超声波），实现对环境的实时感知与动态避障，保证在复杂仓储环境下的安全运行。\par
          系统优势：具备高空间利用率、灵活性强、自动化程度高，能够显著提升仓储作业效率，降低人工成本的同时提高作业质量。\par
 
 
@@ -117,25 +117,25 @@
                 \xfbody{AGV的驱动方式受到多种因素的影响，例如最大载荷、轮系数量、转向方式以及驱动方式等。这些因素相互关联，决定了车辆的运动性能和适用场景。因此，在设计过程中需要从整体系统的角度出发，综合考虑结构、控制、成本和应用需求，才能形成合理的驱动方案。目前，AGV的驱动形式主要可以归纳为三种：单轮驱动、差速驱动和全方位驱动。\par
                 （1）单轮驱动\par
                单轮驱动的特点是一个驱动轮同时承担驱动和转向功能，从动轮则对称分布在车体轴线两侧。驱动轮通常为舵轮，从动轮多为万向轮，如图\ref{fig:单轮驱动}所示。这种结构简单，可靠性高，维护成本较低，适合载荷较小、路径较为固定的场景。其运动能力包括前进、后退和左右转向（转角小于$90^\circ$）。由于转弯半径较大，灵活性不足，不适合空间受限或需要频繁转弯的环境。\par
-               \begin{figure}[htbp]
+               \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{danlunqudong.png}
+                \includegraphics[width=0.42\textwidth]{danlunqudong.png}
                 \caption{单轮驱动示意图}
                 \label{fig:单轮驱动}
                \end{figure}
                （2）差速驱动\par
                差速驱动由两个驱动轮和两个或四个从动万向轮组成，左右驱动轮对称分布在车体轴线两侧。通过改变两侧驱动轮的速度差来实现转向，如图\ref{fig:差速驱动}所示。这种驱动方式可以实现前进、后退和左右转向（转角大于$90^\circ$），转弯半径小，灵活性好，特别适合需要频繁转弯和狭窄通道的场景。但其缺点是驱动轮磨损较快，若为四轮结构，还可能出现轮子悬空的问题，因此对地面平整度要求较高，应用范围受到一定限制。\par
-               \begin{figure}[htbp]
+               \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{chasu.png}
+                \includegraphics[width=0.42\textwidth]{chasu.png}
                 \caption{差速驱动示意图}
                 \label{fig:差速驱动}
                \end{figure}
                （3）全方位驱动\par
                全方位驱动的形式较为复杂，常见有两种：一种是前后各一个舵轮，加上两个从动万向轮，通过调整舵轮的角度和速度实现转向，如图\ref{fig:全方位驱动}所示；另一种是采用四个麦克纳姆轮，分别控制四个轮子的转向和转速，利用速度矢量合成原理实现全方位运动。
-               \begin{figure}[htbp]
+               \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{quanfangwei.png}
+                \includegraphics[width=0.42\textwidth]{quanfangwei.png}
                 \caption{全方位驱动示意图}
                 \label{fig:全方位驱动}
                \end{figure}
@@ -156,24 +156,24 @@
          \xfbody{本节内容主要包括移动底盘，驱动轮，升降部分,罩壳四大大部分组成，在第二章的总体设计方案中已经对AGV小车的总体结构和驱动选型进行了详细的介绍，接下来将对核心部件的结构设计进行深入分析和说明。\par
              \subsection{移动底盘}
                     \xfbody{本文选取的移动底盘采用差速驱动方式，主要由两个独立控制的轮子和四个辅助万向轮组成。差速驱动轮位于底盘的两侧，分别由独立的电机驱动，通过调整左右轮的速度差来实现转向和行驶控制。辅助万向轮则分布在底盘的四个角落，提供额外的支撑和稳定性，确保AGV小车在复杂仓储环境中的平稳运行。底盘结构采用焊接钢架设计，具有良好的强度和稳定性，同时保证了足够的空间用于安装电气系统和传感器。如图\ref{fig:dipan}所示，差速驱动系统的设计使得AGV小车能够在狭窄空间中灵活穿梭，提高了其适应性和作业效率。\par
-                    \begin{figure}[htbp]
+                    \begin{figure}[!htbp]
                 \centering
-                \includegraphics[width=0.64\textwidth]{dipan.png}
+                \includegraphics[width=0.42\textwidth]{dipan.png}
                 \caption{差速驱动底盘示意图}
                 \label{fig:dipan}
              \end{figure}
                          }
                 \subsection{驱动轮}     
                     \xfbody{驱动轮是AGV小车的核心部件之一，如图\ref{fig:qudonglun}和图\ref{fig:lunzi}所示。在该装置中，驱动部分的壳体采用45号钢板制造，厚度为2mm。45钢具有良好的强度和韧性，能够在保证整体刚性的同时兼顾一定的减振性能。壳体通过弯曲与焊接工艺成型，既保证了结构的整体性，又降低了制造成本。驱动级的两个电机分别安装在固定壳体的左右两侧，形成对称布局，有利于车辆在运行过程中保持平衡。电机的另一端与驱动装置的底座相连并固定，确保动力传递的稳定性。\par
-                         \begin{figure}[htbp]
+                         \begin{figure}[!htbp]
                     \centering
                     \subfigure[驱动轮示意图]{
-                         \includegraphics[width=0.47\textwidth]{qudonglun.png}
+                         \includegraphics[width=0.42\textwidth]{qudonglun.png}
                          \label{fig:qudonglun}
                     }
                     \hfill
                     \subfigure[驱动轮组件示意图]{
-                         \includegraphics[width=0.47\textwidth]{lunzi.png}
+                         \includegraphics[width=0.42\textwidth]{lunzi.png}
                          \label{fig:lunzi}
                     }
                     \caption{驱动轮及组件示意图}
@@ -184,9 +184,9 @@
                     }
                     \subsection{旋转机构部分}
                     \xfbody{旋转机构是AGV小车的关键功能模块之一，主要负责实现载物台的旋转操作，以适应不同方向的搬运需求。如图\ref{fig:shengjiang}所示。\par
-                         \begin{figure}[htbp]
+                         \begin{figure}[!htbp]
                     \centering
-                    \includegraphics[width=0.64\textwidth]{旋转机构.png}
+                    \includegraphics[width=0.42\textwidth]{旋转机构.png}
                     \caption{旋转机构示意图}
                     \label{fig:shengjiang}
                  \end{figure}
@@ -194,9 +194,9 @@
                     }
                     \subsection{罩壳设计}
                     \xfbody{罩壳设计是AGV小车的重要组成部分，主要负责保护内部机械结构和电气系统免受外部环境的影响，同时还具有美观和人机交互的功能。如图\ref{fig:zhaoke}所示。\par
-                         \begin{figure}[htbp]
+                         \begin{figure}[!htbp]
                     \centering
-                    \includegraphics[width=0.64\textwidth]{zhaoke.png}
+                    \includegraphics[width=0.42\textwidth]{zhaoke.png}
                     \caption{罩壳设计示意图}
                     \label{fig:zhaoke}
                  \end{figure}
@@ -248,30 +248,30 @@
                \subsection{有限元分析}
                    \xfbody{选好材料以后，本文对支撑梁进行有限元分析，以验证其在最大受力情况下的强度和安全性。\par
                    首选选择固定位点如图\ref{fig:fangzhen1}所示\par
-                \begin{figure}[htbp]
+                \begin{figure}[!htbp]
                 \centering
-                          \includegraphics[width=0.64\textwidth]{fangzhen1.png}
+                          \includegraphics[width=0.42\textwidth]{fangzhen1.png}
                 \caption{固定支撑梁的有限元分析示意图}
                 \label{fig:fangzhen1}
              \end{figure}
              固定好后，本文在轮系固定孔处施加1125N的力F。如图\ref{fig:fangzhen2}所示\par
-                \begin{figure}[htbp]
+                \begin{figure}[!htbp]
                 \centering
-                          \includegraphics[width=0.64\textwidth]{fangzhen2.png}
+                          \includegraphics[width=0.42\textwidth]{fangzhen2.png}
                 \caption{施加受力的有限元分析示意图}
                 \label{fig:fangzhen2}
              \end{figure}
              在进行有限元分析时，首先需要对结构模型进行网格划分。网格划分的目的是将连续的结构离散化为有限数量的单元，以便通过数值方法求解各节点的应力、应变与位移分布。每个单元之间通过节点相互连接，从而共同反映整体结构的力学特性。如图\ref{fig:fangzhen3}所示，支撑梁被划分为多个有限单元，每个单元的尺寸和形状根据结构的复杂程度和受力情况进行优化，以确保分析结果的准确性和计算效率。\par
-                \begin{figure}[htbp]
+                \begin{figure}[!htbp]
                 \centering
-                          \includegraphics[width=0.64\textwidth]{fangzhen3.png}
+                          \includegraphics[width=0.42\textwidth]{fangzhen3.png}
                 \caption{支撑梁的网格划分示意图}
                 \label{fig:fangzhen3}
              \end{figure}
              在完成网格划分之后，本文对模型进行了算例运行与受力仿真模拟。通过有限元分析软件对支撑梁在实际载荷工况下进行受力计算，可以得到结构在不同位置的应力分布情况。仿真过程中，载荷条件按照 AGV 的自重与额定载荷进行叠加，并施加在支撑梁的受力点上，同时考虑约束条件与边界条件的合理设置，以保证计算结果的准确性。如图\ref{fig:fangzhen4}所示，仿真结果显示支撑梁在最大受力情况下的应力分布情况，验证了设计的合理性与安全性。\par
-               \begin{figure}[htbp]
+               \begin{figure}[!htbp]
                 \centering
-                          \includegraphics[width=0.64\textwidth]{fangzhen4.png}
+                          \includegraphics[width=0.42\textwidth]{fangzhen4.png}
                 \caption{支撑梁受力仿真结果示意图}
                 \label{fig:fangzhen4}
              \end{figure}
@@ -283,15 +283,15 @@
             这一数值表明结构在受力作用下的刚度表现良好，变形量远低于一般工程设计中允许的位移限值。换句话说，支撑梁在承受设计载荷时几乎没有明显的形变，能够保持整体结构的稳定性与精度要求。\par
             从工程角度来看，位移变形的大小直接影响设备的运行可靠性与使用寿命。若变形过大，可能导致零部件之间的干涉或疲劳损伤；而本次仿真结果显示的最大位移仅为 0.001538 mm，说明设计在刚度与强度方面均满足要求，具有较高的安全裕度和使用可靠性。\par
             在受力仿真分析中，本文不仅关注应力与位移的分布情况，还需要对结构的应变进行评估。如图\ref{fig:fangzhen5}和\ref{fig:fangzhen6}所示。\par
-                  \begin{figure}[htbp]
+                  \begin{figure}[!htbp]
                     \centering
                     \subfigure[支撑梁应变分布示意图]{
-                         \includegraphics[width=0.47\textwidth]{fangzhen5.png}
+                         \includegraphics[width=0.42\textwidth]{fangzhen5.png}
                          \label{fig:fangzhen5}
                     }
                     \hfill
                     \subfigure[支撑梁最大应变分布示意图]{
-                         \includegraphics[width=0.47\textwidth]{fangzhen6.png}
+                         \includegraphics[width=0.42\textwidth]{fangzhen6.png}
                          \label{fig:fangzhen6}
                     }
                     \caption{支撑梁应变分析结果对比图}
@@ -308,12 +308,12 @@
          }
 \chapter{AGV电气系统设计}
     \section{电气系统总体架构} 
-         \xfbody{AGV小车的电气系统总体架构主要包括电源系统、驱动系统、传感器系统和控制系统四个核心部分。电源系统负责为整个AGV小车提供稳定的电能供应，通常采用高能量密度的锂离子电池，以满足长时间运行的需求。驱动系统由电机和相关驱动电路组成，负责实现AGV小车的运动控制，常选用高性能的伺服电机以提供精确的速度和位置控制。传感器系统包括红外线传感器、超声波传感器和摄像头等，用于环境感知和障碍物检测，确保AGV小车能够安全地在复杂环境中导航。控制系统则基于STM32F103C8T6芯片，负责协调各个子系统的工作，实现自主导航、路径规划和智能避障等功能。通过合理设计和集成这些核心部分，AGV小车能够高效、安全地完成物料搬运任务，满足现代智能仓储的需求。\par
+         \xfbody{AGV小车的电气系统总体架构主要包括电源系统、驱动系统、传感器系统和控制系统四个核心部分。电源系统负责为整个AGV小车提供稳定的电能供应，通常采用高能量密度的锂离子电池，以满足长时间运行的需求。驱动系统由电机和相关驱动电路组成，负责实现AGV小车的运动控制，常选用高性能的伺服电机以提供精确的速度和位置控制。传感器系统包括红外线传感器和超声波传感器，用于环境感知和障碍物检测，确保AGV小车能够安全地在复杂环境中导航。控制系统则基于STM32F103C8T6芯片，负责协调各个子系统的工作，实现自主导航、路径规划和智能避障等功能。通过合理设计和集成这些核心部分，AGV小车能够高效、安全地完成物料搬运任务，满足现代智能仓储的需求。\par
          \subsection{AGV小车主控制器选择}
                  \xfbody{在AGV小车的电气系统设计中，主控制器的选择至关重要。经过综合考虑性能、成本和开发难度等因素，本文最终选择了基于STM32F103C8T6芯片的控制器作为AGV小车的主控制单元。STM32F103C8T6是一款基于ARM Cortex-M3内核的微控制器，具有高性能、低功耗和丰富的外设接口，能够满足AGV小车在自主导航和智能避障方面的需求。如图\ref{fig:stm32f103c8t6实物图}为STM32F103C8T6的实物图。\par
-                     \begin{figure}[htbp]
+                     \begin{figure}[!htbp]
                          \centering
-                         \includegraphics[width=0.64\textwidth]{stm32f103c8t6实物图.png}
+                         \includegraphics[width=0.42\textwidth]{stm32f103c8t6实物图.png}
                          \caption{STM32F103C8T6芯片实物图}
                          \label{fig:stm32f103c8t6实物图}
                          \end{figure}
@@ -341,9 +341,9 @@
                     \end{table}
           
           图\ref{fig:stm32f103c8t6}为stm32f103c8t6芯片的原理图。\par
-           \begin{figure}[htbp]
+           \begin{figure}[!htbp]
                     \centering
-                    \includegraphics[width=0.64\textwidth]{stm32f103c8t6.png}
+                    \includegraphics[width=0.42\textwidth]{stm32f103c8t6.png}
                     \caption{STM32F103C8T6芯片示意图}
                     \label{fig:stm32f103c8t6}
                  \end{figure}
@@ -445,9 +445,9 @@
                     \end{table}
 
                     综上，选用400 W级伺服电机作为驱动电机能够满足本课题对搬运能力、低速稳定性和控制精度的要求，同时为整车运行预留了足够的安全裕量。其电机外形图如图\ref{fig:smc80s}所示。\par
-                    \begin{figure}[htbp]
+                    \begin{figure}[!htbp]
                     \centering
-                    \includegraphics[width=0.64\textwidth]{SMC80S-0040-30AoK-3DKH电机外形图.png}
+                    \includegraphics[width=0.42\textwidth]{SMC80S-0040-30AoK-3DKH电机外形图.png}
                     \caption{SMC80S-0040-30AoK-3DKH伺服电机外形图}
                     \label{fig:smc80s}
                  \end{figure}
@@ -497,17 +497,18 @@
                
                     }
                \subsection{传感器选型}
-                    \xfbody{AGV小车有红外线传感器、超声波传感器和摄像头三种传感器类型。红外线传感器主要用于近距离障碍物检测，具有响应速度快、成本低的优点；超声波传感器适合中远距离测距，能够提供较为准确的环境信息；摄像头则用于视觉识别和环境感知，能够实现更复杂的导航和避障功能。通过合理配置这些传感器，AGV小车能够实现对周围环境的全面感知，从而提高自主导航和智能避障的能力，确保在复杂的仓储环境中安全高效地完成搬运任务。\par
+                    \xfbody{
+                    AGV小车配备红外线传感器和超声波传感器两种传感器。红外线传感器主要用于近距离障碍物检测，具有响应速度快、成本低的优点；超声波传感器适合中远距离测距，能够提供较为准确的环境信息。通过合理配置这些传感器，AGV小车能够实现对周围环境的全面感知，从而提高自主导航和智能避障的能力，确保在复杂的仓储环境中安全高效地完成搬运任务。\par
                     红外线传感器选用型号为TCRT5000的反射式红外传感器，如图\ref{fig:TCRT5000}所示。\par
-                    \begin{figure}[htbp]
+                    \begin{figure}[!htbp]
                     \centering
                     \includegraphics[width=0.42\textwidth]{TCRT5000.jpg}
                     \caption{TCRT5000红外传感器实物图}
                     \label{fig:TCRT5000}
-                 \end{figure}该传感器具有发射和接收功能，能够通过检测反射回来的红外信号强度来判断前方是否存在障碍物。其工作电压为3.3V，输出信号为数字量，适合与STM32F103C8T6控制器直接接口连接，便于实现快速响应的近距离障碍物检测功能。TCRT5000的检测距离一般在1-15cm范围内，能够满足AGV小车在狭窄环境中对近距离障碍物的检测需求，确保小车在行驶过程中能够及时避让前方的障碍物，提升运行安全性。
+                 \end{figure}该传感器为一种集发射与接收于一体的光电传感器，由一个红外发光二极管和一个NPN红外光电三极管组成。TCRT5000采用高性能LM393比较器，驱动能力强（超过15mA），信号干净波形好，检测反射距离为1mm-25mm，能够通过检测反射回来的红外信号强度来判断前方是否存在障碍物。传感器特设M3固定安装孔，调节方向与固定方便易用，输出信号为数字量，适合与STM32F103C8T6控制器直接接口连接，便于实现快速响应的近距离障碍物检测功能。TCRT5000可应用于机器人避障、白线或黑线的循迹跟踪，能够检测白底中的黑线，也可检测黑底中的白线，是寻线机器人的必备传感器，充分满足AGV小车在狭窄环境中对近距离障碍物的检测需求，确保小车在行驶过程中能够及时避让前方的障碍物，提升运行安全性。
                  
                     超声波传感器选用型号为HC-SR04的超声波测距模块，如图\ref{fig:HC-SR04}所示。\par
-                    \begin{figure}[htbp]
+                    \begin{figure}[!htbp]
                     \centering
                     \includegraphics[width=0.42\textwidth]{HC-SR04.jpg}
                     \caption{HC-SR04超声波传感器实物图}
@@ -515,16 +516,8 @@
                  \end{figure}
                  该模块通过发射超声波并接收其反射信号来测量与障碍物之间的距离。HC-SR04的工作电压为5V，测距范围为2cm到400cm，测距精度为3mm，能够提供较为准确的环境信息，适合用于AGV小车的中远距离障碍物检测。通过将HC-SR04与STM32F103C8T6控制器连接，AGV小车能够实时获取周围环境的距离信息，从而实现更智能的导航和避障功能，确保在复杂的仓储环境中安全高效地完成搬运任务。
 
-                    摄像头选用ST官方的B‑CAMS‑IMX如图\ref{fig:B-CAMS-IMX}所示。\par
-                    \begin{figure}[htbp]
-                    \centering
-                      \includegraphics[width=0.42\textwidth]{B-CAMS-IMX.png}
-                    \caption{B‑CAMS‑IMX摄像头实物图}
-                    \label{fig:B-CAMS-IMX}
-                 \end{figure}
-                 它配备500万像素Sony IMX335 CMOS传感器、惯性运动单元和ToF距离传感器，支持 MIPI CSI‑2接口，适合机器视觉、机器人和工业自动化应用。B‑CAMS‑IMX 具有高性能的图像处理能力和丰富的接口，能够满足AGV小车在视觉识别和环境感知方面的需求。通过与STM32F103C8T6控制器的集成，AGV小车能够实现更复杂的导航和避障功能，提高自主运行的智能化水平，确保在复杂的仓储环境中安全高效地完成搬运任务。
 
-                    以上传感器的选型与设计能够满足AGV小车在不同距离范围内的环境感知需求，确保小车能够在复杂的仓储环境中安全高效地完成搬运任务。同时，这些传感器的集成也为后续的运动控制算法提供了丰富的数据支持，进一步提升AGV小车的智能化水平和运行性能。\par
+                    上述传感器的选型与设计能够满足AGV小车在不同距离范围内的环境感知需求，确保小车能够在复杂的仓储环境中安全高效地完成搬运任务。同时，这些传感器的集成也为后续的运动控制算法提供了丰富的数据支持，进一步提升AGV小车的智能化水平和运行性能。\par
 
 
 
@@ -533,23 +526,87 @@
     \section{控制电路设计}
           \subsection{STM32F103C8T6最小系统}
          \xfbody{STM32F103C8T6最小系统主要包含电源电路、滤波电路、时钟电路、BOOT启动电路、SWD程序下载调试电路及复位电路。如图\ref{fig:stm32f103c8t6_min}所示。\par
-         \begin{figure}[htbp]
+         \begin{figure}[!htbp]
                     \centering
-                    \includegraphics[width=0.64\textwidth]{最小系统原理图.png}
+                    \includegraphics[width=0.42\textwidth]{最小系统原理图.png}
                     \caption{STM32F103C8T6最小系统示意图}
                     \label{fig:stm32f103c8t6_min}
                  \end{figure}
-         其中，电源电路采用ME6211C33M5G-N。选用ME6211C33芯片，它采用 SOT-23-5 封装，是一颗低功耗低压差LDO芯片，其工作电压范围是2V~6V，最大输出电流为500mA(Vin 4.3，Vout-3.3)，lout-120mA 时最低压差仅为120mV，待机模式下电流为 0.1uA。ME6211C33M5G-N芯片具有过热保护和过流保护功能，能够有效保障STM32F103C8T6控制器在运行过程中的安全性和稳定性。此外，该芯片的高效率和低功耗特性也有助于延长AGV小车的续航时间，提升整体性能。通过合理设计电源电路，确保STM32F103C8T6控制器能够获得稳定的3.3V电压供应，为AGV小车的正常运行提供坚实的基础。\par
-         滤波电路主要由电容器组成，用于稳定电源电压。如图\ref{fig:power_filter}所示为电源滤波电路，为了保证 STM32 供电电压的稳定性，在电源的正负极之间需要放置一个 104 去耦电容，即 $10\times10^4\,\mathrm{pF}$（100 nF），利用电容阻直通交的特性进行去耦，滤掉电路中的电压波动与高频振荡，减少电源噪声，使电源更加稳定。\par
-           \begin{figure}[htbp]
+         其中，电源电路采用ME6211C33M5G-N。选用ME6211C33芯片，如图\ref{fig:ME6211C33}所示。
+
+ \begin{figure}[!htbp]
+                    \centering
+                    \includegraphics[width=0.42\textwidth]{电源.png}
+                    \caption{ME6211C33芯片实物图}
+                    \label{fig:ME6211C33}
+                 \end{figure}
+
+         它采用 SOT-23-5 封装，是一颗低功耗低压差LDO芯片，其工作电压范围是2V~6V，最大输出电流为500mA(Vin 4.3，Vout-3.3)，lout-120mA 时最低压差仅为120mV，待机模式下电流为 0.1uA。ME6211C33M5G-N芯片具有过热保护和过流保护功能，能够有效保障STM32F103C8T6控制器在运行过程中的安全性和稳定性。此外，该芯片的高效率和低功耗特性也有助于延长AGV小车的续航时间，提升整体性能。通过合理设计电源电路，确保STM32F103C8T6控制器能够获得稳定的3.3V电压供应，为AGV小车的正常运行提供坚实的基础。\par
+        
+         滤波电路主要由电容器组成，用于稳定电源电压。如图\ref{fig:power_filter}所示为电源滤波电路。
+         
+          \begin{figure}[!htbp]
                          \centering
-                         \includegraphics[width=0.64\textwidth]{电源滤波.png}
+                         \includegraphics[width=0.42\textwidth]{电源滤波.png}
                          \caption{电源滤波电路示意图}
                          \label{fig:power_filter}
                      \end{figure}
-           时钟电路采用外部晶振，频率为8MHz。选用8MHz的晶振能够为STM32F103C8T6控制器提供稳定的时钟信号，确保其正常运行和高效处理各种任务。外部晶振相较于内部RC振荡器具有更高的频率稳定性和精确度，能够有效提升AGV小车在导航、路径规划和运动控制等方面的性能表现。此外，合理设计时钟电路还可以降低系统的功耗，提高AGV小车的续航能力，为其在智能仓储环境中的长时间运行提供可靠保障。为了满足晶振的起振要求，晶振电路还需要连接两个12 pF的电容。\par
+         
+         为了保证 STM32 供电电压的稳定性，在电源的正负极之间需要放置一个 104 去耦电容，即 $10\times10^4\,\mathrm{pF}$（100 nF），利用电容阻直通交的特性进行去耦，滤掉电路中的电压波动与高频振荡，减少电源噪声，使电源更加稳定。\par
+           时钟电路采用外部晶振，频率为8MHz。如图\ref{fig:crystal_oscillator}所示为晶振电路示意图。\par
+           \begin{figure}[!htbp]
+                         \centering
+                         \includegraphics[width=0.42\textwidth]{时钟电路.png}
+                         \caption{时钟电路示意图}
+                         \label{fig:crystal_oscillator}
+                     \end{figure}
+           选用8MHz的晶振能够为STM32F103C8T6控制器提供稳定的时钟信号，确保其正常运行和高效处理各种任务。外部晶振相较于内部RC振荡器具有更高的频率稳定性和精确度，能够有效提升AGV小车在导航、路径规划和运动控制等方面的性能表现。此外，合理设计时钟电路还可以降低系统的功耗，提高AGV小车的续航能力，为其在智能仓储环境中的长时间运行提供可靠保障。为了满足晶振的起振要求，晶振电路还需要连接两个12 pF的电容。\par
+          BOOT启动电路设计用于选择STM32F103C8T6的启动模式，确保系统能够正确进入用户程序的执行状态。如图\ref{fig:boot_circuit}所示为BOOT启动电路示意图。\par
+          \begin{figure}[!htbp]
+                         \centering
+                         \includegraphics[width=0.42\textwidth]{boot.png}
+                         \caption{BOOT启动电路示意图}
+                         \label{fig:boot_circuit}
+                     \end{figure}
+           STM32 支持内部 FLASH 启动、系统存储器启动、内部 SRAM 启动三种启动方式，通过 BOOT0 和 BOOT1 引脚的不同电平组合来选择。对于本设计，通常将 BOOT0 引脚连接到低电平（GND），BOOT1 引脚保持不连接或连接到低电平，以确保系统从内部 FLASH 启动，直接进入用户程序的执行状态。这种配置能够简化系统的启动流程，提高启动速度，并且在正常运行过程中提供稳定可靠的性能表现。此外，在开发和调试阶段，可以通过调整 BOOT0 引脚的电平来选择不同的启动模式，以便进行固件升级、系统恢复等操作，增强系统的灵活性和可维护性。\par
+          SWD程序下载调试电路设计用于实现STM32F103C8T6的程序烧录和调试功能，确保开发过程中能够高效地进行代码测试和问题排查。如图\ref{fig:swd_circuit}所示为SWD程序下载调试电路示意图。\par
+            \begin{figure}[!htbp]
+                         \centering
+                               \includegraphics[width=0.42\textwidth]{swd.png}
+                         \caption{SWD程序下载调试电路示意图}
+                         \label{fig:swd_circuit}
+                     \end{figure}
+          SWD（Serial Wire Debug）是一种基于两线接口的调试协议，主要由SWDIO（数据线）和SWCLK（时钟线）两根信号线组成，此外还需要连接电源和地线以确保通信的稳定性。通过SWD接口，开发者可以使用调试器（如ST-Link）与STM32F103C8T6控制器进行通信，实现程序的烧录、单步调试、断点设置和寄存器监视等功能。这种设计不仅简化了开发流程，提高了调试效率，还能够帮助开发者快速定位和解决代码中的问题，从而加速AGV小车的开发和优化过程。此外，SWD接口的使用还可以在系统运行过程中进行在线调试和性能监测，为AGV小车的稳定运行提供持续的支持和保障。\par
+          复位电路设计用于确保STM32F103C8T6控制器在系统异常或电源波动等情况下能够及时复位，恢复正常运行状态。如图\ref{fig:reset_circuit}所示为复位电路示意图。\par
+          \begin{figure}[!htbp]
+                         \centering
+                         \includegraphics[width=0.42\textwidth]{reset.png}
+                         \caption{复位电路示意图}
+                         \label{fig:reset_circuit}
+                     \end{figure}
+          复位电路主要用于对MCU进行程序复位，将电路重置到初始状态。根据STM32F103C8T6官方数据手册，芯片的复位引脚与内部的永久上拉电阻相连，即默认为高电平，当提供低电平时芯片会复位。复位电路由一个按键、一个电容和一个上拉电阻组成。当复位按键被按下时，复位引脚（NRST）被拉低，触发STM32F103C8T6控制器进入复位状态，停止当前的程序执行，并重新启动系统，将电路重置到初始状态。电容的作用是滤除按键的机械抖动，确保复位信号的稳定性；上拉电阻确保在按钮未按下时复位引脚保持高电平，防止误触发复位。通过合理设计复位电路，能够有效提升AGV小车在运行过程中的稳定性和可靠性，确保在遇到异常情况时能够迅速恢复正常运行状态，减少系统停机时间，提升整体性能表现。此外，复位电路还可以与电源监测电路结合使用，实现自动复位功能，进一步增强系统的自恢复能力，为AGV小车在复杂的仓储环境中提供更可靠的运行保障。\par
+          综上所述，STM32F103C8T6最小系统的设计涵盖了电源电路、滤波电路、时钟电路、BOOT启动电路、SWD程序下载调试电路和复位电路等关键部分，确保了控制器能够稳定、可靠地运行，为AGV小车的运动控制和环境感知提供坚实的基础。通过合理设计和集成这些电路，能够有效提升AGV小车的性能表现和运行稳定性，确保其在智能仓储环境中能够高效地完成搬运任务，并为后续的功能扩展和优化提供良好的支持和保障。
 
          }
+         \subsection{传感器接口电路设计}
+              \xfbody{
+              传感器接口电路设计主要包括红外线传感器接口电路和超声波传感器接口电路两部分，确保AGV小车能够准确获取环境信息，为运动控制算法提供可靠的数据支持。\par
+              红外线传感器接口电路设计用于连接TCRT5000反射式红外传感器，确保其能够与STM32F103C8T6控制器进行有效通信。如图\ref{fig:ir_interface}所示为红外线传感器接口电路示意图。\par
+              \begin{figure}[!htbp]
+                         \centering
+                         \includegraphics[width=0.42\textwidth]{ir_interface.png}
+                         \caption{红外线传感器接口电路示意图}
+                         \label{fig:ir_interface}
+                     \end{figure}
+              TCRT5000的输出信号为数字量，直接连接到STM32F103C8T6的GPIO引脚即可实现数据采集。为了确保信号的稳定性和抗干扰能力，可以在信号线上添加一个10kΩ的上拉电阻，将输出信号拉高到3.3V，防止信号浮空导致误触发。此外，为了进一步提高系统的抗干扰能力，可以在信号线上添加一个100nF的去耦电容，滤除高频噪声，确保AGV小车在复杂的仓储环境中能够准确检测近距离障碍物，提高运行安全性和稳定性。\par
+              超声波传感器接口电路设计用于连接HC-SR04超声波测距模块，确保其能够与STM32F103C8T6控制器进行有效通信。如图\ref{fig:ultrasonic_interface}所示为超声波传感器接口电路示意图。\par
+              \begin{figure}[!htbp]
+                         \centering
+                         \includegraphics[width=0.42\textwidth]{ultrasonic_interface.png}
+                         \caption{超声波传感器接口电路示意图}
+                         \label{fig:ultrasonic_interface}
+                     \end{figure}
+              HC-SR04模块具有四个引脚：VCC、GND、Trig和Echo。VCC和GND分别连接到3.3V电源和地线，确保模块的正常供电；Trig引脚连接到STM32F103C8T6的GPIO输出引脚，用于触发超声波发射；Echo引脚连接到STM32F103C8T6的GPIO输入引脚，用于接收反射信号。为了确保信号的稳定性和抗干扰能力，可以在Echo引脚上添加一个10kΩ的上拉电阻，将信号拉高到3.3V，防止信号浮空导致误触发。此外，为了进一步提高系统的抗干扰能力，可以在Echo引脚上添加一个100nF的去耦电容，滤除高频噪声，确保AGV小车在复杂的仓储环境中能够准确测量与障碍物之间的距离，提高运行安全性和稳定性。\par
 \chapter{AGV运动学建模与仿真}
     \section{差速驱动底盘运动学方程推导}
                           \xfbody{在分析智能仓储机器人的运动学模型时，需要综合考虑其结构特性与运动自由度、运动控制方式，以及在运动过程中可能存在的约束与限制。通过建立合适的数学模型和运动学方程，可以对机器人的运动轨迹、速度和加速度等关键参数进行计算与分析，从而提升运动性能与工作效率。
@@ -558,9 +615,9 @@
 
                          本文所研究的智能仓储机器人为双轮差速移动机器人，其模型如图\ref{双轮模型.png}。下面将对其进行运动学分析。
 
-                         \begin{figure}[htbp]
+                         \begin{figure}[!htbp]
                          \centering
-                         \includegraphics[width=0.64\textwidth]{双轮模型.png}
+                         \includegraphics[width=0.42\textwidth]{双轮模型.png}
                          \caption{双轮差速移动机器人模型示意图}
                          \label{双轮模型.png}
                          \end{figure}
