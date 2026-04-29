@@ -1,0 +1,48 @@
+% !Mode:: "TeX:UTF-8"
+
+%? ************************************************************* %?
+%?                                                               %?
+%?                   您将在此处完成中英文摘要的填写                   %?
+%?                                                               %?
+%? ************************************************************* %?
+
+% ====================== 摘要 ======================
+
+\chapter*{\texorpdfstring{\centering \heiti \sanhao \textbf{摘\quad 要}}{摘要}}
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao{摘\qquad 要}}{摘要}}
+
+\linespread{1.5}\selectfont
+\fangsong\xiaosi
+
+\vspace{1em}
+
+\xfabstract{
+
+    随着电子商务与智能物流迅速发展，传统以人工为主的仓储方式在效率、响应时延和环境适应性方面已难以满足现代仓储系统的需求。为提升仓储搬运的自动化水平，本文针对智能仓储场景下的举升式AGV展开研究，涵盖总体方案、机械结构、电气系统、运动学建模与控制仿真等内容。首先，根据仓储环境对通行性、灵活性与搬运效率的综合要求，提出了以双轮差速驱动为核心的举升式AGV总体方案。随后完成了移动底盘、驱动轮、升降机构与外壳等机械部件的设计，并对支撑梁开展强度校核与有限元仿真，以验证结构方案的安全性与可行性。在电气部分，完成了基于STM32F103C8T6的主控单元、电机驱动模块以及红外/超声传感器接口电路的选型与设计。接着建立了差速底盘的运动学模型，推导了车辆线速度、角速度与左右轮角速度间的数学关系，并在MATLAB中对直线、圆弧、S形与8字等典型轨迹进行了仿真验证。最后设计并仿真了基于PID的双轮差速控制器，在扰动工况下进行了目标跟踪测试。结果表明，所提出的AGV方案在结构与控制上均具备可行性，可为后续样机研制与系统优化提供参考。
+
+}
+
+\noindent{\heiti\xiaosi\textbf{关键词：}} 
+\fangsong{举升式AGV；智能仓储；差速驱动；运动学建模；PID控制}
+
+% ====================== Abstract ======================
+
+\chapter*{}
+\vspace*{-1.15cm}
+{\centering\bfseries\sanhao ABSTRACT\par}
+\addcontentsline{toc}{chapter}{\sihao{ABSTRACT}}
+\vspace{0.5cm}
+
+\linespread{1.5}\selectfont
+\rmfamily\xiaosi
+
+\xfenabstract{
+    With rapid development in e-commerce and intelligent logistics, traditional manual warehousing increasingly fails to satisfy modern storage systems in terms of efficiency, responsiveness, and environmental adaptability. To raise the automation level of warehouse handling, this thesis investigates a lifting-type AGV for intelligent warehousing, addressing overall design, mechanical structure, electrical system, kinematic modeling, and control simulation. First, considering warehouse requirements for maneuverability, accessibility, and handling efficiency, a lifting AGV with a dual-wheel differential-drive layout is proposed. Then, mechanical components such as the mobile chassis, drive wheels, lifting mechanisms, and outer shell are designed; the supporting beam is evaluated by strength checks and finite element analysis to confirm structural safety and feasibility. For the electrical system, the STM32F103C8T6-based main controller, motor driver module, and infrared/ultrasonic sensor interfaces are selected and designed. Next, a kinematic model of the differential-drive chassis is derived, relating linear and angular velocities to individual wheel angular speeds, and MATLAB simulations are performed for typical trajectories including straight lines, circular arcs, S-shaped and figure-eight paths. Finally, a PID-based dual-wheel differential controller is designed and tested in disturbance scenarios via simulation. The results indicate that the proposed AGV design is structurally sound and controllable, offering a reference for prototype development and further optimization.
+}
+
+\vspace{1em}
+
+\noindent\textbf{Key words:} lifting AGV; intelligent warehousing; differential drive; kinematic modeling; PID control
+
+\setcounter{secnumdepth}{2}
+

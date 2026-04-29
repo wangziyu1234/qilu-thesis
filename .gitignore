@@ -1,0 +1,40 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.thm
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.xdv
+*.nav
+*.snm
+*.vrb
+
+# Simulink build cache
+slprj/
+*.slxc
+
+# MATLAB backup files
+*.m~
+
+# Thesis font archives are only distribution helpers and exceed GitHub limits
+1_论文/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip
+
+# IDE local settings
+.vscode/
+
+# Claude local settings
+.claude/settings.local.json
+
+# Temporary/unnamed files
+untitled*.slx
+
+# OS files
+Thumbs.db
+.DS_Store
