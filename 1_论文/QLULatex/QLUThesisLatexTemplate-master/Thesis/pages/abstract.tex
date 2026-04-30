@@ -18,12 +18,18 @@
 
 \xfabstract{
 
-    随着电子商务与智能物流迅速发展，传统以人工为主的仓储方式在效率、响应时延和环境适应性方面已难以满足现代仓储系统的需求。为提升仓储搬运的自动化水平，本文针对智能仓储场景下的举升式AGV展开研究，涵盖总体方案、机械结构、电气系统、运动学建模与控制仿真等内容。首先，根据仓储环境对通行性、灵活性与搬运效率的综合要求，提出了以双轮差速驱动为核心的举升式AGV总体方案。随后完成了移动底盘、驱动轮、升降机构与外壳等机械部件的设计，并对支撑梁开展强度校核与有限元仿真，以验证结构方案的安全性与可行性。在电气部分，完成了基于STM32F103C8T6的主控单元、电机驱动模块以及红外/超声传感器接口电路的选型与设计。接着建立了差速底盘的运动学模型，推导了车辆线速度、角速度与左右轮角速度间的数学关系，并在MATLAB中对直线、圆弧、S形与8字等典型轨迹进行了仿真验证。最后设计并仿真了基于PID的双轮差速控制器，在扰动工况下进行了目标跟踪测试。结果表明，所提出的AGV方案在结构与控制上均具备可行性，可为后续样机研制与系统优化提供参考。
+    随着电子商务与智能物流的快速发展，传统仓储搬运方式在效率和成本方面面临越来越多的挑战。为提升仓储搬运的自动化水平，本文针对智能仓储场景下的举升式AGV小车展开研究。
+
+    首先，通过对比三种驱动方案，确定了以双轮差速驱动为核心的举升式AGV总体方案。在机械结构方面，完成了底盘、驱动轮、升降机构和罩壳的设计，并对支撑梁进行了有限元分析验证。在电气系统方面，选用STM32F103C8T6作为主控芯片，完成了伺服电机与减速器的选型匹配，设计了红外和超声波传感器的接口电路。
+
+    在运动学方面，建立了差速底盘运动学方程，对直线、圆弧、S形和8字形四类典型轨迹进行了仿真。在路径规划方面，采用Hybrid A*算法在仓储栅格地图上规划无碰撞路径，路径长度为11.03m。在循迹控制方面，模拟5路红外传感器阵列进行PID循迹仿真，RMS横向误差为2.1cm。最后设计了双轮差速PID控制器，在扰动条件下进行目标跟踪仿真，验证了控制器的扰动抑制能力。
+
+    结果表明，所提出的AGV方案在结构设计、路径规划与运动控制上均具备可行性，可为后续样机研制提供参考。
 
 }
 
-\noindent{\heiti\xiaosi\textbf{关键词：}} 
-\fangsong{举升式AGV；智能仓储；差速驱动；运动学建模；PID控制}
+\noindent{\heiti\xiaosi\textbf{关键词：}}
+\fangsong{举升式AGV；智能仓储；差速驱动；路径规划；Hybrid A*；PID循迹控制}
 
 % ====================== Abstract ======================
 
@@ -37,12 +43,17 @@
 \rmfamily\xiaosi
 
 \xfenabstract{
-    With rapid development in e-commerce and intelligent logistics, traditional manual warehousing increasingly fails to satisfy modern storage systems in terms of efficiency, responsiveness, and environmental adaptability. To raise the automation level of warehouse handling, this thesis investigates a lifting-type AGV for intelligent warehousing, addressing overall design, mechanical structure, electrical system, kinematic modeling, and control simulation. First, considering warehouse requirements for maneuverability, accessibility, and handling efficiency, a lifting AGV with a dual-wheel differential-drive layout is proposed. Then, mechanical components such as the mobile chassis, drive wheels, lifting mechanisms, and outer shell are designed; the supporting beam is evaluated by strength checks and finite element analysis to confirm structural safety and feasibility. For the electrical system, the STM32F103C8T6-based main controller, motor driver module, and infrared/ultrasonic sensor interfaces are selected and designed. Next, a kinematic model of the differential-drive chassis is derived, relating linear and angular velocities to individual wheel angular speeds, and MATLAB simulations are performed for typical trajectories including straight lines, circular arcs, S-shaped and figure-eight paths. Finally, a PID-based dual-wheel differential controller is designed and tested in disturbance scenarios via simulation. The results indicate that the proposed AGV design is structurally sound and controllable, offering a reference for prototype development and further optimization.
+    With the rapid growth of e-commerce and intelligent logistics, traditional warehouse handling faces increasing challenges in efficiency and cost. To improve automation in warehouse material handling, this thesis investigates a lifting-type AGV for intelligent warehousing.
+
+    First, by comparing three drive schemes, a dual-wheel differential drive architecture is adopted for the lifting AGV. For the mechanical structure, the chassis, drive wheels, lifting mechanism, and shell are designed, and finite element analysis is performed on the supporting beam. For the electrical system, the STM32F103C8T6 microcontroller is selected as the main controller, the servo motor is matched with a planetary reducer, and interface circuits are designed for infrared and ultrasonic sensors.
+
+    In terms of kinematics, the differential-drive chassis kinematic equations are derived, and MATLAB simulations are conducted for four typical trajectories: straight, circular, S-shaped, and figure-eight. For path planning, the Hybrid A* algorithm is employed to generate collision-free paths in a warehouse grid map, yielding a path length of 11.03\,m. For line-following control, PID simulation with a 5-sensor infrared array achieves an RMS lateral error of 2.1\,cm. Finally, a dual-wheel PID controller is tested under disturbance conditions, demonstrating its disturbance rejection capability.
+
+    Results show that the proposed AGV design is feasible in structural design, path planning, and motion control, providing a reference for prototype development.
 }
 
 \vspace{1em}
 
-\noindent\textbf{Key words:} lifting AGV; intelligent warehousing; differential drive; kinematic modeling; PID control
+\noindent\textbf{Key words:} lifting AGV; intelligent warehousing; differential drive; path planning; Hybrid A*; PID line-following control
 
 \setcounter{secnumdepth}{2}
-
