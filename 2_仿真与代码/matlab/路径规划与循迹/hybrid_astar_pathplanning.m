@@ -38,9 +38,9 @@ fprintf('起点 (%.1f, %.1f) -> 终点 (%.1f, %.1f)\n', ...
 
 %% ==================== 2. 参数 ====================
 step_len = 0.5;                        % 步长 (m)
-L = 0.32;                              % 轮距 (m)
-steer_angles = [-30,-15,0,15,30]*pi/180;  % 5 种转向角
-n_steer = length(steer_angles);
+L = 0.52;                              % 轮距 (m)
+curvatures = [-1.11, -0.52, 0, 0.52, 1.11];  % 5 种离散曲率 (m^-1), 由差速轮速比产生
+n_curv = length(curvatures);
 max_iter = 20000;
 
 %% ==================== 3. 初始化 OpenList / CloseList ====================
@@ -88,17 +88,17 @@ for iter = 1:max_iter
     end
 
     % 4.4 扩展 10 种动作 (5前进 + 5后退)
-    for a = 1:n_steer*2
-        if a <= n_steer
-            steer = steer_angles(a);
+    for a = 1:n_curv*2
+        if a <= n_curv
+            kappa = curvatures(a);
             dir = 1;
         else
-            steer = steer_angles(a - n_steer);
+            kappa = curvatures(a - n_curv);
             dir = -1;
         end
 
-        % 运动模型
-        [nx, ny, nt] = step_motion(cx, cy, ct, steer, step_len, dir, L);
+        % 运动模型 (差速驱动曲率)
+        [nx, ny, nt] = step_motion(cx, cy, ct, kappa, step_len, dir);
 
         % 边界
         if nx < 0 || nx > map_w || ny < 0 || ny > map_h
@@ -115,7 +115,7 @@ for iter = 1:max_iter
         if dir == -1
             g = g + step_len * 0.5;    % 倒车惩罚
         end
-        if abs(steer) > 1e-6
+        if abs(kappa) > 1e-6
             g = g + 0.1;               % 转弯惩罚
         end
         h = hypot(goal_pos(1)-nx, goal_pos(2)-ny);
@@ -147,16 +147,14 @@ end
 warning('达到最大迭代'); path = start_pos;
 end
 
-%% ======================== 运动模型 ========================
-function [nx, ny, nt] = step_motion(x, y, theta, steer, step, dir, L)
-    if abs(steer) < 1e-6
+%% ======================== 运动模型 (差速驱动曲率) ========================
+function [nx, ny, nt] = step_motion(x, y, theta, kappa, step, dir)
+    if abs(kappa) < 1e-6
         nx = x + dir*step*cos(theta);
         ny = y + dir*step*sin(theta);
         nt = theta;
     else
-        R = L / tan(abs(steer));
-        dtheta = dir * step / R;
-        if steer < 0, dtheta = -dtheta; end
+        dtheta = dir * step * kappa;
         nt = theta + dtheta;
         nt = atan2(sin(nt), cos(nt));
         nx = x + dir*step*cos(theta + dtheta/2);

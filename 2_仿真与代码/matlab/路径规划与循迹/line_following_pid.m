@@ -5,17 +5,17 @@ function line_following_pid(ref_path)
 %   输入: ref_path [x, y, theta] 参考路径 (来自 Hybrid A*)
 
 if nargin < 1
-    t = linspace(0, 4*pi, 200);
+    t = linspace(0, 3.5*pi, 200);
     ref_path = [2 + 1.5*cos(t)', 2 + 0.8*sin(t)', atan2(0.8*cos(t), -1.5*sin(t))'];
 end
 
 %% ==================== 1. 参数设置 ====================
-r_wheel = 0.065;
-L_base  = 0.32;
+r_wheel = 0.075;
+L_base  = 0.52;
 v_nom   = 0.3;            % 标称速度 (m/s)
 
 n_sensors  = 5;
-sensor_spacing = 0.02;
+sensor_spacing = 0.04;
 sensor_offsets = (-2:2) * sensor_spacing;
 line_width = 0.03;         % 黑线检测宽度 (m), 3cm 比较实际
 
@@ -56,7 +56,7 @@ for k = 1:n_steps
     end
 
     % --- 3.2 偏移量 ---
-    weights = -2:2;
+    weights = -4:2:4;
     active = find(sensor_state == 1);
 
     if ~isempty(active)
@@ -133,11 +133,11 @@ title('纠偏角速度');
 
 subplot(2, 2, 4);
 hold on; grid on; axis equal;
-rectangle('Position', [-0.08,-0.06,0.16,0.12], 'Curvature', 0.2, 'EdgeColor', 'b', 'LineWidth', 2);
+rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, 'EdgeColor', 'b', 'LineWidth', 2);
 for s = 1:n_sensors
     plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');
 end
-plot([-0.05, 0.05], [0.06, 0.06], 'k-', 'LineWidth', 3);
+plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);
 xlabel('横向 (m)'); ylabel('纵向 (m)');
 title('5路红外传感器布局');
 
@@ -147,11 +147,11 @@ fprintf('已保存: line_following_result.png\n');
 % 单独保存传感器布局图 (论文用)
 fig2 = figure('Color', 'w', 'Position', [200, 200, 350, 280]);
 hold on; grid on; axis equal;
-rectangle('Position', [-0.08,-0.06,0.16,0.12], 'Curvature', 0.2, 'EdgeColor', 'b', 'LineWidth', 2);
+rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, 'EdgeColor', 'b', 'LineWidth', 2);
 for s = 1:n_sensors
     plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');
 end
-plot([-0.05, 0.05], [0.06, 0.06], 'k-', 'LineWidth', 3);
+plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);
 xlabel('横向 (m)'); ylabel('纵向 (m)');
 title('5路红外传感器布局');
 saveas(fig2, 'sensor_layout.png');

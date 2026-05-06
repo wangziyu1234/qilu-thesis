@@ -8,30 +8,36 @@
 %  使用: 直接在 MATLAB 中 F5 运行
 clear; clc; close all;
 
-%% ==================== 1. 加载 Hybrid A* 路径 ====================
+%% ==================== 1. 生成 Hybrid A* 参考路径 ====================
 script_dir = fileparts(mfilename('fullpath'));
 if isempty(script_dir), script_dir = pwd; end
 
-csv_file = fullfile(script_dir, '..', '..', 'CBS', 'reference_path.csv');
-if ~exist(csv_file, 'file')
-    error('找不到参考路径文件:\n  %s\n请先运行 plan_and_simulate.py 生成', csv_file);
-end
+% 添加路径规划代码目录
+addpath(fullfile(script_dir, '..', '路径规划与循迹'));
 
-data = readtable(csv_file);
-s_ref   = data.s_m;
-x_ref   = data.x_m;
-y_ref   = data.y_m;
-theta_ref = data.theta_rad;
+fprintf('正在运行 Hybrid A* 路径规划...\n');
+path_raw = hybrid_astar_pathplanning();
+
+% 等间距插值 (0.05m)
+dx = diff(path_raw(:,1)); dy = diff(path_raw(:,2));
+seg_len = hypot(dx, dy);
+cum_s = [0; cumsum(seg_len)];
+ds = 0.05;
+s_query = 0:ds:cum_s(end);
+x_ref   = interp1(cum_s, path_raw(:,1), s_query, 'linear')';
+y_ref   = interp1(cum_s, path_raw(:,2), s_query, 'linear')';
+theta_ref = interp1(cum_s, path_raw(:,3), s_query, 'linear')';
+theta_ref = atan2(sin(theta_ref), cos(theta_ref));
+s_ref   = s_query';
 total_len = s_ref(end);
 
 fprintf('========== Hybrid A* + PID 轨迹跟踪 ==========\n');
 fprintf('参考路径: %d 点,  %.2f m\n', length(x_ref), total_len);
-fprintf('文件: %s\n', csv_file);
 
 %% ==================== 2. 参数设置 ====================
 % AGV物理参数
-r_wheel = 0.065;    % 车轮半径 (m)
-L_base  = 0.32;     % 轮距 (m)
+r_wheel = 0.075;    % 车轮半径 (m)
+L_base  = 0.52;     % 轮距 (m)
 
 % PID参数 (同原Simulink模型)
 Kp_xy     = 1.4;
@@ -115,7 +121,7 @@ for k = 1:n_steps
     wl_int = wl_int + wl_err*dt;
     wl_der = (wl_err - wl_prev)/dt;  wl_prev = wl_err;
     wl_drv = Kp_wheel*wl_err + Ki_wheel*wl_int + Kd_wheel*wl_der;
-    wl_drv = wl_drv + 0.35 + 0.20*sin(1.15*t_vec(k));
+    wl_drv = wl_drv + 0.10 + 0.10*sin(1.15*t_vec(k));
     motor_wl = motor_wl + (motor_gain*wl_drv - motor_wl)/motor_tau * dt;
 
     % --- 右轮PID + 电机 ---
@@ -123,7 +129,7 @@ for k = 1:n_steps
     wr_int = wr_int + wr_err*dt;
     wr_der = (wr_err - wr_prev)/dt;  wr_prev = wr_err;
     wr_drv = Kp_wheel*wr_err + Ki_wheel*wr_int + Kd_wheel*wr_der;
-    wr_drv = wr_drv - 0.20 + 0.15*sin(0.82*t_vec(k));
+    wr_drv = wr_drv - 0.10 + 0.10*sin(0.82*t_vec(k));
     motor_wr = motor_wr + (motor_gain*wr_drv - motor_wr)/motor_tau * dt;
 
     % --- 运动学 ---
