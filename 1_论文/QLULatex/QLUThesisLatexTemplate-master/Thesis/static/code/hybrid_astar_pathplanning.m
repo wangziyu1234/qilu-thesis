@@ -1,6 +1,5 @@
 function path = hybrid_astar_pathplanning()
 %HYBRID_ASTAR_PATHPLANNING  Hybrid A* 路径规划
-%   参考 CSDN 博客实现, 差速驱动 AGV, 仓储环境
 %   输出: path [x, y, theta]
 
 clear; clc; close all;
@@ -44,10 +43,10 @@ n_curv = length(curvatures);
 max_iter = 20000;
 
 %% ==================== 3. 初始化 OpenList / CloseList ====================
-% OpenList:  [x, y, theta, cost]
-% CloseList: [x, y, theta, f, g, h, px, py, ptheta, steerid]
+% OpenList:  [x, y, theta, f, g, parent_idx, action_id]
+% CloseList: [x, y, theta, f, g, parent_idx, action_id]
 h0 = hypot(goal_pos(1)-start_pos(1), goal_pos(2)-start_pos(2));
-OpenList  = [start_pos(1), start_pos(2), start_pos(3), h0];
+OpenList  = [start_pos(1), start_pos(2), start_pos(3), h0, 0, 0, 0];
 CloseList = [];
 
 fprintf('搜索中...\n');
@@ -58,17 +57,20 @@ for iter = 1:max_iter
         warning('OpenList 为空'); path = start_pos; return;
     end
 
-    % 4.1 取 cost 最小节点
+    % 4.1 取 f 值最小节点, 移入 CloseList
     [~, mi] = min(OpenList(:,4));
     cur = OpenList(mi, :);
     OpenList(mi, :) = [];
+    CloseList(end+1, :) = cur; %#ok<AGROW>
+    cur_idx = size(CloseList, 1);  % 当前节点在 CloseList 中的索引
 
     cx = cur(1); cy = cur(2); ct = cur(3);
+    cg = cur(5);   % 当前节点的 g 值
 
     % 4.2 到达目标?
     if hypot(cx-goal_pos(1), cy-goal_pos(2)) < 0.5
         fprintf('找到路径! 迭代 %d\n', iter);
-        path = backtrack(CloseList, start_pos, goal_pos);
+        path = backtrack(CloseList, start_pos);
         path = smooth_path(path, 3);
         fprintf('路径点数: %d, 长度 %.2f m\n', size(path,1), ...
             sum(hypot(diff(path(:,1)), diff(path(:,2)))));
@@ -76,18 +78,7 @@ for iter = 1:max_iter
         return;
     end
 
-    % 4.3 父节点代价值 (从 CloseList 查找)
-    pg = 0;
-    if ~isempty(CloseList)
-        dists = hypot(CloseList(:,1)-cx, CloseList(:,2)-cy);
-        ang_ok = abs(atan2(sin(CloseList(:,3)-ct), cos(CloseList(:,3)-ct)));
-        pi_ = find(dists < 0.15 & ang_ok < 0.1, 1);
-        if ~isempty(pi_)
-            pg = CloseList(pi_, 5);   % 父节点的 g
-        end
-    end
-
-    % 4.4 扩展 10 种动作 (5前进 + 5后退)
+    % 4.3 扩展 10 种动作 (5前进 + 5后退)
     for a = 1:n_curv*2
         if a <= n_curv
             kappa = curvatures(a);
@@ -111,7 +102,7 @@ for iter = 1:max_iter
         end
 
         % 代价值
-        g = pg + step_len;
+        g = cg + step_len;
         if dir == -1
             g = g + step_len * 0.5;    % 倒车惩罚
         end
@@ -121,21 +112,22 @@ for iter = 1:max_iter
         h = hypot(goal_pos(1)-nx, goal_pos(2)-ny);
         f = g + h;
 
-        % 检查是否已探索
+        % 跳过已在 CloseList 中的节点
         if is_in_list(CloseList, nx, ny, nt, 0.15)
             continue;
         end
 
-        % OpenList 去重: 如果已有更优路径则跳过
-        if is_in_list(OpenList, nx, ny, nt, 0.15)
+        % OpenList 去重: 若已有相同节点且代价更低则跳过, 否则更新
+        oi = find_in_list(OpenList, nx, ny, nt, 0.15);
+        if oi > 0
+            if f < OpenList(oi, 4)
+                OpenList(oi, :) = [nx, ny, nt, f, g, cur_idx, a];
+            end
             continue;
         end
 
-        % 加入 OpenList
-        OpenList(end+1, :) = [nx, ny, nt, f]; %#ok<AGROW>
-
-        % 记录到 CloseList (含父节点坐标和动作编号)
-        CloseList(end+1, :) = [nx, ny, nt, f, g, h, cx, cy, ct, a]; %#ok<AGROW>
+        % 加入 OpenList (存储父节点在 CloseList 中的索引)
+        OpenList(end+1, :) = [nx, ny, nt, f, g, cur_idx, a]; %#ok<AGROW>
     end
 
     if mod(iter, 2000) == 0
@@ -184,29 +176,29 @@ function found = is_in_list(lst, x, y, theta, tol)
     found = any(d < tol & a < 0.1);
 end
 
-%% ======================== 路径回溯 ========================
-function path = backtrack(CloseList, start_pos, goal_pos)
-    % 找离目标最近的节点作为终点
-    hs = hypot(CloseList(:,1)-goal_pos(1), CloseList(:,2)-goal_pos(2));
-    [~, gi] = min(hs);
-    cur = CloseList(gi, :);
+function idx = find_in_list(lst, x, y, theta, tol)
+    if isempty(lst)
+        idx = 0; return;
+    end
+    d = hypot(lst(:,1)-x, lst(:,2)-y);
+    a = abs(atan2(sin(lst(:,3)-theta), cos(lst(:,3)-theta)));
+    idx = find(d < tol & a < 0.1, 1);
+    if isempty(idx), idx = 0; end
+end
 
+%% ======================== 路径回溯 ========================
+function path = backtrack(CloseList, start_pos)
+    % CloseList: [x, y, theta, f, g, parent_idx, action_id]
+    % 从最后一个节点沿父索引链回溯到起点
+    cur = size(CloseList, 1);
     pts = {};
     for k = 1:size(CloseList, 1)
-        pts{end+1} = [cur(1), cur(2), cur(3)]; %#ok<AGROW>
-        if hypot(cur(1)-start_pos(1), cur(2)-start_pos(2)) < 0.5
+        pts{end+1} = [CloseList(cur,1), CloseList(cur,2), CloseList(cur,3)]; %#ok<AGROW>
+        parent_idx = CloseList(cur, 6);
+        if parent_idx == 0
             break;
         end
-        % 找父节点
-        px = cur(7); py = cur(8); pt = cur(9);
-        dists = hypot(CloseList(:,1)-px, CloseList(:,2)-py);
-        ang_ok = abs(atan2(sin(CloseList(:,3)-pt), cos(CloseList(:,3)-pt)));
-        pi_ = find(dists < 0.3 & ang_ok < 0.2, 1);
-        if isempty(pi_)
-            pts{end+1} = [start_pos(1), start_pos(2), start_pos(3)];
-            break;
-        end
-        cur = CloseList(pi_, :);
+        cur = parent_idx;
     end
 
     pts = flip(pts);

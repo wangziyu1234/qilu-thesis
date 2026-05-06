@@ -43,9 +43,10 @@ e_int = 0;  e_prev = 0;
 for k = 1:n_steps
     t_now = (k-1) * dt;
 
-    % --- 3.1 传感器检测 ---
-    sx = x + sensor_offsets * cos(theta + pi/2);
-    sy = y + sensor_offsets * sin(theta + pi/2);
+    % --- 3.1 传感器检测 (阵列位于车体前方 80mm) ---
+    fwd = 0.08;
+    sx = x + fwd*cos(theta) + sensor_offsets * cos(theta + pi/2);
+    sy = y + fwd*sin(theta) + sensor_offsets * sin(theta + pi/2);
 
     sensor_state = zeros(1, n_sensors);
     for s = 1:n_sensors

@@ -1,193 +1,243 @@
-%% ========== Hybrid A* + PID 轨迹跟踪仿真 ==========
-%  加载 Hybrid A* 规划的参考路径, 运行 PID 控制器做轨迹跟踪
-%  纯 MATLAB, 不依赖 Simulink
-%
-%  控制结构 (同 diff_drive_robot_pid_system.slx):
-%    XY控制器 → 角度PID → 分速度模块 → 轮速PID+电机模型 → 运动学积分
-%
-%  使用: 直接在 MATLAB 中 F5 运行
-clear; clc; close all;
+%% run_pid_tracking.m
+% 运行双轮差速PID控制仿真
+% 配置目标点、PID参数，运行仿真并绘制结果
 
-%% ==================== 1. 生成 Hybrid A* 参考路径 ====================
-script_dir = fileparts(mfilename('fullpath'));
-if isempty(script_dir), script_dir = pwd; end
+clear; clc;
 
-% 添加路径规划代码目录
-addpath(fullfile(script_dir, '..', '路径规划与循迹'));
+model_name = 'diff_drive_robot_pid_system';
 
-fprintf('正在运行 Hybrid A* 路径规划...\n');
-path_raw = hybrid_astar_pathplanning();
-
-% 等间距插值 (0.05m)
-dx = diff(path_raw(:,1)); dy = diff(path_raw(:,2));
-seg_len = hypot(dx, dy);
-cum_s = [0; cumsum(seg_len)];
-ds = 0.05;
-s_query = 0:ds:cum_s(end);
-x_ref   = interp1(cum_s, path_raw(:,1), s_query, 'linear')';
-y_ref   = interp1(cum_s, path_raw(:,2), s_query, 'linear')';
-theta_ref = interp1(cum_s, path_raw(:,3), s_query, 'linear')';
-theta_ref = atan2(sin(theta_ref), cos(theta_ref));
-s_ref   = s_query';
-total_len = s_ref(end);
-
-fprintf('========== Hybrid A* + PID 轨迹跟踪 ==========\n');
-fprintf('参考路径: %d 点,  %.2f m\n', length(x_ref), total_len);
-
-%% ==================== 2. 参数设置 ====================
-% AGV物理参数
-r_wheel = 0.075;    % 车轮半径 (m)
-L_base  = 0.52;     % 轮距 (m)
-
-% PID参数 (同原Simulink模型)
-Kp_xy     = 1.4;
-Kp_theta  = 4.0;   Ki_theta = 0.3;   Kd_theta = 0.05;
-Kp_wheel  = 3.0;   Ki_wheel = 1.2;   Kd_wheel = 0.03;
-
-% 电机模型
-motor_gain = 1.0;
-motor_tau  = 0.15;
-
-% 仿真
-dt   = 0.01;
-v_max = 0.5;
-
-%% ==================== 3. 梯形速度曲线 ====================
-accel = 0.3;  decel = 0.3;
-t_acc = v_max / accel;
-t_dec = v_max / decel;
-d_cruise = max(0, total_len - v_max^2/(2*accel) - v_max^2/(2*decel));
-T_total = t_acc + d_cruise / v_max + t_dec + 10;
-
-n_steps = ceil(T_total / dt);
-t_vec   = (0:n_steps-1)' * dt;
-fprintf('仿真: %.1f s, %d 步, dt=%.2f s\n', T_total, n_steps, dt);
-
-% 弧长进度 → 参考位姿
-s_prog = zeros(n_steps, 1);
-v_cur  = 0;  s_cur = 0;
-for k = 1:n_steps
-    tn = t_vec(k);
-    if tn < t_acc
-        v_des = v_max * tn / t_acc;
-    elseif tn > T_total - t_dec
-        v_des = v_max * max(0, (T_total - tn) / t_dec);
+%% 检查模型是否存在，不存在则构建
+if ~bdIsLoaded(model_name)
+    if exist([model_name '.slx'], 'file')
+        open_system(model_name);
     else
-        v_des = v_max;
+        disp('模型文件不存在，正在构建...');
+        build_diffdrive_pid_model;
     end
-    if v_des > v_cur, v_cur = min(v_des, v_cur + accel*dt);
-    else,              v_cur = max(v_des, v_cur - decel*dt); end
-    s_cur = s_cur + v_cur * dt;
-    s_prog(k) = min(s_cur, total_len);
-end
-x_cmd = interp1(s_ref, x_ref, s_prog, 'linear', 'extrap');
-y_cmd = interp1(s_ref, y_ref, s_prog, 'linear', 'extrap');
-
-%% ==================== 4. PID 轨迹跟踪主循环 ====================
-% 初始状态
-x = x_ref(1);  y = y_ref(1);  theta = theta_ref(1);
-
-% PID积分/微分状态
-ang_int = 0;   ang_prev = 0;
-wl_int  = 0;   wl_prev  = 0;
-wr_int  = 0;   wr_prev  = 0;
-motor_wl = 0;  motor_wr = 0;
-
-% 日志
-log = zeros(n_steps, 7);  % [t, x, y, theta, v, omega, err]
-
-for k = 1:n_steps
-    % --- XY控制器 ---
-    dx = x_cmd(k) - x;
-    dy = y_cmd(k) - y;
-    v_cmd = Kp_xy * sqrt(dx^2 + dy^2);
-    v_cmd = max(-0.8, min(0.8, v_cmd));
-    ang_tgt = atan2(dy, dx);
-
-    % --- 角度PID ---
-    ang_err = atan2(sin(ang_tgt - theta), cos(ang_tgt - theta));
-    ang_int = ang_int + ang_err * dt;
-    ang_der = (ang_err - ang_prev) / dt;
-    ang_prev = ang_err;
-    omega_cmd = Kp_theta*ang_err + Ki_theta*ang_int + Kd_theta*ang_der;
-    omega_cmd = max(-1.5, min(1.5, omega_cmd));
-
-    % --- 分速度 → 左右轮目标 ---
-    wl_tgt = (v_cmd - omega_cmd * L_base/2) / r_wheel;
-    wr_tgt = (v_cmd + omega_cmd * L_base/2) / r_wheel;
-
-    % --- 左轮PID + 电机 ---
-    wl_err = wl_tgt - motor_wl;
-    wl_int = wl_int + wl_err*dt;
-    wl_der = (wl_err - wl_prev)/dt;  wl_prev = wl_err;
-    wl_drv = Kp_wheel*wl_err + Ki_wheel*wl_int + Kd_wheel*wl_der;
-    wl_drv = wl_drv + 0.10 + 0.10*sin(1.15*t_vec(k));
-    motor_wl = motor_wl + (motor_gain*wl_drv - motor_wl)/motor_tau * dt;
-
-    % --- 右轮PID + 电机 ---
-    wr_err = wr_tgt - motor_wr;
-    wr_int = wr_int + wr_err*dt;
-    wr_der = (wr_err - wr_prev)/dt;  wr_prev = wr_err;
-    wr_drv = Kp_wheel*wr_err + Ki_wheel*wr_int + Kd_wheel*wr_der;
-    wr_drv = wr_drv - 0.10 + 0.10*sin(0.82*t_vec(k));
-    motor_wr = motor_wr + (motor_gain*wr_drv - motor_wr)/motor_tau * dt;
-
-    % --- 运动学 ---
-    v_act = r_wheel*(motor_wl + motor_wr)/2;
-    w_act = r_wheel*(motor_wr - motor_wl)/L_base;
-    x     = x + v_act*cos(theta)*dt;
-    y     = y + v_act*sin(theta)*dt;
-    theta = theta + w_act*dt;
-    theta = atan2(sin(theta), cos(theta));
-
-    % 日志
-    log(k, :) = [t_vec(k), x, y, theta, v_act, w_act, sqrt((x-x_cmd(k))^2+(y-y_cmd(k))^2)];
 end
 
-%% ==================== 5. 结果 ====================
-rms_err   = sqrt(mean(log(:,7).^2));
-max_err   = max(log(:,7));
-final_err = log(end, 7);
+%% ========== 仿真参数配置 ==========
 
-fprintf('\n========== 结果 ==========\n');
-fprintf('RMS跟踪误差:   %.3f m\n', rms_err);
-fprintf('最大跟踪误差:  %.3f m\n', max_err);
-fprintf('终点误差:      %.3f m\n', final_err);
-fprintf('仿真时长:       %.1f s\n', log(end,1));
+% 机器人物理参数
+r  = 0.075;    % 轮半径 (m)
+L  = 0.52;     % 轮距 (m)
+mw = 2.5;      % 单轮等效质量 (kg)
 
-%% ==================== 6. 绘图 ====================
-% 图1: XY轨迹
-figure('Color','w','Position',[50,80,1100,450]);
-subplot(1,2,1);
-plot(x_ref, y_ref, 'b-','LineWidth',1.5); hold on;
-plot(log(:,2), log(:,3), 'r--','LineWidth',1.2);
-plot(x_ref(1), y_ref(1), 'go','MarkerSize',10,'LineWidth',2);
-plot(x_ref(end), y_ref(end), 'rx','MarkerSize',10,'LineWidth',2);
-grid on; axis equal;
-xlabel('X (m)'); ylabel('Y (m)');
-title('Hybrid A* 参考路径 vs PID 跟踪轨迹');
-legend('参考路径','PID跟踪','起点','终点','Location','best');
+% 目标点坐标
+target_x = 5.0;
+target_y = 5.0;
 
-subplot(1,2,2);
-plot(log(:,1), log(:,7), 'r-','LineWidth',1.2); hold on;
-yline(rms_err, 'b--', sprintf('RMS=%.3fm', rms_err), 'LineWidth',1.5);
-grid on; xlabel('时间 (s)'); ylabel('误差 (m)');
-title('跟踪误差'); legend('瞬时','RMS');
+% 设置目标位置
+set_param([model_name '/Target X'], 'Value', num2str(target_x));
+set_param([model_name '/Target Y'], 'Value', num2str(target_y));
 
-% 图2: 速度
-figure('Color','w','Position',[50,560,1100,350]);
-subplot(2,1,1); plot(log(:,1), log(:,5), 'b-','LineWidth',1);
-grid on; ylabel('v (m/s)'); title('线速度');
-subplot(2,1,2); plot(log(:,1), log(:,6), 'r-','LineWidth',1);
-grid on; ylabel('\omega (rad/s)'); xlabel('时间 (s)'); title('角速度');
+% PID 参数
+Kp_angle = 1.5;   % 角度环比例
+Ki_angle = 0.1;   % 角度环积分
+Kd_angle = 0.05;  % 角度环微分
 
-% 图3: X/Y分量
-figure('Color','w','Position',[50,940,1100,300]);
-plot(log(:,1), x_cmd, 'b-','DisplayName','X_{ref}'); hold on;
-plot(log(:,1), log(:,2), 'r--','DisplayName','X_{act}');
-plot(log(:,1), y_cmd, 'c-','DisplayName','Y_{ref}');
-plot(log(:,1), log(:,3), 'm--','DisplayName','Y_{act}');
-grid on; xlabel('时间 (s)'); ylabel('位置 (m)');
-title('X/Y分量跟踪'); legend('Location','best');
+Kp_speed = 3.0;   % 速度环比例
+Ki_speed = 0.5;   % 速度环积分
+Kd_speed = 0.0;   % 速度环微分
 
-fprintf('图表已生成\n');
+Kp_pos = 0.8;     % 位置-速度比例
+
+% 更新 PID 参数
+set_param([model_name '/PID Control System/Angle PID'], ...
+    'P', num2str(Kp_angle), 'I', num2str(Ki_angle), 'D', num2str(Kd_angle));
+set_param([model_name '/PID Control System/Speed PID'], ...
+    'P', num2str(Kp_speed), 'I', num2str(Ki_speed), 'D', num2str(Kd_speed));
+set_param([model_name '/PID Control System/Kp_pos'], ...
+    'Gain', num2str(Kp_pos));
+
+% 速度饱和
+set_param([model_name '/PID Control System/Sat_v'], ...
+    'UpperLimit', '0.5', 'LowerLimit', '0');
+
+% 力饱和
+set_param([model_name '/PID Control System/Sat_FL'], ...
+    'UpperLimit', '15', 'LowerLimit', '-15');
+set_param([model_name '/PID Control System/Sat_FR'], ...
+    'UpperLimit', '15', 'LowerLimit', '-15');
+
+% 仿真时间
+sim_time = 30;
+set_param(model_name, 'StopTime', num2str(sim_time));
+set_param(model_name, 'Solver', 'ode45');
+set_param(model_name, 'MaxStep', '0.01');
+
+%% ========== 运行仿真 ==========
+disp('========================================');
+disp('  双轮差速PID控制仿真');
+disp('========================================');
+fprintf('目标位置: (%.1f, %.1f)\n', target_x, target_y);
+fprintf('仿真时间: %d 秒\n', sim_time);
+fprintf('角度PID: P=%.2f, I=%.2f, D=%.2f\n', Kp_angle, Ki_angle, Kd_angle);
+fprintf('速度PID: P=%.2f, I=%.2f, D=%.2f\n', Kp_speed, Ki_speed, Kd_speed);
+disp('----------------------------------------');
+
+% 记录仿真数据（需要配置数据日志或使用输出端口）
+% 方式1：使用 To Workspace 模块（需要在模型中添加）
+% 方式2：使用 simout 输出
+
+% 运行仿真
+simOut = sim(model_name, 'ReturnWorkspaceOutputs', 'on');
+
+%% ========== 从 Scope 读取数据并绘图 ==========
+
+% 获取 Scope 数据
+scope_names = {'Scope_Force', 'Scope_vx', 'Scope_x', 'Scope_y', 'Scope_Sensor'};
+scope_labels = {'合力 (作用力合力)', '横轴速度分量 vx (m/s)', ...
+                '横坐标 x (m)', '纵坐标 y (m)', '感应值 sensor'};
+
+figure('Color', 'w', 'Name', 'PID控制仿真结果', 'Position', [100, 100, 900, 700]);
+
+for i = 1:5
+    scope_path = [model_name '/' scope_names{i}];
+    try
+        % 尝试获取 scope 数据
+        scope_conf = get_param(scope_path, 'ScopeConfiguration');
+        if isa(scope_conf, 'Simulink.scopes.ScopeBlockStrategy')
+            % 新版本 scope
+            dataSet = scope_conf.DataLogging;
+            if ~isempty(dataSet)
+                subplot(3, 2, i);
+                % 用 simlog 获取数据
+            end
+        end
+    catch
+        % 如果无法获取 scope 数据，使用备用方法
+    end
+end
+
+% 由于 Scope 数据提取依赖版本，提供备用绘图方式
+% 使用 To Workspace 或 Output 端口替代
+
+disp('----------------------------------------');
+disp('仿真完成！请在 Simulink 中查看示波器和 XY Graph。');
+disp('或者使用以下方式查看结果：');
+disp('  1. 双击打开各 Scope 模块');
+disp('  2. 双击 XY Graph 查看运动轨迹');
+disp('  3. 在 Simulink 工具栏点击 Data Inspector');
+
+%% ========== 备用：直接通过 MATLAB 仿真验证 ==========
+% 如果不依赖 Simulink 可视化，可运行以下纯数值仿真
+
+run_standalone = false;  % 设为 true 运行独立仿真
+
+if run_standalone
+    disp('运行独立数值仿真...');
+
+    % 初始状态
+    x0 = [0; 0; 0];  % [x, y, theta]
+    vx = 0; vy = 0;
+
+    dt = 0.01;
+    t = 0:dt:sim_time;
+    N = length(t);
+
+    % 存储
+    x_hist = zeros(1, N); y_hist = zeros(1, N);
+    theta_hist = zeros(1, N);
+    v_hist = zeros(1, N); omega_hist = zeros(1, N);
+    FL_hist = zeros(1, N); FR_hist = zeros(1, N);
+
+    % PID 积分项
+    int_angle = 0; int_speed = 0;
+    prev_angle_err = 0; prev_speed_err = 0;
+
+    for k = 1:N
+        x_hist(k) = x0(1); y_hist(k) = x0(2); theta_hist(k) = x0(3);
+
+        % 当前实际速度
+        v_actual = hypot(vx, vy);
+        v_hist(k) = v_actual;
+
+        % XY 控制器：计算期望航向和速度
+        dx = target_x - x0(1);
+        dy = target_y - x0(2);
+        dist = hypot(dx, dy);
+        theta_des = atan2(dy, dx);
+        v_des = min(0.5, Kp_pos * dist);
+        if dist < 0.05
+            v_des = 0;
+        end
+
+        % 角度 PID
+        angle_err = atan2(sin(theta_des - x0(3)), cos(theta_des - x0(3)));
+        int_angle = int_angle + angle_err * dt;
+        d_angle = (angle_err - prev_angle_err) / dt;
+        omega_correction = Kp_angle * angle_err + Ki_angle * int_angle + Kd_angle * d_angle;
+        omega_correction = max(-2, min(2, omega_correction));
+        prev_angle_err = angle_err;
+
+        % 速度 PID
+        speed_err = v_des - v_actual;
+        int_speed = int_speed + speed_err * dt;
+        d_speed = (speed_err - prev_speed_err) / dt;
+        F_base = Kp_speed * speed_err + Ki_speed * int_speed + Kd_speed * d_speed;
+        F_base = max(-10, min(10, F_base));
+        prev_speed_err = speed_err;
+
+        % 力混合
+        FL = F_base - omega_correction * (L/2);
+        FR = F_base + omega_correction * (L/2);
+        FL = max(-15, min(15, FL));
+        FR = max(-15, min(15, FR));
+        FL_hist(k) = FL; FR_hist(k) = FR;
+
+        % 机器人动力学
+        vL = FL / mw * dt;  % 简化：直接积分
+        vR = FR / mw * dt;
+
+        v = (vL + vR) / 2;
+        omega = (vR - vL) / L;
+        omega_hist(k) = omega;
+
+        % 更新状态
+        vx = v * cos(x0(3));
+        vy = v * sin(x0(3));
+        x0(1) = x0(1) + vx * dt;
+        x0(2) = x0(2) + vy * dt;
+        x0(3) = x0(3) + omega * dt;
+    end
+
+    % 绘图
+    figure('Color', 'w', 'Name', 'PID控制仿真结果（独立数值仿真）', 'Position', [100, 100, 1000, 750]);
+
+    subplot(2,3,1); plot(t, FL_hist, 'b', t, FR_hist, 'r', 'LineWidth', 1.2);
+    grid on; xlabel('时间 (s)'); ylabel('力 (N)');
+    legend('F_L', 'F_R'); title('左右轮作用力');
+
+    subplot(2,3,2); plot(t, v_hist, 'LineWidth', 1.5);
+    grid on; xlabel('时间 (s)'); ylabel('速度 (m/s)');
+    title('横轴速度分量 (线速度)');
+
+    subplot(2,3,3); plot(t, x_hist, 'LineWidth', 1.5);
+    grid on; xlabel('时间 (s)'); ylabel('x (m)');
+    title('横坐标 x');
+
+    subplot(2,3,4); plot(t, y_hist, 'LineWidth', 1.5);
+    grid on; xlabel('时间 (s)'); ylabel('y (m)');
+    title('纵坐标 y');
+
+    subplot(2,3,5); plot(t, omega_hist, 'LineWidth', 1.5);
+    grid on; xlabel('时间 (s)'); ylabel('\omega (rad/s)');
+    title('角速度 (感应值)');
+
+    subplot(2,3,6); plot(x_hist, y_hist, 'b-', 'LineWidth', 1.5); hold on;
+    plot(target_x, target_y, 'r*', 'MarkerSize', 12, 'LineWidth', 2);
+    plot(x_hist(1), y_hist(1), 'go', 'MarkerSize', 8, 'LineWidth', 1.5);
+    grid on; axis equal; xlabel('x (m)'); ylabel('y (m)');
+    legend('轨迹', '目标点', '起点');
+    title('机器人运动轨迹 (XY图)');
+
+    fprintf('终点位置: (%.3f, %.3f)\n', x_hist(end), y_hist(end));
+    fprintf('终点航向: %.2f°\n', rad2deg(theta_hist(end)));
+    fprintf('目标位置: (%.1f, %.1f)\n', target_x, target_y);
+    fprintf('位置误差: %.3f m\n', hypot(target_x-x_hist(end), target_y-y_hist(end)));
+end
+
+disp('========================================');
+disp('  仿真结束');
+disp('========================================');

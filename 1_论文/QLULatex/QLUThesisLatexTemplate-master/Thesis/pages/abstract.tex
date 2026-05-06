@@ -18,13 +18,11 @@
 
 \xfabstract{
 
-    电子商务与智能物流的快速推进，使传统仓储搬运方式在效率和成本上遭遇日益严峻的考验。着眼于仓储搬运自动化水平的提升，本文对智能仓储场景下的举升式AGV小车展开研究。
+    为提升仓储搬运自动化水平，本文对智能仓储场景下的举升式AGV展开研究。通过三种驱动方案对比，选定双轮差速驱动方案。机械层面完成了底盘、升降机构和罩壳设计，并对支撑梁进行有限元验证。电气层面选定STM32F103C8T6为主控芯片，完成了电机选型和传感器接口电路设计。
 
-    经过三种驱动方案的对比，选定了以双轮差速驱动为核心的举升式AGV总体方案。机械结构层面，完成了底盘、驱动轮、升降机构和罩壳的设计，并借助有限元分析对支撑梁进行了验证。电气系统层面，选定STM32F103C8T6作为主控芯片，完成了伺服电机与减速器的选型匹配，设计了红外和超声波传感器的接口电路。
+    运动学层面推导了差速底盘方程，对四类典型轨迹进行仿真。路径规划层面采用Hybrid A*算法生成无碰撞路径，长度10.71\,m。循迹控制层面以5路红外传感器阵列进行PID仿真，RMS横向误差0.8\,cm。运动控制层面设计了分层PID控制器，在扰动条件下验证了跟踪与抗扰能力。
 
-    运动学层面，推导了差速底盘运动学方程，对直线、圆弧、S形和8字形四类典型轨迹开展了仿真。路径规划层面，采用Hybrid A*算法在仓储栅格地图上规划了无碰撞路径，路径长度为10.90m。循迹控制层面，模拟5路红外传感器阵列进行PID循迹仿真，RMS横向误差为3.1cm。最后设计了双轮差速PID控制器，在扰动条件下进行目标跟踪仿真，检验了控制器的扰动抑制能力。
-
-    测试结果显示，所提出的AGV方案在结构设计、路径规划与运动控制上均切实可行，可为后续样机研制提供参考。
+    仿真结果表明，该方案在结构、规划与控制层面具备可行性，可为样机研制提供参考。
 
 }
 
@@ -47,9 +45,9 @@
 
     First, by comparing three drive schemes, a dual-wheel differential drive architecture is adopted for the lifting AGV. For the mechanical structure, the chassis, drive wheels, lifting mechanism, and shell are designed, and finite element analysis is performed on the supporting beam. For the electrical system, the STM32F103C8T6 microcontroller is selected as the main controller, the servo motor is matched with a planetary reducer, and interface circuits are designed for infrared and ultrasonic sensors.
 
-    In terms of kinematics, the differential-drive chassis kinematic equations are derived, and MATLAB simulations are conducted for four typical trajectories: straight, circular, S-shaped, and figure-eight. For path planning, the Hybrid A* algorithm is employed to generate collision-free paths in a warehouse grid map, yielding a path length of 10.90\,m. For line-following control, PID simulation with a 5-sensor infrared array achieves an RMS lateral error of 3.1\,cm. Finally, a dual-wheel PID controller is tested under disturbance conditions, demonstrating its disturbance rejection capability.
+    In terms of kinematics, the differential-drive chassis kinematic equations are derived, and MATLAB simulations are conducted for four typical trajectories: straight, circular, S-shaped, and figure-eight. For path planning, the Hybrid A* algorithm is employed to generate collision-free paths in a warehouse grid map, yielding a path length of 10.71\,m. For line-following control, PID simulation with a 5-sensor infrared array achieves an RMS lateral error of 0.8\,cm. Finally, a dual-wheel PID controller is tested under disturbance conditions, demonstrating its disturbance rejection capability.
 
-    Results show that the proposed AGV design is feasible in structural design, path planning, and motion control, providing a reference for prototype development.
+    Simulation results show that the proposed AGV design is feasible in structural design, path planning, and motion control, providing a reference for prototype development.
 }
 
 \vspace{1em}

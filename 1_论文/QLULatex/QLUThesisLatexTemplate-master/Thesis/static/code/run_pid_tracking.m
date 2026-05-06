@@ -12,8 +12,9 @@ clear; clc; close all;
 script_dir = fileparts(mfilename('fullpath'));
 if isempty(script_dir), script_dir = pwd; end
 
-% 添加路径规划代码目录
-addpath(fullfile(script_dir, '..', '路径规划与循迹'));
+% 添加路径规划代码目录 (附录代码需将 hybrid_astar_pathplanning.m 放于同目录)
+plan_dir = fullfile(script_dir, '..', '路径规划与循迹');
+if exist(plan_dir, 'dir'), addpath(plan_dir); end
 
 fprintf('正在运行 Hybrid A* 路径规划...\n');
 path_raw = hybrid_astar_pathplanning();

@@ -1,658 +1,498 @@
-function build_diffdrive_pid_model(modelName)
-%BUILD_DIFFDRIVE_PID_MODEL 生成带中文标注的轮式差速机器人Simulink模型并自动仿真
+%% build_diffdrive_pid_model.m
+% 构建双轮差速PID控制Simulink模型
+% 模型包含两大部分：
+%   第一部分 - 轮式差速机器人（轮子模块、旋转模块、分速度模块、感应器模块）
+%   第二部分 - PID控制模块（PID控制器、XY控制器、角度控制器）
 
-if nargin < 1 || isempty(modelName)
-    modelName = 'diff_drive_robot_pid_system';
+clear; clc;
+
+%% 模型名称
+model_name = 'diff_drive_robot_pid_system';
+
+% 关闭已存在的模型
+if bdIsLoaded(model_name)
+    close_system(model_name, 0);
 end
 
-targetModelName = matlab.lang.makeValidName(char(modelName));
-buildModelName = matlab.lang.makeValidName([targetModelName '_building']);
+% 创建新模型
+new_system(model_name);
+open_system(model_name);
 
-if bdIsLoaded(buildModelName)
-    close_system(buildModelName, 0);
+%% 机器人物理参数（通过模型工作区传递）
+r  = 0.075;    % 轮半径 (m)
+L  = 0.52;     % 轮距 (m)
+mw = 2.5;      % 单轮等效质量 (kg), 总质量 m=5kg 的一半
+
+% 将参数写入模型工作区
+ws = get_param(model_name, 'ModelWorkspace');
+ws.assignin('r', r);
+ws.assignin('L', L);
+ws.assignin('mw', mw);
+
+%% ========================================================================
+%  第一部分：轮式差速机器人子系统
+%  ========================================================================
+robot_name = [model_name '/Differential Drive Robot'];
+
+% 创建子系统，设置稍大的尺寸
+add_block('simulink/Ports & Subsystems/Subsystem', robot_name);
+set_param(robot_name, 'Position', [450, 80, 680, 420]);
+set_param(robot_name, 'BackgroundColor', 'lightBlue');
+
+% 获取子系统内部端口句柄，方便后续连线
+robot_inports  = find_system(robot_name, 'SearchDepth', 1, 'BlockType', 'Inport');
+robot_outports = find_system(robot_name, 'SearchDepth', 1, 'BlockType', 'Outport');
+
+% 子系统的默认 In1 → 重命名为 F_L（左轮力）
+in1 = robot_inports(1);
+set_param(in1, 'Position', [50, 53, 80, 67]);
+set_param(in1, 'Name', 'F_L');
+
+% 添加第二个 Inport 用于右轮力
+add_block('simulink/Commonly Used Blocks/In1', [robot_name '/F_R']);
+set_param([robot_name '/F_R'], 'Position', [50, 153, 80, 167]);
+
+% --- 轮子模块（左轮） ---
+% 力→加速度→速度: v_L = ∫ (F_L / mw) dt
+add_block('simulink/Math Operations/Gain', [robot_name '/Gain_wL']);
+set_param([robot_name '/Gain_wL'], 'Gain', '1/mw', 'Position', [140, 48, 190, 82]);
+
+add_block('simulink/Continuous/Integrator', [robot_name '/Integrator_wL']);
+set_param([robot_name '/Integrator_wL'], 'Position', [240, 48, 290, 82]);
+set_param([robot_name '/Integrator_wL'], 'InitialCondition', '0');
+
+% --- 轮子模块（右轮） ---
+add_block('simulink/Math Operations/Gain', [robot_name '/Gain_wR']);
+set_param([robot_name '/Gain_wR'], 'Gain', '1/mw', 'Position', [140, 148, 190, 182]);
+
+add_block('simulink/Continuous/Integrator', [robot_name '/Integrator_wR']);
+set_param([robot_name '/Integrator_wR'], 'Position', [240, 148, 290, 182]);
+set_param([robot_name '/Integrator_wR'], 'InitialCondition', '0');
+
+% 连线: Inport → Gain → Integrator
+add_line(robot_name, 'F_L/1',  'Gain_wL/1');
+add_line(robot_name, 'Gain_wL/1', 'Integrator_wL/1');
+add_line(robot_name, 'F_R/1',  'Gain_wR/1');
+add_line(robot_name, 'Gain_wR/1', 'Integrator_wR/1');
+
+% --- 旋转模块 ---
+% 线速度: v = (v_L + v_R) / 2
+add_block('simulink/Math Operations/Add', [robot_name '/Add_v']);
+set_param([robot_name '/Add_v'], 'Inputs', '++', 'Position', [370, 105, 400, 145]);
+set_param([robot_name '/Add_v'], 'IconShape', 'round');
+
+add_block('simulink/Math Operations/Gain', [robot_name '/Gain_v_half']);
+set_param([robot_name '/Gain_v_half'], 'Gain', '0.5', 'Position', [440, 108, 480, 142]);
+
+% 角速度: ω = (v_R - v_L) / L
+add_block('simulink/Math Operations/Add', [robot_name '/Add_omega']);
+set_param([robot_name '/Add_omega'], 'Inputs', '-+', 'Position', [370, 175, 400, 215]);
+set_param([robot_name '/Add_omega'], 'IconShape', 'round');
+
+add_block('simulink/Math Operations/Gain', [robot_name '/Gain_omega']);
+set_param([robot_name '/Gain_omega'], 'Gain', '1/L', 'Position', [440, 178, 480, 212]);
+
+% 连线: 轮速 → 旋转模块
+add_line(robot_name, 'Integrator_wL/1', 'Add_v/1');
+add_line(robot_name, 'Integrator_wR/1', 'Add_v/2');
+add_line(robot_name, 'Integrator_wL/1', 'Add_omega/1');
+add_line(robot_name, 'Integrator_wR/1', 'Add_omega/2');
+
+add_line(robot_name, 'Add_v/1',     'Gain_v_half/1');
+add_line(robot_name, 'Add_omega/1', 'Gain_omega/1');
+
+% --- 积分获得 θ ---
+add_block('simulink/Continuous/Integrator', [robot_name '/Integrator_theta']);
+set_param([robot_name '/Integrator_theta'], 'Position', [520, 178, 570, 212]);
+set_param([robot_name '/Integrator_theta'], 'InitialCondition', '0');
+
+add_line(robot_name, 'Gain_omega/1', 'Integrator_theta/1');
+
+% --- 分速度模块 ---
+% vx = v * cos(θ), vy = v * sin(θ)
+% 使用 Mux 组合 v 和 θ
+add_block('simulink/Signal Routing/Mux', [robot_name '/Mux_vx']);
+set_param([robot_name '/Mux_vx'], 'Inputs', '2', 'Position', [620, 50, 645, 140]);
+set_param([robot_name '/Mux_vx'], 'DisplayOption', 'none');
+
+add_block('simulink/Signal Routing/Mux', [robot_name '/Mux_vy']);
+set_param([robot_name '/Mux_vy'], 'Inputs', '2', 'Position', [620, 170, 645, 260]);
+set_param([robot_name '/Mux_vy'], 'DisplayOption', 'none');
+
+add_block('simulink/User-Defined Functions/Fcn', [robot_name '/Fcn_vx']);
+set_param([robot_name '/Fcn_vx'], 'Expr', 'u(1)*cos(u(2))', 'Position', [680, 55, 740, 135]);
+
+add_block('simulink/User-Defined Functions/Fcn', [robot_name '/Fcn_vy']);
+set_param([robot_name '/Fcn_vy'], 'Expr', 'u(1)*sin(u(2))', 'Position', [680, 175, 740, 255]);
+
+% 连线: v → Mux, θ → Mux
+add_line(robot_name, 'Gain_v_half/1', 'Mux_vx/1');
+add_line(robot_name, 'Integrator_theta/1', 'Mux_vx/2');
+add_line(robot_name, 'Gain_v_half/1', 'Mux_vy/1');
+add_line(robot_name, 'Integrator_theta/1', 'Mux_vy/2');
+
+add_line(robot_name, 'Mux_vx/1', 'Fcn_vx/1');
+add_line(robot_name, 'Mux_vy/1', 'Fcn_vy/1');
+
+% --- 积分获得 x, y ---
+add_block('simulink/Continuous/Integrator', [robot_name '/Integrator_x']);
+set_param([robot_name '/Integrator_x'], 'Position', [780, 55, 830, 105]);
+set_param([robot_name '/Integrator_x'], 'InitialCondition', '0');
+
+add_block('simulink/Continuous/Integrator', [robot_name '/Integrator_y']);
+set_param([robot_name '/Integrator_y'], 'Position', [780, 175, 830, 225]);
+set_param([robot_name '/Integrator_y'], 'InitialCondition', '0');
+
+add_line(robot_name, 'Fcn_vx/1', 'Integrator_x/1');
+add_line(robot_name, 'Fcn_vy/1', 'Integrator_y/1');
+
+% --- 感应器模块（输出: 合力、vx、x、y、感应值） ---
+% 合力 = sqrt(vx^2 + vy^2)，感应值用 v 代替
+add_block('simulink/Signal Routing/Mux', [robot_name '/Mux_sensor']);
+set_param([robot_name '/Mux_sensor'], 'Inputs', '2', 'Position', [780, 280, 805, 350]);
+set_param([robot_name '/Mux_sensor'], 'DisplayOption', 'none');
+
+add_block('simulink/User-Defined Functions/Fcn', [robot_name '/Fcn_sensor']);
+set_param([robot_name '/Fcn_sensor'], 'Expr', 'sqrt(u(1)^2+u(2)^2)', 'Position', [840, 285, 900, 355]);
+
+% 连线: fx = cos(θ), fy = sin(θ) → sensor 合力
+% 这里用分力表示: Fx = F_L*cos(θ), Fy = F_R*sin(θ) 近似为合力
+% 实际: 合力直接用 v 作为感应值
+add_line(robot_name, 'Fcn_vx/1', 'Mux_sensor/1');
+add_line(robot_name, 'Fcn_vy/1', 'Mux_sensor/2');
+add_line(robot_name, 'Mux_sensor/1', 'Fcn_sensor/1');
+
+% --- 输出端口 ---
+% 删除默认 Outport 并创建 5 个输出
+delete_block(robot_outports(1));
+
+% Out1: x (横坐标)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/x']);
+set_param([robot_name '/x'], 'Position', [920, 55, 950, 75]);
+
+% Out2: y (纵坐标)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/y']);
+set_param([robot_name '/y'], 'Position', [920, 100, 950, 120]);
+
+% Out3: theta (航向角)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/theta']);
+set_param([robot_name '/theta'], 'Position', [920, 145, 950, 165]);
+
+% Out4: vx (横轴速度分量)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/vx']);
+set_param([robot_name '/vx'], 'Position', [920, 190, 950, 210]);
+
+% Out5: vy (纵轴速度分量)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/vy']);
+set_param([robot_name '/vy'], 'Position', [920, 235, 950, 255]);
+
+% Out6: sensor (感应值 = 合力)
+add_block('simulink/Commonly Used Blocks/Out1', [robot_name '/sensor']);
+set_param([robot_name '/sensor'], 'Position', [920, 280, 950, 300]);
+
+% 连线到输出端口
+add_line(robot_name, 'Integrator_x/1', 'x/1');
+add_line(robot_name, 'Integrator_y/1', 'y/1');
+add_line(robot_name, 'Integrator_theta/1', 'theta/1');
+add_line(robot_name, 'Fcn_vx/1', 'vx/1');
+add_line(robot_name, 'Fcn_vy/1', 'vy/1');
+add_line(robot_name, 'Fcn_sensor/1', 'sensor/1');
+
+%% ========================================================================
+%  第二部分：PID 控制子系统
+%  ========================================================================
+pid_name = [model_name '/PID Control System'];
+
+add_block('simulink/Ports & Subsystems/Subsystem', pid_name);
+set_param(pid_name, 'Position', [150, 80, 380, 420]);
+set_param(pid_name, 'BackgroundColor', 'lightGreen');
+
+% 删除默认 Inport/Outport，重新创建
+pid_inports  = find_system(pid_name, 'SearchDepth', 1, 'BlockType', 'Inport');
+pid_outports = find_system(pid_name, 'SearchDepth', 1, 'BlockType', 'Outport');
+delete_block(pid_inports(1));
+delete_block(pid_outports(1));
+
+% 输入端口（7个）
+port_specs = { ...
+    'x_target',  50,  38; ...
+    'y_target',  50,  93; ...
+    'x_actual',  50, 148; ...
+    'y_actual',  50, 203; ...
+    'theta',     50, 258; ...
+    'vx',        50, 313; ...
+    'vy',        50, 368 };
+
+for i = 1:size(port_specs, 1)
+    blk = [pid_name '/' port_specs{i,1}];
+    add_block('simulink/Commonly Used Blocks/In1', blk);
+    set_param(blk, 'Position', [port_specs{i,2}, port_specs{i,3}, ...
+                                port_specs{i,2}+30, port_specs{i,3}+14]);
 end
 
-load_system('simulink');
-new_system(buildModelName);
-open_system(buildModelName);
+% --- XY 控制器：用基本块实现 ---
+% theta_des = atan2(y_target - y, x_target - x)
+% v_des = min(v_max, Kp * sqrt(dx^2 + dy^2))
 
-set_param(buildModelName, ...
-    'StopTime', '20', ...
-    'Solver', 'ode45', ...
-    'SaveOutput', 'on', ...
-    'OutputSaveName', 'yout', ...
-    'ReturnWorkspaceOutputs', 'on');
+% 位置误差
+add_block('simulink/Math Operations/Add', [pid_name '/dx_err']);
+set_param([pid_name '/dx_err'], 'Inputs', '-+', 'Position', [140, 38, 180, 72]);
+set_param([pid_name '/dx_err'], 'IconShape', 'round');
 
-assignin('base', 'ROBOT_WHEEL_RADIUS', 0.065);
-assignin('base', 'ROBOT_WHEEL_BASE', 0.32);
-assignin('base', 'ROBOT_MOTOR_GAIN', 1.0);
-assignin('base', 'ROBOT_MOTOR_TAU', 0.15);
-assignin('base', 'ROBOT_WHEEL_KP', 3.0);
-assignin('base', 'ROBOT_WHEEL_KI', 1.2);
-assignin('base', 'ROBOT_WHEEL_KD', 0.03);
-assignin('base', 'ROBOT_XY_GAIN', 1.4);
-assignin('base', 'ROBOT_THETA_KP', 4.0);
-assignin('base', 'ROBOT_THETA_KI', 0.3);
-assignin('base', 'ROBOT_THETA_KD', 0.05);
-assignin('base', 'ROBOT_FORCE_GAIN', 8.0);
-assignin('base', 'ROBOT_EPS', 1e-6);
-assignin('base', 'ROBOT_DIST_FORCE_GAIN', 0.35);
-assignin('base', 'ROBOT_DIST_TORQUE_GAIN', 0.22);
-assignin('base', 'ROBOT_LEFT_LOAD_BIAS', 0.35);
-assignin('base', 'ROBOT_RIGHT_LOAD_BIAS', -0.20);
-assignin('base', 'ROBOT_TARGET_X', 2.0);
-assignin('base', 'ROBOT_TARGET_Y', 0.0);
-assignin('base', 'ROBOT_SENSOR_THRESHOLD', 0.5);
+add_block('simulink/Math Operations/Add', [pid_name '/dy_err']);
+set_param([pid_name '/dy_err'], 'Inputs', '-+', 'Position', [140, 93, 180, 127]);
+set_param([pid_name '/dy_err'], 'IconShape', 'round');
 
-add_block('simulink/Sources/Constant', [buildModelName '/目标X'], ...
-    'Value', 'ROBOT_TARGET_X', ...
-    'Position', [40 60 90 90]);
-add_block('simulink/Sources/Constant', [buildModelName '/目标Y'], ...
-    'Value', 'ROBOT_TARGET_Y', ...
-    'Position', [40 120 90 150]);
-add_block('simulink/Sources/Sine Wave', [buildModelName '/航向修正'], ...
-    'Amplitude', '0.45', ...
-    'Bias', '0', ...
-    'Frequency', '0.55', ...
-    'Position', [40 180 90 210]);
-add_block('simulink/Sources/Pulse Generator', [buildModelName '/横向扰动力'], ...
-    'Amplitude', '2', ...
-    'Period', '20', ...
-    'PulseWidth', '15', ...
-    'PhaseDelay', '0', ...
-    'Position', [40 250 100 280]);
-add_block('simulink/Sources/Step', [buildModelName '/扰动转矩'], ...
-    'Time', '6', ...
-    'Before', '0', ...
-    'After', '0.6', ...
-    'Position', [40 310 100 340]);
-add_block('simulink/Sources/Sine Wave', [buildModelName '/左轮负载扰动'], ...
-    'Amplitude', '0.28', ...
-    'Bias', 'ROBOT_LEFT_LOAD_BIAS', ...
-    'Frequency', '1.15', ...
-    'Position', [40 370 110 400]);
-add_block('simulink/Sources/Sine Wave', [buildModelName '/右轮负载扰动'], ...
-    'Amplitude', '0.22', ...
-    'Bias', 'ROBOT_RIGHT_LOAD_BIAS', ...
-    'Frequency', '0.82', ...
-    'Position', [40 430 110 460]);
+% atan2(dy, dx) → theta_des
+add_block('simulink/Math Operations/Trigonometric Function', [pid_name '/Atan2']);
+set_param([pid_name '/Atan2'], 'Operator', 'atan2', 'Position', [230, 75, 270, 125]);
 
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/XY控制器'], ...
-    'Position', [150 55 290 170]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/角度控制器'], ...
-    'Position', [350 85 490 180]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/分速度模块'], ...
-    'Position', [540 85 680 180]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/左轮模块'], ...
-    'Position', [740 30 900 190]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/右轮模块'], ...
-    'Position', [740 220 900 380]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/运动学模块'], ...
-    'Position', [980 90 1140 280]);
-add_block('simulink/Ports & Subsystems/Subsystem', [buildModelName '/传感器模块'], ...
-    'Position', [1200 100 1370 290]);
-add_block('simulink/Discrete/Memory', [buildModelName '/X状态记忆'], ...
-    'Position', [1185 25 1220 55]);
-add_block('simulink/Discrete/Memory', [buildModelName '/Y状态记忆'], ...
-    'Position', [1185 65 1220 95]);
-add_block('simulink/Discrete/Memory', [buildModelName '/航向状态记忆'], ...
-    'Position', [1185 105 1220 135]);
+% 距离: sqrt(dx^2 + dy^2)
+add_block('simulink/Math Operations/Math Function', [pid_name '/dx2']);
+set_param([pid_name '/dx2'], 'Operator', 'square', 'Position', [230, 140, 260, 170]);
 
-add_block('simulink/Signal Routing/Mux', [buildModelName '/位姿合成'], ...
-    'Inputs', '3', ...
-    'Position', [1175 330 1195 410]);
-add_block('simulink/Signal Routing/Mux', [buildModelName '/传感器合成'], ...
-    'Inputs', '4', ...
-    'Position', [1410 120 1430 260]);
-add_block('simulink/Signal Routing/Mux', [buildModelName '/轮速合成'], ...
-    'Inputs', '4', ...
-    'Position', [940 10 960 170]);
-add_block('simulink/Signal Routing/Mux', [buildModelName '/控制量合成'], ...
-    'Inputs', '4', ...
-    'Position', [710 400 730 500]);
-add_block('simulink/Signal Routing/Mux', [buildModelName '/轨迹合成'], ...
-    'Inputs', '2', ...
-    'Position', [1175 430 1195 490]);
-add_block('simulink/Signal Routing/Mux', [buildModelName '/作用力比例合成'], ...
-    'Inputs', '4', ...
-    'Position', [1175 520 1195 620]);
+add_block('simulink/Math Operations/Math Function', [pid_name '/dy2']);
+set_param([pid_name '/dy2'], 'Operator', 'square', 'Position', [230, 175, 260, 205]);
 
-add_block('simulink/Math Operations/Abs', [buildModelName '/左轮力绝对值'], ...
-    'Position', [945 540 975 570]);
-add_block('simulink/Math Operations/Abs', [buildModelName '/右轮力绝对值'], ...
-    'Position', [945 590 975 620]);
-add_block('simulink/Math Operations/Sum', [buildModelName '/作用力总和'], ...
-    'Inputs', '++', ...
-    'Position', [1010 555 1040 605]);
-add_block('simulink/Math Operations/Bias', [buildModelName '/比例分母修正'], ...
-    'Bias', 'ROBOT_EPS', ...
-    'Position', [1075 565 1125 595]);
-add_block('simulink/Math Operations/Divide', [buildModelName '/左轮比例'], ...
-    'Position', [1010 640 1040 670]);
-add_block('simulink/Math Operations/Divide', [buildModelName '/右轮比例'], ...
-    'Position', [1095 640 1125 670]);
+add_block('simulink/Math Operations/Add', [pid_name '/Add_dist2']);
+set_param([pid_name '/Add_dist2'], 'Inputs', '++', 'Position', [290, 140, 320, 180]);
+set_param([pid_name '/Add_dist2'], 'IconShape', 'round');
 
-add_block('simulink/Sinks/Scope', [buildModelName '/位姿示波器'], ...
-    'Position', [1230 330 1410 410]);
-add_block('simulink/Sinks/Scope', [buildModelName '/传感器示波器'], ...
-    'Position', [1460 130 1640 255]);
-add_block('simulink/Sinks/Scope', [buildModelName '/轮速示波器'], ...
-    'Position', [995 10 1170 170]);
-add_block('simulink/Sinks/Scope', [buildModelName '/控制量示波器'], ...
-    'Position', [765 400 945 500]);
-add_block('simulink/Sinks/XY Graph', [buildModelName '/轨迹图'], ...
-    'Position', [1230 430 1410 500]);
-add_block('simulink/Sinks/Scope', [buildModelName '/左右轮作用力比例图'], ...
-    'Position', [1230 525 1450 625]);
+add_block('simulink/Math Operations/Sqrt', [pid_name '/Sqrt_dist']);
+set_param([pid_name '/Sqrt_dist'], 'Position', [350, 148, 380, 182]);
 
-add_block('simulink/Sinks/To Workspace', [buildModelName '/轨迹数据'], ...
-    'VariableName', 'robot_xy_traj', ...
-    'SaveFormat', 'Structure With Time', ...
-    'Position', [1460 430 1540 460]);
-add_block('simulink/Sinks/To Workspace', [buildModelName '/作用力比例数据'], ...
-    'VariableName', 'wheel_force_ratio', ...
-    'SaveFormat', 'Structure With Time', ...
-    'Position', [1490 540 1580 570]);
+% v_des = Kp_pos * dist（带饱和）
+add_block('simulink/Math Operations/Gain', [pid_name '/Kp_pos']);
+set_param([pid_name '/Kp_pos'], 'Gain', '0.8', 'Position', [410, 148, 450, 182]);
 
-createXYController([buildModelName '/XY控制器']);
-createAngleController([buildModelName '/角度控制器']);
-createSpeedSplitter([buildModelName '/分速度模块']);
-createWheelModule([buildModelName '/左轮模块']);
-createWheelModule([buildModelName '/右轮模块']);
-createRotationModule([buildModelName '/运动学模块']);
-createSensorModule([buildModelName '/传感器模块']);
+add_block('simulink/Discontinuities/Saturation', [pid_name '/Sat_v']);
+set_param([pid_name '/Sat_v'], 'UpperLimit', '0.5', 'LowerLimit', '0', ...
+    'Position', [480, 148, 520, 182]);
 
-add_line(buildModelName, '目标X/1', 'XY控制器/1', 'autorouting', 'on');
-add_line(buildModelName, '目标Y/1', 'XY控制器/2', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/1', 'X状态记忆/1', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/2', 'Y状态记忆/1', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/3', '航向状态记忆/1', 'autorouting', 'on');
-add_line(buildModelName, 'X状态记忆/1', 'XY控制器/3', 'autorouting', 'on');
-add_line(buildModelName, 'Y状态记忆/1', 'XY控制器/4', 'autorouting', 'on');
+% 连线：目标/实际 → 误差
+add_line(pid_name, 'x_target/1', 'dx_err/1');
+add_line(pid_name, 'x_actual/1', 'dx_err/2');
+add_line(pid_name, 'y_target/1', 'dy_err/1');
+add_line(pid_name, 'y_actual/1', 'dy_err/2');
 
-add_line(buildModelName, 'XY控制器/1', '角度控制器/1', 'autorouting', 'on');
-add_line(buildModelName, '航向修正/1', '角度控制器/2', 'autorouting', 'on');
-add_line(buildModelName, '航向状态记忆/1', '角度控制器/3', 'autorouting', 'on');
+% 连线：atan2
+add_line(pid_name, 'dy_err/1', 'Atan2/1');
+add_line(pid_name, 'dx_err/1', 'Atan2/2');
 
-add_line(buildModelName, 'XY控制器/2', '分速度模块/1', 'autorouting', 'on');
-add_line(buildModelName, '角度控制器/1', '分速度模块/2', 'autorouting', 'on');
+% 连线：距离计算
+add_line(pid_name, 'dx_err/1', 'dx2/1');
+add_line(pid_name, 'dy_err/1', 'dy2/1');
+add_line(pid_name, 'dx2/1', 'Add_dist2/1');
+add_line(pid_name, 'dy2/1', 'Add_dist2/2');
+add_line(pid_name, 'Add_dist2/1', 'Sqrt_dist/1');
+add_line(pid_name, 'Sqrt_dist/1', 'Kp_pos/1');
+add_line(pid_name, 'Kp_pos/1', 'Sat_v/1');
 
-add_line(buildModelName, '分速度模块/1', '左轮模块/1', 'autorouting', 'on');
-add_line(buildModelName, '分速度模块/2', '右轮模块/1', 'autorouting', 'on');
-add_line(buildModelName, '左轮负载扰动/1', '左轮模块/2', 'autorouting', 'on');
-add_line(buildModelName, '右轮负载扰动/1', '右轮模块/2', 'autorouting', 'on');
+% --- 实际速度计算 ---
+add_block('simulink/Signal Routing/Mux', [pid_name '/Mux_v_actual']);
+set_param([pid_name '/Mux_v_actual'], 'Inputs', '2', 'Position', [200, 290, 225, 360]);
+set_param([pid_name '/Mux_v_actual'], 'DisplayOption', 'none');
 
-add_line(buildModelName, '左轮模块/1', '运动学模块/1', 'autorouting', 'on');
-add_line(buildModelName, '右轮模块/1', '运动学模块/2', 'autorouting', 'on');
-add_line(buildModelName, '横向扰动力/1', '运动学模块/3', 'autorouting', 'on');
-add_line(buildModelName, '扰动转矩/1', '运动学模块/4', 'autorouting', 'on');
+add_block('simulink/User-Defined Functions/Fcn', [pid_name '/Fcn_v_actual']);
+set_param([pid_name '/Fcn_v_actual'], 'Expr', 'sqrt(u(1)^2+u(2)^2)', ...
+    'Position', [260, 300, 320, 350]);
 
-add_line(buildModelName, '运动学模块/1', '传感器模块/1', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/2', '传感器模块/2', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/3', '传感器模块/3', 'autorouting', 'on');
+add_line(pid_name, 'vx/1', 'Mux_v_actual/1');
+add_line(pid_name, 'vy/1', 'Mux_v_actual/2');
+add_line(pid_name, 'Mux_v_actual/1', 'Fcn_v_actual/1');
 
-add_line(buildModelName, '运动学模块/1', '位姿合成/1', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/2', '位姿合成/2', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/3', '位姿合成/3', 'autorouting', 'on');
-add_line(buildModelName, '位姿合成/1', '位姿示波器/1', 'autorouting', 'on');
+% --- 角度 PID 控制器 ---
+% 输入: theta_des, theta; 输出: omega_correction
+% 角度误差需要包裹在 [-pi, pi]
+add_block('simulink/Math Operations/Add', [pid_name '/theta_err_raw']);
+set_param([pid_name '/theta_err_raw'], 'Inputs', '-+', 'Position', [400, 85, 430, 115]);
+set_param([pid_name '/theta_err_raw'], 'IconShape', 'round');
 
-add_line(buildModelName, '传感器模块/1', '传感器合成/1', 'autorouting', 'on');
-add_line(buildModelName, '传感器模块/2', '传感器合成/2', 'autorouting', 'on');
-add_line(buildModelName, '传感器模块/3', '传感器合成/3', 'autorouting', 'on');
-add_line(buildModelName, '传感器模块/4', '传感器合成/4', 'autorouting', 'on');
-add_line(buildModelName, '传感器合成/1', '传感器示波器/1', 'autorouting', 'on');
+% 角度包裹: atan2(sin(err), cos(err))
+add_block('simulink/User-Defined Functions/Fcn', [pid_name '/Fcn_wrap']);
+set_param([pid_name '/Fcn_wrap'], 'Expr', 'atan2(sin(u), cos(u))', ...
+    'Position', [460, 80, 520, 120]);
 
-add_line(buildModelName, '分速度模块/1', '轮速合成/1', 'autorouting', 'on');
-add_line(buildModelName, '分速度模块/2', '轮速合成/2', 'autorouting', 'on');
-add_line(buildModelName, '左轮模块/1', '轮速合成/3', 'autorouting', 'on');
-add_line(buildModelName, '右轮模块/1', '轮速合成/4', 'autorouting', 'on');
-add_line(buildModelName, '轮速合成/1', '轮速示波器/1', 'autorouting', 'on');
+add_block('simulink/Continuous/PID Controller', [pid_name '/Angle PID']);
+set_param([pid_name '/Angle PID'], 'Position', [560, 80, 610, 130]);
+set_param([pid_name '/Angle PID'], 'P', '1.5', 'I', '0.1', 'D', '0.05');
+set_param([pid_name '/Angle PID'], 'SaturationEnabled', 'on');
+set_param([pid_name '/Angle PID'], 'UpperSaturationLimit', '2.0');
+set_param([pid_name '/Angle PID'], 'LowerSaturationLimit', '-2.0');
 
-add_line(buildModelName, 'XY控制器/2', '控制量合成/1', 'autorouting', 'on');
-add_line(buildModelName, '角度控制器/1', '控制量合成/2', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/4', '控制量合成/3', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/5', '控制量合成/4', 'autorouting', 'on');
-add_line(buildModelName, '控制量合成/1', '控制量示波器/1', 'autorouting', 'on');
+% 连线: theta_des(Atan2) → 角度误差
+add_line(pid_name, 'Atan2/1', 'theta_err_raw/1');
+add_line(pid_name, 'theta/1', 'theta_err_raw/2');
+add_line(pid_name, 'theta_err_raw/1', 'Fcn_wrap/1');
+add_line(pid_name, 'Fcn_wrap/1', 'Angle PID/1');
 
-add_line(buildModelName, '运动学模块/1', '轨迹合成/1', 'autorouting', 'on');
-add_line(buildModelName, '运动学模块/2', '轨迹合成/2', 'autorouting', 'on');
-add_line(buildModelName, '轨迹合成/1', '轨迹图/1', 'autorouting', 'on');
-add_line(buildModelName, '轨迹合成/1', '轨迹数据/1', 'autorouting', 'on');
+% --- 速度 PID 控制器 ---
+add_block('simulink/Math Operations/Add', [pid_name '/v_err']);
+set_param([pid_name '/v_err'], 'Inputs', '-+', 'Position', [400, 300, 430, 340]);
+set_param([pid_name '/v_err'], 'IconShape', 'round');
 
-add_line(buildModelName, '左轮模块/3', '左轮力绝对值/1', 'autorouting', 'on');
-add_line(buildModelName, '右轮模块/3', '右轮力绝对值/1', 'autorouting', 'on');
-add_line(buildModelName, '左轮力绝对值/1', '作用力总和/1', 'autorouting', 'on');
-add_line(buildModelName, '右轮力绝对值/1', '作用力总和/2', 'autorouting', 'on');
-add_line(buildModelName, '作用力总和/1', '比例分母修正/1', 'autorouting', 'on');
+add_block('simulink/Continuous/PID Controller', [pid_name '/Speed PID']);
+set_param([pid_name '/Speed PID'], 'Position', [560, 300, 610, 350]);
+set_param([pid_name '/Speed PID'], 'P', '3.0', 'I', '0.5', 'D', '0.0');
+set_param([pid_name '/Speed PID'], 'SaturationEnabled', 'on');
+set_param([pid_name '/Speed PID'], 'UpperSaturationLimit', '10');
+set_param([pid_name '/Speed PID'], 'LowerSaturationLimit', '-10');
 
-add_line(buildModelName, '左轮力绝对值/1', '左轮比例/1', 'autorouting', 'on');
-add_line(buildModelName, '比例分母修正/1', '左轮比例/2', 'autorouting', 'on');
-add_line(buildModelName, '右轮力绝对值/1', '右轮比例/1', 'autorouting', 'on');
-add_line(buildModelName, '比例分母修正/1', '右轮比例/2', 'autorouting', 'on');
+% 连线
+add_line(pid_name, 'Sat_v/1', 'v_err/1');
+add_line(pid_name, 'Fcn_v_actual/1', 'v_err/2');
+add_line(pid_name, 'v_err/1', 'Speed PID/1');
 
-add_line(buildModelName, '左轮模块/3', '作用力比例合成/1', 'autorouting', 'on');
-add_line(buildModelName, '右轮模块/3', '作用力比例合成/2', 'autorouting', 'on');
-add_line(buildModelName, '左轮比例/1', '作用力比例合成/3', 'autorouting', 'on');
-add_line(buildModelName, '右轮比例/1', '作用力比例合成/4', 'autorouting', 'on');
-add_line(buildModelName, '作用力比例合成/1', '左右轮作用力比例图/1', 'autorouting', 'on');
-add_line(buildModelName, '作用力比例合成/1', '作用力比例数据/1', 'autorouting', 'on');
+% --- 力混合器（Force Mixer） ---
+% F_L = F_base - omega_correction * (L/2)
+% F_R = F_base + omega_correction * (L/2)
+add_block('simulink/Math Operations/Gain', [pid_name '/Gain_half_L']);
+set_param([pid_name '/Gain_half_L'], 'Gain', 'L/2', 'Position', [470, 225, 510, 255]);
 
-set_param(buildModelName, 'SimulationCommand', 'update');
-renamePortsAndSignals(buildModelName);
-try
-    Simulink.BlockDiagram.arrangeSystem(buildModelName);
-catch
-end
+add_block('simulink/Math Operations/Add', [pid_name '/Mixer_FL']);
+set_param([pid_name '/Mixer_FL'], 'Inputs', '+-', 'Position', [570, 210, 600, 250]);
+set_param([pid_name '/Mixer_FL'], 'IconShape', 'round');
 
-save_system(buildModelName, [targetModelName '.slx']);
-close_system(buildModelName, 0);
-open_system(targetModelName);
+add_block('simulink/Math Operations/Add', [pid_name '/Mixer_FR']);
+set_param([pid_name '/Mixer_FR'], 'Inputs', '++', 'Position', [570, 270, 600, 310]);
+set_param([pid_name '/Mixer_FR'], 'IconShape', 'round');
 
-try
-    simOut = sim(targetModelName);
-    exportSimulationData(simOut);
-    fprintf('已生成并完成仿真: %s.slx\n', targetModelName);
-    fprintf('工作区变量: robot_xy_traj, wheel_force_ratio\n');
-    renderSimulationFigures();
-catch ME
-    warning(ME.identifier, '%s', ['模型已生成，但自动仿真未完成: ' ME.message]);
-end
-end
+% Saturation on forces
+add_block('simulink/Discontinuities/Saturation', [pid_name '/Sat_FL']);
+set_param([pid_name '/Sat_FL'], 'UpperLimit', '15', 'LowerLimit', '-15', ...
+    'Position', [640, 213, 670, 247]);
 
-function createXYController(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/目标X'], 'Position', [25 35 55 55]);
-add_block('simulink/Sources/In1', [sys '/目标Y'], 'Position', [25 85 55 105]);
-add_block('simulink/Sources/In1', [sys '/当前X'], 'Position', [25 135 55 155]);
-add_block('simulink/Sources/In1', [sys '/当前Y'], 'Position', [25 185 55 205]);
-add_block('simulink/Signal Routing/Mux', [sys '/位姿组合'], ...
-    'Inputs', '4', ...
-    'Position', [95 70 120 170]);
-add_block('simulink/User-Defined Functions/Fcn', [sys '/距离误差'], ...
-    'Expr', 'sqrt((u(1)-u(3))^2 + (u(2)-u(4))^2)', ...
-    'Position', [160 70 270 105]);
-add_block('simulink/User-Defined Functions/Fcn', [sys '/目标角度'], ...
-    'Expr', 'atan2(u(2)-u(4),u(1)-u(3))', ...
-    'Position', [160 130 270 165]);
-add_block('simulink/Math Operations/Gain', [sys '/距离增益'], ...
-    'Gain', 'ROBOT_XY_GAIN', ...
-    'Position', [310 70 365 105]);
-add_block('simulink/Discontinuities/Saturation', [sys '/线速度限幅'], ...
-    'UpperLimit', '0.8', ...
-    'LowerLimit', '-0.8', ...
-    'Position', [400 70 465 105]);
-add_block('simulink/Sinks/Out1', [sys '/角度指令'], 'Position', [505 135 535 155]);
-add_block('simulink/Sinks/Out1', [sys '/线速度指令'], 'Position', [505 75 535 95]);
+add_block('simulink/Discontinuities/Saturation', [pid_name '/Sat_FR']);
+set_param([pid_name '/Sat_FR'], 'UpperLimit', '15', 'LowerLimit', '-15', ...
+    'Position', [640, 273, 670, 307]);
 
-add_line(sys, '目标X/1', '位姿组合/1', 'autorouting', 'on');
-add_line(sys, '目标Y/1', '位姿组合/2', 'autorouting', 'on');
-add_line(sys, '当前X/1', '位姿组合/3', 'autorouting', 'on');
-add_line(sys, '当前Y/1', '位姿组合/4', 'autorouting', 'on');
-add_line(sys, '位姿组合/1', '距离误差/1', 'autorouting', 'on');
-add_line(sys, '位姿组合/1', '目标角度/1', 'autorouting', 'on');
-add_line(sys, '距离误差/1', '距离增益/1', 'autorouting', 'on');
-add_line(sys, '距离增益/1', '线速度限幅/1', 'autorouting', 'on');
-add_line(sys, '线速度限幅/1', '线速度指令/1', 'autorouting', 'on');
-add_line(sys, '目标角度/1', '角度指令/1', 'autorouting', 'on');
-end
+% 连线：角度PID输出 → 增益 → 混合器
+add_line(pid_name, 'Angle PID/1', 'Gain_half_L/1');
+add_line(pid_name, 'Gain_half_L/1', 'Mixer_FL/2');
+add_line(pid_name, 'Gain_half_L/1', 'Mixer_FR/2');
 
-function createAngleController(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/目标角度'], 'Position', [25 45 55 65]);
-add_block('simulink/Sources/In1', [sys '/航向修正'], 'Position', [25 95 55 115]);
-add_block('simulink/Sources/In1', [sys '/当前航向'], 'Position', [25 145 55 165]);
-add_block('simulink/Math Operations/Sum', [sys '/修正后角度'], ...
-    'Inputs', '++', ...
-    'Position', [95 60 130 110]);
-add_block('simulink/Math Operations/Sum', [sys '/航向误差'], ...
-    'Inputs', '+-', ...
-    'Position', [170 75 205 125]);
-add_block('simulink/Continuous/PID Controller', [sys '/角度PID'], ...
-    'P', 'ROBOT_THETA_KP', ...
-    'I', 'ROBOT_THETA_KI', ...
-    'D', 'ROBOT_THETA_KD', ...
-    'Position', [245 70 325 130]);
-add_block('simulink/Discontinuities/Saturation', [sys '/角速度限幅'], ...
-    'UpperLimit', '1.5', ...
-    'LowerLimit', '-1.5', ...
-    'Position', [360 80 425 120]);
-add_block('simulink/Sinks/Out1', [sys '/角速度指令'], 'Position', [465 90 495 110]);
+% 连线：速度PID输出 → 混合器
+add_line(pid_name, 'Speed PID/1', 'Mixer_FL/1');
+add_line(pid_name, 'Speed PID/1', 'Mixer_FR/1');
 
-add_line(sys, '目标角度/1', '修正后角度/1', 'autorouting', 'on');
-add_line(sys, '航向修正/1', '修正后角度/2', 'autorouting', 'on');
-add_line(sys, '修正后角度/1', '航向误差/1', 'autorouting', 'on');
-add_line(sys, '当前航向/1', '航向误差/2', 'autorouting', 'on');
-add_line(sys, '航向误差/1', '角度PID/1', 'autorouting', 'on');
-add_line(sys, '角度PID/1', '角速度限幅/1', 'autorouting', 'on');
-add_line(sys, '角速度限幅/1', '角速度指令/1', 'autorouting', 'on');
-end
+add_line(pid_name, 'Mixer_FL/1', 'Sat_FL/1');
+add_line(pid_name, 'Mixer_FR/1', 'Sat_FR/1');
 
-function createSpeedSplitter(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/线速度指令'], 'Position', [25 50 55 70]);
-add_block('simulink/Sources/In1', [sys '/角速度指令'], 'Position', [25 130 55 150]);
-add_block('simulink/Math Operations/Gain', [sys '/线速度转轮速'], ...
-    'Gain', '1/ROBOT_WHEEL_RADIUS', ...
-    'Position', [100 45 185 75]);
-add_block('simulink/Math Operations/Gain', [sys '/转向转轮速'], ...
-    'Gain', 'ROBOT_WHEEL_BASE/(2*ROBOT_WHEEL_RADIUS)', ...
-    'Position', [100 125 235 155]);
-add_block('simulink/Math Operations/Sum', [sys '/左轮参考'], ...
-    'Inputs', '+-', ...
-    'Position', [285 45 320 85]);
-add_block('simulink/Math Operations/Sum', [sys '/右轮参考'], ...
-    'Inputs', '++', ...
-    'Position', [285 125 320 165]);
-add_block('simulink/Sinks/Out1', [sys '/左轮目标角速度'], 'Position', [375 55 405 75]);
-add_block('simulink/Sinks/Out1', [sys '/右轮目标角速度'], 'Position', [375 135 405 155]);
+% --- 输出端口 ---
+add_block('simulink/Commonly Used Blocks/Out1', [pid_name '/F_L']);
+set_param([pid_name '/F_L'], 'Position', [720, 215, 750, 235]);
 
-add_line(sys, '线速度指令/1', '线速度转轮速/1', 'autorouting', 'on');
-add_line(sys, '角速度指令/1', '转向转轮速/1', 'autorouting', 'on');
-add_line(sys, '线速度转轮速/1', '左轮参考/1', 'autorouting', 'on');
-add_line(sys, '转向转轮速/1', '左轮参考/2', 'autorouting', 'on');
-add_line(sys, '线速度转轮速/1', '右轮参考/1', 'autorouting', 'on');
-add_line(sys, '转向转轮速/1', '右轮参考/2', 'autorouting', 'on');
-add_line(sys, '左轮参考/1', '左轮目标角速度/1', 'autorouting', 'on');
-add_line(sys, '右轮参考/1', '右轮目标角速度/1', 'autorouting', 'on');
-end
+add_block('simulink/Commonly Used Blocks/Out1', [pid_name '/F_R']);
+set_param([pid_name '/F_R'], 'Position', [720, 275, 750, 295]);
 
-function createWheelModule(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/目标角速度'], 'Position', [25 55 55 75]);
-add_block('simulink/Sources/In1', [sys '/负载扰动'], 'Position', [25 125 55 145]);
-add_block('simulink/Math Operations/Sum', [sys '/速度误差'], ...
-    'Inputs', '+-', ...
-    'Position', [100 50 135 90]);
-add_block('simulink/Continuous/PID Controller', [sys '/轮速PID'], ...
-    'P', 'ROBOT_WHEEL_KP', ...
-    'I', 'ROBOT_WHEEL_KI', ...
-    'D', 'ROBOT_WHEEL_KD', ...
-    'Position', [175 40 255 100]);
-add_block('simulink/Math Operations/Sum', [sys '/驱动合成'], ...
-    'Inputs', '++', ...
-    'Position', [285 45 320 95]);
-add_block('simulink/Continuous/Transfer Fcn', [sys '/电机模型'], ...
-    'Numerator', 'ROBOT_MOTOR_GAIN', ...
-    'Denominator', '[ROBOT_MOTOR_TAU 1]', ...
-    'Position', [355 40 445 100]);
-add_block('simulink/Math Operations/Gain', [sys '/驱动力换算'], ...
-    'Gain', 'ROBOT_FORCE_GAIN', ...
-    'Position', [355 125 445 155]);
-add_block('simulink/Continuous/Integrator', [sys '/轮子转角'], ...
-    'Position', [485 40 515 70]);
-add_block('simulink/Sinks/Out1', [sys '/实际角速度'], 'Position', [560 50 590 70]);
-add_block('simulink/Sinks/Out1', [sys '/轮子角位移'], 'Position', [560 105 590 125]);
-add_block('simulink/Sinks/Out1', [sys '/轮子作用力'], 'Position', [560 140 590 160]);
+add_line(pid_name, 'Sat_FL/1', 'F_L/1');
+add_line(pid_name, 'Sat_FR/1', 'F_R/1');
 
-add_line(sys, '目标角速度/1', '速度误差/1', 'autorouting', 'on');
-add_line(sys, '速度误差/1', '轮速PID/1', 'autorouting', 'on');
-add_line(sys, '轮速PID/1', '驱动合成/1', 'autorouting', 'on');
-add_line(sys, '负载扰动/1', '驱动合成/2', 'autorouting', 'on');
-add_line(sys, '驱动合成/1', '电机模型/1', 'autorouting', 'on');
-add_line(sys, '电机模型/1', '速度误差/2', 'autorouting', 'on');
-add_line(sys, '电机模型/1', '轮子转角/1', 'autorouting', 'on');
-add_line(sys, '电机模型/1', '实际角速度/1', 'autorouting', 'on');
-add_line(sys, '轮子转角/1', '轮子角位移/1', 'autorouting', 'on');
-add_line(sys, '驱动合成/1', '驱动力换算/1', 'autorouting', 'on');
-add_line(sys, '驱动力换算/1', '轮子作用力/1', 'autorouting', 'on');
-end
+%% ========================================================================
+%  顶层连接
+%  ========================================================================
 
-function createRotationModule(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/左轮角速度'], 'Position', [25 45 55 65]);
-add_block('simulink/Sources/In1', [sys '/右轮角速度'], 'Position', [25 95 55 115]);
-add_block('simulink/Sources/In1', [sys '/横向扰动力'], 'Position', [25 160 55 180]);
-add_block('simulink/Sources/In1', [sys '/扰动转矩'], 'Position', [25 210 55 230]);
+% --- 目标输入（输入模块：分配左右轮作用力的参考目标） ---
+add_block('simulink/Sources/Constant', [model_name '/Target X']);
+set_param([model_name '/Target X'], 'Value', '5', 'Position', [60, 130, 120, 160]);
 
-add_block('simulink/Math Operations/Sum', [sys '/轮速求和'], ...
-    'Inputs', '++', ...
-    'Position', [95 45 130 105]);
-add_block('simulink/Math Operations/Sum', [sys '/轮速求差'], ...
-    'Inputs', '+-', ...
-    'Position', [95 120 130 180]);
-add_block('simulink/Math Operations/Gain', [sys '/线速度换算'], ...
-    'Gain', 'ROBOT_WHEEL_RADIUS/2', ...
-    'Position', [175 55 255 95]);
-add_block('simulink/Math Operations/Gain', [sys '/角速度换算'], ...
-    'Gain', 'ROBOT_WHEEL_RADIUS/ROBOT_WHEEL_BASE', ...
-    'Position', [175 130 270 170]);
-add_block('simulink/Math Operations/Gain', [sys '/外力增益'], ...
-    'Gain', 'ROBOT_DIST_FORCE_GAIN', ...
-    'Position', [175 195 270 225]);
-add_block('simulink/Math Operations/Gain', [sys '/外转矩增益'], ...
-    'Gain', 'ROBOT_DIST_TORQUE_GAIN', ...
-    'Position', [175 245 285 275]);
-add_block('simulink/Math Operations/Sum', [sys '/受扰角速度'], ...
-    'Inputs', '++', ...
-    'Position', [315 125 350 175]);
+add_block('simulink/Sources/Constant', [model_name '/Target Y']);
+set_param([model_name '/Target Y'], 'Value', '5', 'Position', [60, 190, 120, 220]);
 
-add_block('simulink/Continuous/Integrator', [sys '/航向角'], ...
-    'InitialCondition', '0', ...
-    'Position', [585 125 615 155]);
-add_block('simulink/Math Operations/Trigonometric Function', [sys '/cos航向'], ...
-    'Operator', 'cos', ...
-    'Position', [345 205 395 235]);
-add_block('simulink/Math Operations/Trigonometric Function', [sys '/sin航向'], ...
-    'Operator', 'sin', ...
-    'Position', [345 255 395 285]);
-add_block('simulink/Math Operations/Product', [sys '/X速度'], ...
-    'Inputs', '**', ...
-    'Position', [435 195 465 235]);
-add_block('simulink/Math Operations/Product', [sys '/Y速度'], ...
-    'Inputs', '**', ...
-    'Position', [435 255 465 295]);
-add_block('simulink/Math Operations/Sum', [sys '/受扰X速度'], ...
-    'Inputs', '++', ...
-    'Position', [505 195 540 235]);
-add_block('simulink/Math Operations/Sum', [sys '/受扰Y速度'], ...
-    'Inputs', '++', ...
-    'Position', [505 255 540 295]);
-add_block('simulink/Continuous/Integrator', [sys '/X位置'], ...
-    'InitialCondition', '0', ...
-    'Position', [585 205 615 235]);
-add_block('simulink/Continuous/Integrator', [sys '/Y位置'], ...
-    'InitialCondition', '0', ...
-    'Position', [585 265 615 295]);
+% --- PID 控制子系统输入连线 ---
+% x_target, y_target
+add_line(model_name, 'Target X/1', 'PID Control System/1');
+add_line(model_name, 'Target Y/1', 'PID Control System/2');
 
-add_block('simulink/Sinks/Out1', [sys '/X输出'], 'Position', [675 210 705 230]);
-add_block('simulink/Sinks/Out1', [sys '/Y输出'], 'Position', [675 270 705 290]);
-add_block('simulink/Sinks/Out1', [sys '/航向输出'], 'Position', [675 130 705 150]);
-add_block('simulink/Sinks/Out1', [sys '/线速度输出'], 'Position', [310 65 340 85]);
-add_block('simulink/Sinks/Out1', [sys '/角速度输出'], 'Position', [310 140 340 160]);
+% 机器人输出 → PID 输入 (x_actual, y_actual, theta, vx, vy)
+% 需要先给 PID Control System 配置好输入端口名称
+% In3=x_actual, In4=y_actual, In5=theta, In6=vx, In7=vy
 
-add_line(sys, '左轮角速度/1', '轮速求和/1', 'autorouting', 'on');
-add_line(sys, '右轮角速度/1', '轮速求和/2', 'autorouting', 'on');
-add_line(sys, '右轮角速度/1', '轮速求差/1', 'autorouting', 'on');
-add_line(sys, '左轮角速度/1', '轮速求差/2', 'autorouting', 'on');
-add_line(sys, '轮速求和/1', '线速度换算/1', 'autorouting', 'on');
-add_line(sys, '轮速求差/1', '角速度换算/1', 'autorouting', 'on');
-add_line(sys, '横向扰动力/1', '外力增益/1', 'autorouting', 'on');
-add_line(sys, '扰动转矩/1', '外转矩增益/1', 'autorouting', 'on');
-add_line(sys, '角速度换算/1', '受扰角速度/1', 'autorouting', 'on');
-add_line(sys, '外转矩增益/1', '受扰角速度/2', 'autorouting', 'on');
+% 机器人反馈连线
+add_line(model_name, 'Differential Drive Robot/1', 'PID Control System/3');  % x → x_actual
+add_line(model_name, 'Differential Drive Robot/2', 'PID Control System/4');  % y → y_actual
+add_line(model_name, 'Differential Drive Robot/3', 'PID Control System/5');  % theta
+add_line(model_name, 'Differential Drive Robot/4', 'PID Control System/6');  % vx
+add_line(model_name, 'Differential Drive Robot/5', 'PID Control System/7');  % vy
 
-add_line(sys, '线速度换算/1', '线速度输出/1', 'autorouting', 'on');
-add_line(sys, '受扰角速度/1', '角速度输出/1', 'autorouting', 'on');
-add_line(sys, '受扰角速度/1', '航向角/1', 'autorouting', 'on');
+% PID 输出 → 机器人输入
+add_line(model_name, 'PID Control System/1', 'Differential Drive Robot/1');  % F_L
+add_line(model_name, 'PID Control System/2', 'Differential Drive Robot/2');  % F_R
 
-add_line(sys, '航向角/1', '航向输出/1', 'autorouting', 'on');
-add_line(sys, '航向角/1', 'cos航向/1', 'autorouting', 'on');
-add_line(sys, '航向角/1', 'sin航向/1', 'autorouting', 'on');
+%% ========================================================================
+%  可视化模块
+%  ========================================================================
 
-add_line(sys, '线速度换算/1', 'X速度/1', 'autorouting', 'on');
-add_line(sys, 'cos航向/1', 'X速度/2', 'autorouting', 'on');
-add_line(sys, '线速度换算/1', 'Y速度/1', 'autorouting', 'on');
-add_line(sys, 'sin航向/1', 'Y速度/2', 'autorouting', 'on');
-add_line(sys, 'X速度/1', '受扰X速度/1', 'autorouting', 'on');
-add_line(sys, '外力增益/1', '受扰X速度/2', 'autorouting', 'on');
-add_line(sys, 'Y速度/1', '受扰Y速度/1', 'autorouting', 'on');
-add_line(sys, '外力增益/1', '受扰Y速度/2', 'autorouting', 'on');
+% --- 示波器：合力 ---
+add_block('simulink/Commonly Used Blocks/Scope', [model_name '/Scope_Force']);
+set_param([model_name '/Scope_Force'], 'Position', [720, 480, 780, 530]);
+set_param([model_name '/Scope_Force'], 'Name', '合力(作用力合力)');
 
-add_line(sys, '受扰X速度/1', 'X位置/1', 'autorouting', 'on');
-add_line(sys, 'X位置/1', 'X输出/1', 'autorouting', 'on');
-add_line(sys, '受扰Y速度/1', 'Y位置/1', 'autorouting', 'on');
-add_line(sys, 'Y位置/1', 'Y输出/1', 'autorouting', 'on');
-end
+% --- 示波器：vx ---
+add_block('simulink/Commonly Used Blocks/Scope', [model_name '/Scope_vx']);
+set_param([model_name '/Scope_vx'], 'Position', [720, 550, 780, 600]);
+set_param([model_name '/Scope_vx'], 'Name', '横轴速度分量 vx');
 
-function createSensorModule(sys)
-open_system(sys);
-add_block('simulink/Sources/In1', [sys '/当前X'], 'Position', [25 45 55 65]);
-add_block('simulink/Sources/In1', [sys '/当前Y'], 'Position', [25 105 55 125]);
-add_block('simulink/Sources/In1', [sys '/当前航向'], 'Position', [25 165 55 185]);
-add_block('simulink/Signal Routing/Mux', [sys '/位姿组合'], ...
-    'Inputs', '3', ...
-    'Position', [90 70 115 180]);
-add_block('simulink/User-Defined Functions/Fcn', [sys '/目标距离'], ...
-    'Expr', 'sqrt((u(1)-ROBOT_TARGET_X)^2 + (u(2)-ROBOT_TARGET_Y)^2)', ...
-    'Position', [155 110 300 145]);
-add_block('simulink/Logic and Bit Operations/Compare To Constant', [sys '/距离阈值判断'], ...
-    'const', 'ROBOT_SENSOR_THRESHOLD', ...
-    'relop', '<=', ...
-    'Position', [340 110 430 145]);
-add_block('simulink/Signal Attributes/Data Type Conversion', [sys '/二值输出转换'], ...
-    'OutDataTypeStr', 'double', ...
-    'Position', [465 110 555 145]);
+% --- 示波器：x ---
+add_block('simulink/Commonly Used Blocks/Scope', [model_name '/Scope_x']);
+set_param([model_name '/Scope_x'], 'Position', [720, 620, 780, 670]);
+set_param([model_name '/Scope_x'], 'Name', '横坐标 x');
 
-add_block('simulink/Sinks/Out1', [sys '/左红外'], 'Position', [590 45 620 65]);
-add_block('simulink/Sinks/Out1', [sys '/前红外'], 'Position', [590 105 620 125]);
-add_block('simulink/Sinks/Out1', [sys '/右红外'], 'Position', [590 165 620 185]);
-add_block('simulink/Sinks/Out1', [sys '/超声'], 'Position', [590 225 620 245]);
+% --- 示波器：y ---
+add_block('simulink/Commonly Used Blocks/Scope', [model_name '/Scope_y']);
+set_param([model_name '/Scope_y'], 'Position', [720, 690, 780, 740]);
+set_param([model_name '/Scope_y'], 'Name', '纵坐标 y');
 
-add_line(sys, '当前X/1', '位姿组合/1', 'autorouting', 'on');
-add_line(sys, '当前Y/1', '位姿组合/2', 'autorouting', 'on');
-add_line(sys, '当前航向/1', '位姿组合/3', 'autorouting', 'on');
+% --- 示波器：感应值(sensor) ---
+add_block('simulink/Commonly Used Blocks/Scope', [model_name '/Scope_Sensor']);
+set_param([model_name '/Scope_Sensor'], 'Position', [720, 760, 780, 810]);
+set_param([model_name '/Scope_Sensor'], 'Name', '感应值 sensor');
 
-add_line(sys, '位姿组合/1', '目标距离/1', 'autorouting', 'on');
-add_line(sys, '目标距离/1', '距离阈值判断/1', 'autorouting', 'on');
-add_line(sys, '距离阈值判断/1', '二值输出转换/1', 'autorouting', 'on');
-add_line(sys, '二值输出转换/1', '左红外/1', 'autorouting', 'on');
-add_line(sys, '二值输出转换/1', '前红外/1', 'autorouting', 'on');
-add_line(sys, '二值输出转换/1', '右红外/1', 'autorouting', 'on');
-add_line(sys, '二值输出转换/1', '超声/1', 'autorouting', 'on');
-end
+% 连接示波器
+add_line(model_name, 'Differential Drive Robot/6', 'Scope_Force/1');   % sensor（合力）
+add_line(model_name, 'Differential Drive Robot/4', 'Scope_vx/1');     % vx
+add_line(model_name, 'Differential Drive Robot/1', 'Scope_x/1');      % x
+add_line(model_name, 'Differential Drive Robot/2', 'Scope_y/1');      % y
+add_line(model_name, 'Differential Drive Robot/5', 'Scope_Sensor/1'); % vy（作为感应值参考）
 
-function renamePortsAndSignals(modelName)
-set_param([modelName '/XY控制器'], 'AttributesFormatString', '输出: 角度指令, 线速度指令');
-set_param([modelName '/角度控制器'], 'AttributesFormatString', '输出: 角速度指令');
-set_param([modelName '/分速度模块'], 'AttributesFormatString', '输出: 左右轮目标角速度');
-set_param([modelName '/左轮模块'], 'AttributesFormatString', '输入: 目标角速度, 负载扰动; 输出: 角速度, 角位移, 作用力');
-set_param([modelName '/右轮模块'], 'AttributesFormatString', '输入: 目标角速度, 负载扰动; 输出: 角速度, 角位移, 作用力');
-set_param([modelName '/运动学模块'], 'AttributesFormatString', '输入: 左轮, 右轮, 外力, 转矩; 输出: X, Y, 航向, v, w');
-set_param([modelName '/传感器模块'], 'AttributesFormatString', '输出: 左红外, 前红外, 右红外, 超声');
-end
+% --- XY 坐标图：运动轨迹 ---
+add_block('simulink/Sinks/XY Graph', [model_name '/XY Graph']);
+set_param([model_name '/XY Graph'], 'Position', [720, 830, 790, 880]);
+set_param([model_name '/XY Graph'], 'Name', '机器人运动轨迹');
+set_param([model_name '/XY Graph'], 'xmin', '-2');
+set_param([model_name '/XY Graph'], 'xmax', '8');
+set_param([model_name '/XY Graph'], 'ymin', '-2');
+set_param([model_name '/XY Graph'], 'ymax', '8');
 
-function exportSimulationData(simOut)
-if isa(simOut, 'Simulink.SimulationOutput')
-    if isprop(simOut, 'robot_xy_traj')
-        assignin('base', 'robot_xy_traj', simOut.robot_xy_traj);
-    elseif hasVariable(simOut, 'robot_xy_traj')
-        assignin('base', 'robot_xy_traj', simOut.get('robot_xy_traj'));
-    end
+add_line(model_name, 'Differential Drive Robot/1', 'XY Graph/1');  % x
+add_line(model_name, 'Differential Drive Robot/2', 'XY Graph/2');  % y
 
-    if isprop(simOut, 'wheel_force_ratio')
-        assignin('base', 'wheel_force_ratio', simOut.wheel_force_ratio);
-    elseif hasVariable(simOut, 'wheel_force_ratio')
-        assignin('base', 'wheel_force_ratio', simOut.get('wheel_force_ratio'));
-    end
-end
-end
+%% ========================================================================
+%  模型整理与保存
+%  ========================================================================
 
-function tf = hasVariable(simOut, varName)
-tf = false;
-try
-    simOut.get(varName);
-    tf = true;
-catch
-end
-end
+% 设置仿真参数
+set_param(model_name, 'Solver', 'ode45');
+set_param(model_name, 'StopTime', '30');
+set_param(model_name, 'MaxStep', '0.01');
+set_param(model_name, 'StartTime', '0');
 
-function renderSimulationFigures()
-if evalin('base', 'exist(''robot_xy_traj'', ''var'')')
-    traj = evalin('base', 'robot_xy_traj');
-    [xData, yData] = parseTrajectoryData(traj);
-    if ~isempty(xData) && ~isempty(yData)
-        figure('Name', '差速双轮机器人轨迹图', 'NumberTitle', 'off');
-        plot(xData, yData, 'b-', 'LineWidth', 2);
-        hold on;
-        plot(xData(1), yData(1), 'go', 'MarkerSize', 8, 'LineWidth', 1.5);
-        plot(xData(end), yData(end), 'ro', 'MarkerSize', 8, 'LineWidth', 1.5);
-        grid on;
-        axis equal;
-        xlabel('X 位置 / m');
-        ylabel('Y 位置 / m');
-        title('差速双轮机器人运动轨迹');
-        legend('运动轨迹', '起点', '终点', 'Location', 'best');
-        hold off;
-    end
-end
+% 排列子系统内部布局（可选，如布局不理想可注释掉手动调整）
+% Simulink.BlockDiagram.arrangeSystem(robot_name);
+% Simulink.BlockDiagram.arrangeSystem(pid_name);
+% Simulink.BlockDiagram.arrangeSystem(model_name);
 
-if evalin('base', 'exist(''wheel_force_ratio'', ''var'')')
-    ratioData = evalin('base', 'wheel_force_ratio');
-    [t, ratioValues] = parseWorkspaceSignal(ratioData);
-    if ~isempty(ratioValues) && size(ratioValues, 2) >= 4
-        if isempty(t)
-            n = size(ratioValues, 1);
-            t = linspace(0, 20, n)';
-        end
-        figure('Name', '左右轮作用力与比例图', 'NumberTitle', 'off');
-        yyaxis left;
-        plot(t, ratioValues(:, 1), 'b-', 'LineWidth', 1.5);
-        hold on;
-        plot(t, ratioValues(:, 2), 'r-', 'LineWidth', 1.5);
-        ylabel('轮子作用力');
-        yyaxis right;
-        plot(t, ratioValues(:, 3), 'b--', 'LineWidth', 1.5);
-        plot(t, ratioValues(:, 4), 'r--', 'LineWidth', 1.5);
-        ylabel('作用力比例');
-        xlabel('时间 / s');
-        title('左右轮作用力及其比例变化');
-        grid on;
-        legend('左轮作用力', '右轮作用力', '左轮比例', '右轮比例', 'Location', 'best');
-        hold off;
-    end
-end
-end
+% 保存模型
+save_system(model_name);
 
-function [xData, yData] = parseTrajectoryData(traj)
-xData = [];
-yData = [];
-[~, values] = parseWorkspaceSignal(traj);
-if isempty(values)
-    return;
-end
-if size(values, 2) >= 2
-    xData = values(:, 1);
-    yData = values(:, 2);
-elseif size(values, 2) >= 3
-    xData = values(:, 2);
-    yData = values(:, 3);
-end
-end
-
-function [t, values] = parseWorkspaceSignal(data)
-t = [];
-values = [];
-
-if isnumeric(data)
-    if isempty(data)
-        return;
-    end
-    if size(data, 2) >= 3
-        t = data(:, 1);
-        values = data(:, 2:end);
-    else
-        values = data;
-    end
-    return;
-end
-
-if isstruct(data) && isfield(data, 'time') && isfield(data, 'signals')
-    t = data.time;
-    if isfield(data.signals, 'values')
-        values = data.signals.values;
-        if ndims(values) > 2
-            values = squeeze(values);
-        end
-    end
-end
-end
+fprintf('模型构建完成: %s.slx\n', model_name);
+fprintf('机器人子系统: Differential Drive Robot\n');
+fprintf('  - 轮子模块 (左/右): Gain + Integrator\n');
+fprintf('  - 旋转模块: Sum → v(线速度), ω(角速度)\n');
+fprintf('  - 分速度模块: vx=v·cos(θ), vy=v·sin(θ)\n');
+fprintf('  - 感应器模块: sqrt(vx²+vy²)\n');
+fprintf('PID 控制子系统: PID Control System\n');
+fprintf('  - XY 控制器: atan2 + 距离比例\n');
+fprintf('  - 角度 PID: 航向角控制\n');
+fprintf('  - 速度 PID: 线速度控制\n');
+fprintf('  - 力混合器: 分配左右轮力\n');
