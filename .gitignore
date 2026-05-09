@@ -38,3 +38,6 @@ untitled*.slx
 # OS files
 Thumbs.db
 .DS_Store
+lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip
+lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/*.zip
+lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip

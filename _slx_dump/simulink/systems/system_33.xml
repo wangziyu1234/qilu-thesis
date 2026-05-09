@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[433, 403, 931, 703]</P>
+  <Block BlockType="Inport" Name="v" SID="36">
+    <P Name="Position">[20, 28, 50, 42]</P>
+    <P Name="ZOrder">1</P>
+  </Block>
+  <Block BlockType="Inport" Name="theta" SID="37">
+    <P Name="Position">[20, 93, 50, 107]</P>
+    <P Name="ZOrder">2</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="Fcn" Name="Fvx" SID="41">
+    <P Name="Position">[150, 25, 195, 65]</P>
+    <P Name="ZOrder">289</P>
+    <P Name="Expr">u(1)*cos(u(2))</P>
+  </Block>
+  <Block BlockType="Fcn" Name="Fvy" SID="42">
+    <P Name="Position">[150, 90, 195, 130]</P>
+    <P Name="ZOrder">290</P>
+    <P Name="Expr">u(1)*sin(u(2))</P>
+  </Block>
+  <Block BlockType="Mux" Name="Mx" SID="40">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[90, 55, 115, 95]</P>
+    <P Name="ZOrder">5</P>
+    <P Name="Inputs">2</P>
+  </Block>
+  <Block BlockType="Outport" Name="vx" SID="38">
+    <P Name="Position">[260, 30, 290, 50]</P>
+    <P Name="ZOrder">3</P>
+  </Block>
+  <Block BlockType="Outport" Name="vy" SID="39">
+    <P Name="Position">[260, 95, 290, 115]</P>
+    <P Name="ZOrder">4</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">36#out:1</P>
+    <P Name="Dst">40#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">37#out:1</P>
+    <P Name="Dst">40#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">40#out:1</P>
+    <P Name="Points">[0, 0]</P>
+    <Branch>
+      <P Name="ZOrder">4</P>
+      <P Name="Dst">41#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">6</P>
+      <P Name="Dst">42#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">41#out:1</P>
+    <P Name="Dst">38#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">42#out:1</P>
+    <P Name="Dst">39#in:1</P>
+  </Line>
+</System>

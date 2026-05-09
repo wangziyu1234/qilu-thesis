@@ -1,0 +1,15 @@
+{
+    "GraphicalInterface":{
+        "ExternalFileReferences":[
+            {
+                "Path":"$bdroot\/角度控制器\/AnglePID",
+                "Reference":"slpidlib\/PID Controller",
+                "SID":"100",
+                "Type":"LIBRARY_BLOCK"
+            }
+        ],
+        "PreCompExecutionDomainType":"Unset",
+        "SimulinkSubDomainType":"Simulink",
+        "SolverName":"ode15s"
+    }
+}
