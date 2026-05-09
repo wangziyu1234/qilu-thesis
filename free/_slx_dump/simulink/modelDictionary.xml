@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" defaultPackage="slid" packageUris="http://schema.mathworks.com/mf0/slid/R2023a_20220628">
+  <System type="System" uuid="aa591c9a-34b6-46b5-9ec1-bfc85379e97c">
+    <Parameter type="Parameter" uuid="ba4bc439-bb47-4070-895c-0ca382ed1d61">
+      <Identifier>R_robot</Identifier>
+      <Name>R_robot</Name>
+    </Parameter>
+    <Parameter type="Parameter" uuid="477cf212-5d81-4e8b-a3e6-a72cc9a636ef">
+      <Identifier>d0</Identifier>
+      <Name>d0</Name>
+    </Parameter>
+    <Parameter type="Parameter" uuid="c80ea71c-7e80-4fc3-a9ab-7de6da2d7a27">
+      <Identifier>k_drag</Identifier>
+      <Name>k_drag</Name>
+    </Parameter>
+    <Parameter type="Parameter" uuid="82cd6e97-ece9-42dd-a9ba-f11e5e584ca3">
+      <Identifier>m</Identifier>
+      <Name>m</Name>
+    </Parameter>
+    <Interface type="Interface" uuid="ed52b5ad-9d3f-467b-8948-d380135ac7ce"/>
+  </System>
+</MF0>
