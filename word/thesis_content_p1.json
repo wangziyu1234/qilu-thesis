@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "title": "智能仓储自主移动机器人结构设计与控制",
+    "school": "机械工程学院",
+    "class": "机器人(SI)22-2",
+    "author": "王子煜",
+    "student_id": "202201230042",
+    "supervisor": "刘鹏博",
+    "date": "2026 年 03 月 10 日",
+    "year": "2026"
+  },
+  "abstract_cn": "随着电商物流与智能制造的快速发展,传统仓储搬运方式在效率和人力成本方面面临日益严峻的挑战。为提升仓储搬运自动化水平,本文设计了一款具备举升功能的双轮差速驱动自动导引车(AGV),系统开展了总体方案设计、机械结构设计、电气系统设计、运动学建模、路径规划与循迹控制以及运动控制算法研究。\n\n在总体方案层面,通过三种驱动方案对比分析,选定双轮差速驱动方案,确定了额定载重25 kg等关键技术指标。机械层面完成了底盘、升降机构和罩壳设计,对支撑梁进行有限元分析,满载工况下最大应力为4.891 MPa,远低于Q235A屈服强度235 MPa,最大位移变形仅为1.538e-3 mm。电气层面以STM32F103C8T6为主控芯片,完成了SMC80S伺服电机与ZJPX115行星减速器选型,设计了TCRT5000红外传感器和HC-SR04超声波传感器的接口电路。\n\n运动学建模与路径规划层面,推导了双轮差速底盘运动学方程,在MATLAB中对直线、圆弧、S形和8字形四类典型轨迹进行了仿真验证。采用Hybrid A*算法在10 m x 8 m仓储栅格地图上规划了无碰撞路径,路径长度10.71 m。循迹控制层面,模拟5路TCRT5000红外传感器阵列进行PID循迹仿真,RMS横向误差为0.8 cm,最大横向误差为1.6 cm,验证了全局规划与局部循迹协同工作的可行性。\n\n运动控制层面,设计了双环PID级联控制器(位姿外环+轮速内环),在MATLAB/Simulink环境中对阶跃响应、定点镇定、直线跟踪和圆形轨迹跟踪四种工况进行了仿真。仿真结果表明,本文所设计的举升式AGV在结构、路径规划与运动控制层面均具备可行性,可为后续样机研制和工程应用提供参考。",
+  "keywords_cn": "举升式AGV;智能仓储;差速驱动;路径规划;Hybrid A*;PID循迹控制",
+  "abstract_en": "With the rapid development of e-commerce logistics and intelligent manufacturing, traditional warehouse handling methods face increasingly severe challenges in efficiency and labor costs. To enhance the automation level of warehouse handling, this thesis designs a lifting-type dual-wheel differential drive Automated Guided Vehicle (AGV), systematically conducting overall scheme design, mechanical structure design, electrical system design, kinematic modeling, path planning and line-following control, and motion control algorithm research.\n\nFor the overall scheme, the dual-wheel differential drive is selected after comparing three drive configurations, with key specifications including rated payload of 25 kg. For the mechanical structure, the chassis, lifting mechanism, and shell are designed. Finite element analysis of the supporting beam yields a maximum stress of 4.891 MPa, far below the Q235A yield strength of 235 MPa, with a maximum displacement of only 1.538e-3 mm. For the electrical system, the STM32F103C8T6 microcontroller serves as the main controller, an SMC80S servo motor is matched with a ZJPX115 planetary reducer, and interface circuits are designed for TCRT5000 infrared and HC-SR04 ultrasonic sensors.\n\nIn kinematic modeling and path planning, the differential-drive chassis kinematic equations are derived, and four typical trajectories (straight, circular, S-shaped, and figure-eight) are simulated in MATLAB. The Hybrid A* algorithm generates a collision-free path of 10.71 m in a 10 m x 8 m warehouse grid map. In line-following control, PID simulation with a 5-sensor TCRT5000 infrared array achieves an RMS lateral error of 0.8 cm and a maximum error of 1.6 cm, validating the cooperative feasibility of global planning and local line tracking.\n\nIn motion control, a dual-loop PID cascade controller (pose outer loop + wheel speed inner loop) is designed and simulated in MATLAB/Simulink under four scenarios: step response, point stabilization, straight-line tracking, and circular trajectory tracking. Simulation results demonstrate the feasibility of the designed lifting-type AGV in structure, path planning, and motion control, providing a reference for subsequent prototype development and engineering applications.",
+  "keywords_en": "Lifting AGV; Intelligent Warehouse; Differential Drive; Path Planning; Hybrid A*; PID Line-following Control",
+  "chapters": [
+    {
+      "number": "第一章",
+      "title": "引言",
+      "sections": [
+        {
+          "level": 2,
+          "title": "1.1 研究背景和意义",
+          "body": [
+            "随着电子商务和智能制造的快速发展,传统的人工搬运方式已无法满足现代仓储物流对高效率、高精度和低成本的需求。在工业4.0和《中国制造2025》战略推动下,智能仓储物流装备正成为制造业转型升级的关键支撑。自动导引车(Automated Guided Vehicle, AGV)作为一种具备自主导航和物料搬运能力的移动机器人,在智能仓储系统中发挥着越来越重要的作用。",
+            "传统的AGV多采用磁导航或电磁导航方式,需要对地面进行改造,铺设磁条或埋设导线,部署成本高,路径变更不灵活。随着传感器技术、嵌入式系统和控制算法的发展,具备自主路径规划和环境感知能力的AGV逐渐成为研究热点。特别是在中小型仓储场景中,对AGV的结构紧凑性、运动灵活性和控制系统可靠性提出了更高的要求。",
+            "本文以智能仓储为应用背景,设计一款具备举升功能的双轮差速驱动AGV,开展总体方案设计、机械结构设计、电气系统设计、运动学建模与仿真分析以及运动控制算法研究,为差速驱动举升式AGV的设计和应用提供参考。"
+          ]
+        },
+        {
+          "level": 2,
+          "title": "1.2 国内外智能仓储移动机器人研究综述",
+          "body": []
+        },
+        {
+          "level": 3,
+          "title": "1.2.1 智能仓储移动机器人国外研究现状",
+          "body": [
+            "国外对AGV的研究起步较早,可以追溯到20世纪50年代。美国Barrett Electronics公司于1953年研制出世界上第一台AGV,用于仓储货物搬运。此后,欧美和日本等发达国家在AGV技术领域持续投入研发,形成了较为完整的技术体系。",
+            "在结构设计方面,Amazon公司的Kiva机器人采用举升式结构,通过顶升货架实现货物搬运,大幅提升了仓储作业效率。MiR(Mobile Industrial Robots)公司推出的MiR系列AGV采用差速驱动方式,具备自主导航和避障能力,在工业制造和仓储物流领域得到广泛应用。在控制算法方面,PID控制因其结构简单、鲁棒性强,仍是工业AGV使用最广泛的控制方法。近年来,模型预测控制(MPC)、滑模控制和自适应控制等先进方法也被引入AGV运动控制中。",
+            "在路径规划方面,从传统的A*算法、Dijkstra算法,到考虑运动学约束的Hybrid A*算法和基于采样的RRT算法,国内外学者提出了多种适用于AGV的路径规划方法。"
+          ]
+        },
+        {
+          "level": 3,
+          "title": "1.2.2 智能仓储移动机器人国内研究现状",
+          "body": [
+            "国内AGV技术起步较晚但发展迅速。20世纪70年代,北京起重运输机械研究所研制出我国第一台AGV。近年来,随着电商物流的爆发式增长,以极智嘉(Geek+)、快仓(Quicktron)为代表的国产AGV企业快速崛起,在仓储AGV领域形成了较强的竞争力。",
+            "在学术研究层面,国内高校和科研机构在AGV的结构优化设计、运动学建模、路径规划算法和运动控制策略等方面开展了大量研究。哈尔滨工业大学、华中科技大学、上海交通大学等高校在差速驱动AGV的运动控制与导航定位方面取得了显著成果。同时,随着STM32等嵌入式平台的发展,低成本、高性能的AGV控制系统成为可能。"
+          ]
+        },
+        {
+          "level": 2,
+          "title": "1.3 国内外智能仓储移动机器人路径规划算法研究现状",
+          "body": [
+            "路径规划是AGV自主导航的核心技术之一。根据环境信息的已知程度,路径规划可分为全局路径规划和局部路径规划。全局路径规划在地图信息完全已知的前提下生成从起点到终点的最优路径,常用算法包括A*算法、Dijkstra算法和Hybrid A*算法等。局部路径规划则根据传感器实时信息进行动态避障和轨迹调整,常用方法包括人工势场法、动态窗口法(DWA)和基于传感器的循迹控制等。",
+            "Hybrid A*算法由Dolgov等人于2008年提出,最初用于自动驾驶车辆的路径规划。该算法在传统A*的基础上引入车辆运动学约束,生成的路径满足车辆的最小转弯半径限制,因此特别适用于差速驱动AGV。与A*算法相比,Hybrid A*生成的路径更平滑,更容易被底层控制器跟踪执行。然而,Hybrid A*的计算复杂度较高,尤其在大型地图和高分辨率栅格下搜索时间显著增加。近年来,许多改进的Hybrid A*变体被提出,包括结合RS曲线进行路径平滑、引入启发式函数优化搜索效率,以及利用多分辨率栅格加速搜索等。",
+            "在局部循迹层面,基于红外传感器的黑线循迹是一种低成本、易实现的方案。通过在AGV前端安装红外传感器阵列,检测地面轨迹线的横向偏移量,利用PID控制器进行差速纠偏。该方案结构简单、响应速度快,适用于仓储等结构化环境下的轨迹跟踪。"
+          ]
+        },
+        {
+          "level": 2,
+          "title": "1.4 研究方法与手段",
+          "body": [
+            "本文采用文献调研-总体设计-分系统设计-仿真验证的研究路线。首先,通过文献调研了解AGV技术的发展现状和关键技术;其次,根据仓储搬运需求制定总体设计方案和技术指标;然后,分模块完成机械结构设计、电气系统设计和控制算法设计;最后,利用MATLAB/Simulink仿真平台进行运动学建模、路径规划和运动控制的仿真验证。"
+          ]
+        }
+      ]
+    },
+    {
+      "number": "第二章",
+      "title": "智能仓储移动机器人总体设计方案",
+      "sections": [
+        {
+          "level": 2,
+          "title": "2.1 仓储移动机器人选型",
+          "body": [
+            "AGV的本体形态日趋多元化,旨在适配不同的仓储场景和搬运需求。本文所研究的对象是一款具备举升功能的自主搬运机器人,它集载货、升降与运输于一体,依靠举升机构完成货物装卸作业,可在一般工业和仓储环境中使用,且具有较好的扩展性和场景适应能力。",
+            "现代仓储环境对货物运输效率和灵活性提出了较高的要求。AGV的运行逻辑相对固定,适用于路径相对简单、环境较为稳定的场景。因其研究较早,技术成熟,在业务流程固定、追求高性价比的大规模搬运场景中,AGV依然是主流选择。本文选择研究的智能仓储移动机器人属于AGV范畴,具备举升功能,能够在货架密集的环境中自主行驶,执行物料的自动搬运与装卸任务。"
+          ]
+        },
+        {
+          "level": 2,
+          "title": "2.2 设计需求和技术指标",
+          "body": [
+            "结合中小型仓储环境对物料搬运AGV的需求,确定以下技术指标:额定载重25 kg,举升行程0.2 m,最大行驶速度30 m/min,整车尺寸约1000 mm x 700 mm x 1000 mm,自重约200 kg,驱动方式为双轮差速驱动。自动载物功能要求配备可升降的载物台,升降行程为0.2 m,可满足不同货架高度的搬运需求。"
+          ]
+        },
+        {
+          "level": 2,
+          "title": "2.3 驱动选型",
+          "body": [
+            "在AGV的驱动方式选择中,常见方案包括单轮驱动、差速驱动和全方位驱动三种。单轮驱动结构简单但转弯半径大、灵活性差;全方位驱动(如麦克纳姆轮)可实现任意方向平移但成本高、控制复杂;双轮差速驱动通过调节左右轮速度差实现转向,结构紧凑、转弯灵活、控制相对简便,是中小型AGV的主流选择。",
+            "经三种驱动方案的对比分析,本文最终选用双轮差速驱动方案。该方案的核心优势在于:(1)机械结构简洁,仅需两个驱动电机和两个驱动轮,以及四个万向轮辅助支撑;(2)转弯半径可为零,即实现原地转向,特别适合仓储狭窄通道环境;(3)运动控制模型相对简单,便于控制器设计和工程实现。"
+          ]
+        }
+      ],
+      "figures": [
+        {
+          "file": "danlunqudong.png",
+          "caption": "图2.1 单轮驱动示意图"
+        },
+        {
+          "file": "chasu.png",
+          "caption": "图2.2 差速驱动示意图"
+        },
+        {
+          "file": "quanfangwei.png",
+          "caption": "图2.3 全方位驱动示意图"
+        }
+      ]
+    }
+  ]
+}
