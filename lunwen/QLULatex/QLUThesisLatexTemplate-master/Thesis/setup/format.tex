@@ -178,9 +178,9 @@
 \makeatletter
 \long\def\@makecaption#1#2{
    \vskip\abovecaptionskip
-   \sbox\@tempboxa{\centering\wuhao\songti{#1\qquad #2} }
+   \sbox\@tempboxa{\centering\wuhao\songti{#1\ #2} }
    \ifdim \wd\@tempboxa >\hsize
-     \centering\wuhao\songti{#1\qquad #2} \par
+     \centering\wuhao\songti{#1\ #2} \par
    \else
      \global \@minipagefalse
      \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}
@@ -279,7 +279,7 @@
 
 \pagestyle{fancy}
   \fancyhf{}
-  \fancyhead[C]{\songti{\xiaowu{\@cheading}}}  % 页眉显示齐鲁工业大学 20XX 届本科毕业论文
+  \fancyhead[C]{\songti{\xiaowu{\@cheading}}}  % 页眉显示齐鲁工业大学 20XX 届本科毕业设计
   \fancyfoot[C]{\songti\xiaowu ~\thepage~}
 \newlength{\@title@width}
 
@@ -316,7 +316,7 @@
       \vspace{-1pt}
 
       \heiti\maintitle{\textbf{\renewcommand{\CJKglue}{\hskip 0.16em}
-        本科毕业论文（  \ 设\  计 ） \ 
+        本科毕业设计 \
         }}
 
       \vspace{76pt}
@@ -343,7 +343,7 @@
       \vspace*{3.48cm}
 
       \heiti\xiaoyi{\textbf{\renewcommand{\CJKglue}{\hskip 0.22em}
-        本科毕业论文（~设计~）
+        本科毕业设计
         }}
 
       \vspace{66pt}
