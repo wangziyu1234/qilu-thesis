@@ -1,6 +1,6 @@
 %% 剪叉式垂直升降台 —— 强度校核与载重分析
 % 臂杆: 36×4.8mm 实心扁钢, L=600mm, Q235
-% 两臂夹角 α=15.78°~57.12°, 半角 β=α/2
+% 两臂夹角 α=19.10°~133.49°, 半角 β=α/2, h0=49mm(配件)
 % 额定载重 50kg
 clear; clc; close all;
 
@@ -11,19 +11,20 @@ L_arm   = 600;       % mm, 臂长
 material = 'Q235';
 
 % 两臂夹角 α（用户提供）
-alpha_low  = 15.78;   % °, 最低位两臂夹角
-alpha_high = 57.12;   % °, 最高位两臂夹角
+alpha_low  = 19.10;   % °, 最低位两臂夹角
+alpha_high = 133.49;  % °, 最高位两臂夹角
 
 % 半角 β = α/2 = 臂与水平面夹角（力学分析用）
-beta_low  = alpha_low  / 2;   % = 7.89°
-beta_high = alpha_high / 2;   % = 28.56°
+beta_low  = alpha_low  / 2;   % = 9.55°
+beta_high = alpha_high / 2;   % = 66.75°
 beta_worst = beta_low;         % 最危险工况
 
-% 台面高度 H = L * sin(β)
-H_min = L_arm * sind(beta_low);
-H_max = L_arm * sind(beta_high);
+% 台面高度 H = L * sin(β) + h0
+h0 = 49;  % mm, 两端配件固定高度贡献
+H_min = L_arm * sind(beta_low) + h0;
+H_max = L_arm * sind(beta_high) + h0;
 stroke = H_max - H_min;
-H_lift = 458.92;  % mm, 设计总高度（含底盘）
+H_lift = stroke;  % mm, 理论升程
 
 fprintf('--- 设计参数 ---\n');
 fprintf('  臂长 L = %.0f mm,  材料: %s\n', L_arm, material);
@@ -31,7 +32,7 @@ fprintf('  截面: 36×4.8 mm 实心扁钢（宽面竖直）\n');
 fprintf('  两臂夹角 α: %.2f° ~ %.2f°\n', alpha_low, alpha_high);
 fprintf('  水平半角 β: %.2f° ~ %.2f°\n', beta_low, beta_high);
 fprintf('  纯剪叉台高: %.1f ~ %.1f mm (行程 %.1f mm)\n', H_min, H_max, stroke);
-fprintf('  设计总高度: %.2f mm (含底盘约172mm)\n\n', H_lift);
+fprintf('  理论升程: %.0f mm\n\n', H_lift);
 
 % --- 平台 ---
 platform_length = 660;   platform_width = 312;   platform_thick = 3;

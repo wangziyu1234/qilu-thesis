@@ -2,8 +2,9 @@
 clear; clc; close all;
 
 L = 600;
-alpha_low  = 15.78;   beta_low  = alpha_low/2;
-alpha_high = 57.12;   beta_high = alpha_high/2;
+alpha_low  = 19.10;   beta_low  = alpha_low/2;
+alpha_high = 133.49;  beta_high = alpha_high/2;
+h0 = 49;  % 两端配件固定高度贡献
 
 fig_dir = 'D:/bylw/code/lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/figures';
 
@@ -19,10 +20,11 @@ for plot_idx = 1:2
     end
 
     b = deg2rad(beta_deg);
-    H_plat = L * sin(b);
+    H_arm = L * sin(b);         % 臂杆上端点高度
+    H_plat = H_arm + h0;        % 台面（含配件）高度
     base_y = -20;
 
-    figure('Position', [50, 50, 1000, 900], 'Color', 'w');
+    figure('Position', [50, 50, 800, 650], 'Color', 'w');
     hold on;
 
     % 底座
@@ -30,8 +32,9 @@ for plot_idx = 1:2
         [base_y-10, base_y-10, base_y, base_y], ...
         [0.5 0.5 0.5], 'EdgeColor', 'k', 'LineWidth', 1.2);
 
-    % 台面
-    plat_w = 200;
+    % 台面（跨度覆盖两端铰点 + 两侧各留30mm余量）
+    plat_margin = 30;
+    plat_w = L*cos(b) + 2*plat_margin;
     plat_cx = L/2 * cos(b);
     fill(plat_cx + [-plat_w/2, plat_w/2, plat_w/2, -plat_w/2], ...
         H_plat + [0, 0, 8, 8], [0.7 0.7 0.78], ...
@@ -49,16 +52,20 @@ for plot_idx = 1:2
     % 四个端点铰点
     plot(0, 0, 'ko', 'MarkerSize', 10, 'MarkerFaceColor', 'k');          % 左下固定
     plot(L*cos(b), 0, 'ko', 'MarkerSize', 10, 'MarkerFaceColor', 'w', 'LineWidth', 1.5); % 右下(滑块)
-    plot(L*cos(b), H_plat, 'ko', 'MarkerSize', 10, 'MarkerFaceColor', 'k'); % 右上固定
+    plot(L*cos(b), H_arm, 'ko', 'MarkerSize', 10, 'MarkerFaceColor', 'k'); % 右上固定
     % 左上滚轮 (两个小圆表示)
-    plot(0, H_plat, 'ko', 'MarkerSize', 16, 'MarkerFaceColor', 'w', 'LineWidth', 1.5);
-    plot(0, H_plat, 'ko', 'MarkerSize', 6, 'MarkerFaceColor', 'k');
+    plot(0, H_arm, 'ko', 'MarkerSize', 16, 'MarkerFaceColor', 'w', 'LineWidth', 1.5);
+    plot(0, H_arm, 'ko', 'MarkerSize', 6, 'MarkerFaceColor', 'k');
 
     % 底部滑轨 + 顶部导向槽
     plot([L*cos(b)-18, L*cos(b)+60], [0, 0], 'k-', 'LineWidth', 2.5);
-    plot([-18, 60], [H_plat, H_plat], 'k-', 'LineWidth', 2.5);
+    plot([-18, 60], [H_arm, H_arm], 'k-', 'LineWidth', 2.5);
 
-    % 标注文字（字号放大）
+    % 配件连接（臂端到台面）
+    plot([0, 0], [H_arm, H_plat], 'k-', 'LineWidth', 2);
+    plot([L*cos(b), L*cos(b)], [H_arm, H_plat], 'k-', 'LineWidth', 2);
+
+    % 标注文字
     text(-30, -4, '固定铰', 'FontSize', 12, 'HorizontalAlignment', 'right');
     text(L*cos(b)+15, -4, '滑动端(滑块)', 'FontSize', 12, 'HorizontalAlignment', 'left');
     text(xm+15, ym-10, '中心铰', 'FontSize', 12, 'Color', [0.7 0.5 0]);
@@ -107,6 +114,13 @@ for plot_idx = 1:2
     text(L*cos(b)+30, 12, 'F_{push}', 'FontSize', 13, 'Color', [0.8 0.3 0], 'FontWeight', 'bold');
     plot([L*cos(b), L*cos(b)+25], [3, 8], '-', 'Color', [0.8 0.3 0], 'LineWidth', 1.8);
 
+    % ---- 角标 (a)(b) ----
+    if plot_idx == 1
+        text(-80, H_plat+55, '(a) 最低位', 'FontSize', 13, 'FontWeight', 'bold');
+    else
+        text(-80, H_plat+55, '(b) 最高位', 'FontSize', 13, 'FontWeight', 'bold');
+    end
+
     axis equal;
     xlim([-100, max(L*cos(b)+90, 500)]);
     ylim([base_y-18, H_plat+55]);
@@ -114,6 +128,10 @@ for plot_idx = 1:2
     ylabel('Z 高度 (mm)', 'FontSize', 13);
     grid on;  box on;
     set(gca, 'FontSize', 12);
+
+    % 去掉四周留白
+    set(gca, 'Position', [0.10 0.12 0.85 0.82]);
+    set(gca, 'LooseInset', get(gca, 'TightInset'));
 
     fname = fullfile(fig_dir, ['jiagou_' suffix '.png']);
     print(gcf, fname, '-dpng', '-r200');

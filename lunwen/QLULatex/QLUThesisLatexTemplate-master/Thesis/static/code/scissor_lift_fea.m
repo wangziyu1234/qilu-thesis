@@ -8,7 +8,7 @@ E = 206000;  nu = 0.3;
 sigma_allow = 235/1.5;
 
 %% ===== 参数 =====
-L_arm = 600;   alpha_low = 15.78;   beta_low = alpha_low/2;
+L_arm = 600;   alpha_low = 19.10;   beta_low = alpha_low/2;
 Q_load = 50;
 F_load = Q_load * 9.81;
 F_arm  = F_load / (4 * sind(beta_low));
