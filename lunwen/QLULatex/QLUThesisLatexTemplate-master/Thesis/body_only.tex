@@ -1,0 +1,55 @@
+% !Mode:: "TeX:UTF-8"
+% !TEX program = xelatex
+
+\def\usewhat{xelatex}
+\documentclass[12pt,openany,oneside]{ctexbook}
+\input{setup/package}
+\input{setup/format}
+\graphicspath{{static/figures/}}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\defaultfont
+
+% 第 num 章的标题格式
+\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\chaptername}{第\ \thechapter\ 章}
+\ctexset{
+  chapter = {
+    format = \bfseries\huge,
+    name = {第,章},
+    number = \arabic{chapter}
+  }
+}
+
+\setcounter{page}{1}
+\pagenumbering{Roman}
+
+\titleformat{\chapter}{\centering\sanhao\heiti\bfseries}{\chaptername}{0.8em}{}
+
+% 摘要
+\include{pages/abstract}
+
+% 正文
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\include{pages/body}
+
+% 致谢（不含附录）
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{致\qquad 谢}}{致谢}}
+\chapter*{\sanhao\heiti\textbf{致\qquad 谢}}
+
+写到这里，论文终于画上了句号。四年一晃而过，回头看这一路，心中百感交集。
+
+最想感谢的是我的指导老师刘鹏博老师。从选题方向的确定、论文框架的搭建到最终的定稿环节，刘老师一路给予耐心细致的指导，每次我遇到瓶颈时总能及时得到点拨。刘老师对待学术的严谨态度、深厚的学识功底以及温和谦逊的处事风格，都令我深受触动，也将是我日后学习和工作中持续效仿的标杆。
+
+同样感谢学长仪效哲。在论文研究和撰写期间，学长毫无保留地给予帮助，无论是理论层面的讲解还是仿真环节的指导，都让我收获颇丰。学长的无私相助让我避开了不少弯路，这份情谊我会一直记在心里。
+
+还要感谢我的几位舍友。四年里我们朝夕相伴，一起学习一起生活。谢谢你们在我低落时给予的鼓劲，在我困惑时提供的陪伴。那些一块儿熬夜复习、一块儿畅聊理想的时光，是我大学岁月中最值得珍藏的画面。
+
+最后要感谢我的父母。你们含辛茹苦将我抚养长大，一直是我最可靠的依靠。求学这些年，你们的支持和包容让我得以专心致志地追求自己的目标。养育之恩深似海，唯愿你们身体康健、一切顺遂，我会用持续的努力来回报这份深情。
+
+过往种种，皆为序章。愿今后的路途既有远方也有光亮。
+
+\end{document}

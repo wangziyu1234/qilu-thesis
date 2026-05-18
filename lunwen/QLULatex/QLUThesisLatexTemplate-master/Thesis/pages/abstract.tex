@@ -18,20 +18,22 @@
 
 \xfabstract{
 
-    随着电商物流与智能制造的快速发展，传统仓储搬运方式在效率和人力成本方面面临日益严峻的挑战。为提升仓储搬运自动化水平，本文设计了一款具备举升功能的双轮差速驱动自动导引车（AGV），系统开展了总体方案设计、机械结构设计、电气系统设计、运动学建模、路径规划与循迹控制以及运动控制算法研究。
+    随着电商物流与智能制造的快速发展，传统仓储搬运方式在效率和人力成本方面面临日益严峻的挑战。为提升仓储搬运自动化水平，本文设计了一款具备举升功能的双轮差速驱动智能仓储移动机器人。首先进行总体方案设计，通过多方案对比分析，分别选定了双轮差速驱动、交流伺服电机、剪叉式升降机构、ARM单片机控制器、双环PID运动控制和Hybrid A*路径规划算法。
+    
+    在机械结构设计层面，本文重点阐述了小车的整体结构组成与设计思想。采用差速驱动方式由两个独立的交流伺服电机驱动两个驱动轮，通过左右轮速差实现转向控制，具有结构紧凑、转弯灵活的优势。搭载剪叉式升降机构，在不改变车身位置的情况下实现货物的垂直搬运，升降行程设计为$0.45\,\mathrm{m}$，能够适应不同高度货架的搬运需求。整体结构兼具运动灵活性和承载能力，额定载重$50\,\mathrm{kg}$，能够满足中小型仓储环境下的物流配送需求。
 
-    在总体方案层面，通过三种驱动方案对比分析，选定双轮差速驱动方案，确定了额定载重$25\,\mathrm{kg}$等关键技术指标。机械层面完成了底盘、升降机构和罩壳设计，对支撑梁进行有限元分析，满载工况下最大应力为$4.891\,\mathrm{MPa}$，远低于Q235A屈服强度$235\,\mathrm{MPa}$，最大位移变形仅为$1.538\times10^{-3}\,\mathrm{mm}$。电气层面以STM32F103C8T6为主控芯片，完成了SMC80S伺服电机与ZJPX115行星减速器选型，设计了TCRT5000红外传感器和HC-SR04超声波传感器的接口电路。
+    电气系统方面，以STM32F103C8T6为主控芯片，完成了SMC80S伺服电机与ZJPX115行星减速器选型，设计了TCRT5000红外传感器和HC-SR04超声波传感器的接口电路，为运动控制和障碍检测提供了硬件支撑。
 
-    运动学建模与路径规划层面，推导了双轮差速底盘运动学方程，在MATLAB中对直线、圆弧、S形和8字形四类典型轨迹进行了仿真验证。采用Hybrid A*算法在$10\,\mathrm{m}\times8\,\mathrm{m}$仓储栅格地图上规划了无碰撞路径，路径长度$10.71\,\mathrm{m}$。循迹控制层面，模拟5路TCRT5000红外传感器阵列进行PID循迹仿真，RMS横向误差为$0.8\,\mathrm{cm}$，最大横向误差为$1.6\,\mathrm{cm}$，验证了全局规划与局部循迹协同工作的可行性。
+    运动学建模与控制策略方面，推导了双轮差速底盘的运动学方程，设计了位姿外环与轮速内环相结合的双环PID控制器。在MATLAB环境中进行了仿真验证，包括阶跃响应、定点镇定、直线跟踪和圆形轨迹跟踪等典型工况，验证了控制算法的可行性。
 
-    运动控制算法层面，设计了位姿外环与轮速内环相结合的双环PID控制器，在阶跃响应、定点镇定、直线跟踪和圆形轨迹跟踪四类工况下进行了仿真验证。结果表明：阶跃响应无超调、稳态误差接近零；定点镇定终点位置误差为厘米级、航向误差在$1^\circ$以内；直线跟踪角速度RMSE为$0.0023\,\mathrm{rad/s}$；圆形轨迹跟踪线速度RMSE为$0.0088\,\mathrm{m/s}$、轨迹圆度RMSE为$0.021\,\mathrm{m}$。
+    路径规划方面，采用Hybrid A*算法，该算法生成的路径天然满足差速底盘的最小转弯半径约束，无需后处理即可直接交付底层控制器执行，提高了系统的集成度和可靠性。
 
-    仿真结果表明，本文所设计的举升式AGV在结构、路径规划与运动控制层面均具备可行性，可为后续样机研制和工程应用提供参考。
+    研究结果表明，本文所设计的智能仓储移动机器人在机械结构、控制系统与路径规划等方面均具备可行性与实用性，为后续样机研制和工程应用提供了理论依据和技术参考。
 
 }
 
 \noindent{\heiti\xiaosi\textbf{关键词：}}
-\fangsong{举升式AGV；智能仓储；差速驱动；路径规划；Hybrid A*；PID循迹控制}
+\fangsong{智能仓储移动机器人；差速驱动；路径规划；Hybrid A*；PID运动控制}
 
 % ====================== Abstract ======================
 
@@ -45,19 +47,21 @@
 \rmfamily\xiaosi
 
 \xfenabstract{
-    With the rapid growth of e-commerce and intelligent manufacturing, traditional warehouse handling faces increasing challenges in efficiency and labor cost. To improve automation in warehouse material handling, this thesis presents a lifting-type dual-wheel differential-drive Automated Guided Vehicle (AGV), covering overall scheme design, mechanical structure design, electrical system design, kinematic modeling, path planning and line-following control, and motion control algorithms.
-
-    For the overall scheme, the dual-wheel differential drive is selected after comparing three drive configurations, with key specifications including rated payload of $25\,\mathrm{kg}$. For the mechanical structure, the chassis, lifting mechanism, and shell are designed. Finite element analysis of the supporting beam yields a maximum stress of $4.891\,\mathrm{MPa}$, far below the Q235A yield strength of $235\,\mathrm{MPa}$, with a maximum displacement of only $1.538\times10^{-3}\,\mathrm{mm}$. For the electrical system, the STM32F103C8T6 microcontroller serves as the main controller, an SMC80S servo motor is matched with a ZJPX115 planetary reducer, and interface circuits are designed for TCRT5000 infrared and HC-SR04 ultrasonic sensors.
-
-    In kinematic modeling and path planning, the differential-drive chassis kinematic equations are derived, and four typical trajectories (straight, circular, S-shaped, and figure-eight) are simulated in MATLAB. The Hybrid A* algorithm generates a collision-free path of $10.71\,\mathrm{m}$ in a $10\,\mathrm{m}\times8\,\mathrm{m}$ warehouse grid map. In line-following control, PID simulation with a 5-sensor TCRT5000 infrared array achieves an RMS lateral error of $0.8\,\mathrm{cm}$ and a maximum error of $1.6\,\mathrm{cm}$, validating the cooperative feasibility of global planning and local line tracking.
-
-    For motion control, a dual-loop PID controller combining an outer pose loop and an inner wheel-speed loop is designed and validated under four scenarios: step response, point stabilization, straight-line tracking, and circular trajectory tracking. Results show zero steady-state speed error in step response, centimeter-level positioning and sub-$1^\circ$ heading error in point stabilization, an angular velocity RMSE of $0.0023\,\mathrm{rad/s}$ in straight-line tracking, and a velocity RMSE of $0.0088\,\mathrm{m/s}$ with a circularity RMSE of $0.021\,\mathrm{m}$ in circle tracking.
-
-    Simulation results demonstrate that the proposed lifting AGV is feasible in structural design, path planning, and motion control, providing a reference for prototype development and engineering applications.
+    With the rapid growth of e-commerce and intelligent manufacturing, traditional warehouse handling faces increasing challenges in efficiency and labor cost. To improve automation in warehouse material handling, this thesis presents a lifting-type dual-wheel differential-drive intelligent warehouse mobile robot. First, a comprehensive overall scheme design is conducted. Through multi-scheme comparative analysis, the dual-wheel differential drive, AC servo motor, scissor-type lifting mechanism, ARM Cortex-M microcontroller, dual-loop PID motion control, and Hybrid A* path planning algorithm are selected.
+    
+    In mechanical structure design, the thesis focuses on the overall structure composition and design principles of the robot. The differential-drive approach uses two independent AC servo motors to drive two drive wheels, achieving steering control through left-right wheel speed difference, offering advantages of compact structure and flexible turning. A scissor-type lifting mechanism is equipped to enable vertical cargo handling without changing the vehicle's position, with a lifting stroke designed at $0.45\,\mathrm{m}$ to adapt to different warehouse shelf heights. The integrated structure combines mobility flexibility with load-bearing capacity, with a rated payload of $50\,\mathrm{kg}$, suitable for small-to-medium warehouse environments and logistics delivery applications.
+    
+    For the electrical system, the STM32F103C8T6 serves as the main control chip. An SMC80S servo motor is selected and matched with a ZJPX115 planetary reducer. Interface circuits are designed for TCRT5000 infrared sensors and HC-SR04 ultrasonic sensors, providing hardware support for motion control and obstacle detection.
+    
+    For kinematic modeling and control strategy, the differential-drive chassis kinematic equations are derived, and a dual-loop PID controller combining an outer pose loop and inner wheel-speed loop is designed. Simulation verification is conducted in MATLAB environment for typical scenarios including step response, point stabilization, straight-line tracking, and circular trajectory tracking, validating the feasibility of the control algorithm.
+    
+    For path planning, the Hybrid A* algorithm is adopted. The paths generated by this algorithm naturally satisfy the differential chassis's minimum turning radius constraint and can be directly delivered to the lower-level controller for execution without post-processing, improving system integration and reliability.
+    
+    The research results demonstrate that the proposed intelligent warehouse mobile robot is feasible and practical in mechanical structure design, control systems, and path planning, providing theoretical basis and technical reference for prototype development and engineering applications.
 }
 
 \vspace{1em}
 
-\noindent\textbf{Key words:} lifting AGV; intelligent warehousing; differential drive; path planning; Hybrid A*; PID line-following control
+\noindent\textbf{Key words:} intelligent warehouse mobile robot; differential drive; path planning; Hybrid A*; PID motion control
 
 \setcounter{secnumdepth}{2}
