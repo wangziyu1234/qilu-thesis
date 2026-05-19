@@ -1,5 +1,5 @@
-function path = hybrid_astar_pathplanning()
-%HYBRID_ASTAR_PATHPLANNING  Hybrid A* 路径规划
+function path = hybrid_astar()
+%HYBRID_ASTAR  Hybrid A* 路径规划
 %   在仓储栅格地图上规划满足差速运动学约束的无碰撞路径
 %   输出: path [x, y, theta]
 

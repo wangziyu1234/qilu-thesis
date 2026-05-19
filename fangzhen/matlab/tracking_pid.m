@@ -1,5 +1,5 @@
-function line_following_pid(ref_path)
-%LINE_FOLLOWING_PID  红外传感器 PID 循迹仿真
+function tracking_pid(ref_path)
+%TRACKING_PID  红外传感器 PID 循迹仿真
 %   模拟 5 路 TCRT5000 红外传感器检测黑线, PID 差速纠偏
 %   输入: ref_path [x, y, theta] 参考路径 (来自 Hybrid A*)
 

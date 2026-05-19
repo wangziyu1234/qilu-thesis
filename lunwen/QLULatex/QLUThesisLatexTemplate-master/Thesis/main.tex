@@ -56,9 +56,7 @@
 \titleformat{\chapter}{\centering\sanhao\heiti}{\chaptername}{2em}{} % 设置目录两字的格式
 \pdfbookmark[0]{目~~录}{mulu}
 
-\tableofcontents   
-
-\makeatletter                             % 中文目录
+\makeatletter                             % 目录页眉页脚（需在\tableofcontents之前定义）
 \fancypagestyle{plain}{
     \fancyhf{}
     \fancyhead[C]{\songti\xiaowu \@cheading}            % 首页页眉格式
@@ -67,6 +65,8 @@
     \renewcommand{\footrulewidth}{0pt}
 }
 \makeatother
+
+\tableofcontents
 \thispagestyle{plain}
 
 \mainmatter\defaultfont\sloppy\raggedbottom

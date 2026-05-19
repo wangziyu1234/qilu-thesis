@@ -7,9 +7,9 @@ clear; clc; close all;
 fig_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');
 if ~exist(fig_dir, 'dir'), mkdir(fig_dir); end
 
-fprintf('========== 1. 典型轨迹运动学仿真 (chasu) ==========\n');
+fprintf('========== 1. 典型轨迹运动学仿真 (traj_sim) ==========\n');
 
-%% ---- 1.1 运行 chasu 仿真 ----
+%% ---- 1.1 运行 traj_sim 仿真 ----
 r = 0.09; L = 0.52; dt = 0.01; T = 20;
 t_full = 0:dt:T;
 x0 = [0;0;0];

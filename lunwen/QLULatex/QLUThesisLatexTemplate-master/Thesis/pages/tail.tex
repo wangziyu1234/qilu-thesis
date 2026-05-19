@@ -8,7 +8,7 @@
 
 % ====================== 致谢 ======================
 
-\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{致\qquad 谢}}{致谢}} %添加到目录中
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{致\qquad 谢}}{致谢}}
 
 \chapter*{\sanhao\heiti\textbf{致\qquad 谢}}
 
@@ -25,91 +25,84 @@
 过往种种，皆为序章。愿今后的路途既有远方也有光亮。
 
 
-% ====================== 附录 ======================
+% ====================== 附录A：MATLAB仿真程序代码 ======================
 
-\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{附\qquad 录}}{附录}} %添加到目录中
+\chapter*{\sanhao\heiti\textbf{附录A\quad MATLAB仿真程序代码}}
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{附录A\quad MATLAB仿真程序代码}}{附录A}}
 
-\chapter*{\sanhao\heiti\textbf{附\qquad 录}}
+\noindent \textbf{附A1}\quad 典型轨迹运动学仿真程序 \texttt{traj\_sim.m}
 
-\noindent 程序1\quad 典型轨迹运动学仿真程序 \texttt{chasu.m}
-
-\lstinputlisting[language=Matlab]{static/code/chasu.m}
-
-\vspace{1em}
-
-\noindent 程序2\quad Hybrid A*路径规划仿真程序 \texttt{hybrid\_astar\_pathplanning.m}
-
-\lstinputlisting[language=Matlab]{static/code/hybrid_astar_pathplanning.m}
+\lstinputlisting[language=Matlab]{static/code/traj_sim.m}
 
 \vspace{1em}
 
-\noindent 程序3\quad 红外循迹PID仿真程序 \texttt{line\_following\_pid.m}
+\noindent \textbf{附A2}\quad Hybrid A*路径规划仿真程序 \texttt{hybrid\_astar.m}
 
-\lstinputlisting[language=Matlab]{static/code/line_following_pid.m}
-
-\vspace{1em}
-
-\noindent 程序4\quad 双环PID运动控制仿真程序 \texttt{diff\_drive\_pid\_sim.m}
-
-\lstinputlisting[language=Matlab]{static/code/diff_drive_pid_sim.m}
+\lstinputlisting[language=Matlab]{static/code/hybrid_astar.m}
 
 \vspace{1em}
 
-\noindent 程序5\quad 剪叉式升降机构强度校核与载重分析程序 \texttt{scissor\_lift\_strength\_analysis.m}
+\noindent \textbf{附A3}\quad 红外循迹PID仿真程序 \texttt{tracking\_pid.m}
 
-\lstinputlisting[language=Matlab]{static/code/scissor_lift_strength_analysis.m}
+\lstinputlisting[language=Matlab]{static/code/tracking_pid.m}
 
 \vspace{1em}
 
-% ====================== 装配图 ======================
+\noindent \textbf{附A4}\quad 双环PID运动控制仿真程序 \texttt{pid\_control.m}
 
-% 附图1：总装装配图
+\lstinputlisting[language=Matlab]{static/code/pid_control.m}
+
+\vspace{1em}
+
+\noindent \textbf{附A5}\quad 剪叉式升降机构强度校核与载重分析程序 \texttt{lift\_strength.m}
+
+\lstinputlisting[language=Matlab]{static/code/lift_strength.m}
+
+
+% ====================== 附录B：装配图 ======================
+
+\chapter*{\sanhao\heiti\textbf{附录B\quad 装配图}}
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{附录B\quad 装配图}}{附录B}}
+
 \newpage
-\noindent 附图1\quad 总装装配图
+\noindent \textbf{图B1}\quad 总装装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{总装.JPG}
 \end{center}
 
-% 附图2：驱动轮装配图
 \newpage
-\noindent 附图2\quad 驱动轮装配图
+\noindent \textbf{图B2}\quad 驱动轮装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{驱动轮.JPG}
 \end{center}
 
-% 附图3：升降机装配图
 \newpage
-\noindent 附图3\quad 升降机装配图
+\noindent \textbf{图B3}\quad 升降机装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{升降机.JPG}
 \end{center}
 
-% 附图4：万向轮装配图
 \newpage
-\noindent 附图4\quad 万向轮装配图
+\noindent \textbf{图B4}\quad 万向轮装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{万向轮.JPG}
 \end{center}
 
-% 附图5：柱塞装配图
 \newpage
-\noindent 附图5\quad 柱塞装配图
+\noindent \textbf{图B5}\quad 柱塞装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{柱塞.JPG}
 \end{center}
 
-% 附图6：柱塞桶装配图
 \newpage
-\noindent 附图6\quad 柱塞桶装配图
+\noindent \textbf{图B6}\quad 柱塞桶装配图
 \vspace{0.5em}
 \begin{center}
 \includegraphics[angle=90,width=\textwidth,height=0.92\textheight,keepaspectratio]{柱塞桶.JPG}
 \end{center}
-
-
 
