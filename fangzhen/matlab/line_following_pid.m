@@ -114,58 +114,56 @@ fprintf('最大横向误差:  %.4f m (%.1f cm)\n', max_err, max_err*100);
 fprintf('仿真时长:      %.1f s\n', final_t);
 
 %% ==================== 5. 结果可视化 ====================
-figure('Color', 'w', 'Position', [50, 80, 1200, 500]);  % 创建图形窗口
-
-subplot(2, 2, 1);                       % 子图1: XY 轨迹对比
-plot(ref_x, ref_y, 'b-', 'LineWidth', 2); hold on;  % 参考路径 (蓝色实线)
-plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1.2);  % 实际轨迹 (红色虚线)
-plot(ref_x(1), ref_y(1), 'go', 'MarkerSize', 10, 'LineWidth', 2);  % 起点 (绿色圆点)
-plot(ref_x(end), ref_y(end), 'rx', 'MarkerSize', 10, 'LineWidth', 2);  % 终点 (红色叉号)
-grid on; axis equal;                    % 网格 + 等比例坐标
+% 图(a): XY 轨迹对比
+figure('Color', 'w', 'Position', [50, 80, 700, 550]);
+plot(ref_x, ref_y, 'b-', 'LineWidth', 2); hold on;
+plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1.2);
+plot(ref_x(1), ref_y(1), 'go', 'MarkerSize', 10, 'LineWidth', 2);
+plot(ref_x(end), ref_y(end), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+grid on; axis equal;
 xlabel('X (m)'); ylabel('Y (m)');
 title('参考路径 vs 循迹轨迹');
 legend('参考', '循迹', '起点', '终点', 'Location', 'best');
+saveas(gcf, 'line_following_traj.png');
+fprintf('已保存: line_following_traj.png\n');
 
-subplot(2, 2, 2);                       % 子图2: 横向误差曲线
-plot(log(:,1), log(:,7)*100, 'r-', 'LineWidth', 1); hold on;  % 误差曲线 [cm]
-yline( rms_err*100, 'b--', sprintf('RMS=%.1fcm', rms_err*100));  % RMS 线
-yline(-rms_err*100, 'b--');             % -RMS 线
-yline( line_width*100, 'g:');           % 线宽上界
-yline(-line_width*100, 'g:');           % 线宽下界
+% 图(b): 横向误差曲线
+figure('Color', 'w', 'Position', [100, 100, 800, 450]);
+plot(log(:,1), log(:,7)*100, 'r-', 'LineWidth', 1); hold on;
+yline( rms_err*100, 'b--', sprintf('RMS=%.1fcm', rms_err*100));
+yline(-rms_err*100, 'b--');
+yline( line_width*100, 'g:');
+yline(-line_width*100, 'g:');
 grid on; xlabel('时间 (s)'); ylabel('误差 (cm)');
 title('循迹横向误差');
+saveas(gcf, 'line_following_error.png');
+fprintf('已保存: line_following_error.png\n');
 
-subplot(2, 2, 3);                       % 子图3: 纠偏角速度
-plot(log(:,1), log(:,6), 'r-', 'LineWidth', 1);  % 角速度指令曲线
+% 图(c): 纠偏角速度
+figure('Color', 'w', 'Position', [150, 120, 800, 450]);
+omg_rms = sqrt(mean(log(:,6).^2));
+plot(log(:,1), log(:,6), 'r-', 'LineWidth', 1); hold on;
+yline( omg_rms, 'b--', sprintf('RMS=%.2f rad/s', omg_rms));
+yline(-omg_rms, 'b--');
+yline(0, 'k:');
 grid on; xlabel('时间 (s)'); ylabel('\omega (rad/s)');
-title('纠偏角速度');
+title('纠偏角速度指令');
+legend('角速度指令', 'Location', 'best');
+saveas(gcf, 'line_following_omega.png');
+fprintf('已保存: line_following_omega.png\n');
 
-subplot(2, 2, 4);                       % 子图4: 传感器布局示意图
+% 图(d): 传感器布局示意图
+figure('Color', 'w', 'Position', [200, 140, 400, 350]);
 hold on; grid on; axis equal;
 rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, ...
-          'EdgeColor', 'b', 'LineWidth', 2);  % 车体外轮廓
+          'EdgeColor', 'b', 'LineWidth', 2);
 for s = 1:n_sensors
-    plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');  % 传感器位置
+    plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');
 end
-plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);  % 黑线 (粗黑实线)
+plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);
 xlabel('横向 (m)'); ylabel('纵向 (m)');
 title('5路红外传感器布局');
-
-saveas(gcf, 'line_following_result.png');  % 保存综合结果图
-fprintf('已保存: line_following_result.png\n');
-
-% 单独保存传感器布局图 (论文插图用)
-fig2 = figure('Color', 'w', 'Position', [200, 200, 350, 280]);
-hold on; grid on; axis equal;
-rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, ...
-          'EdgeColor', 'b', 'LineWidth', 2);  % 车体外轮廓
-for s = 1:n_sensors
-    plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');  % 传感器位置
-end
-plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);  % 黑线
-xlabel('横向 (m)'); ylabel('纵向 (m)');
-title('5路红外传感器布局');
-saveas(fig2, 'sensor_layout.png');      % 保存传感器布局图
+saveas(gcf, 'sensor_layout.png');
 fprintf('已保存: sensor_layout.png\n');
 end
 
