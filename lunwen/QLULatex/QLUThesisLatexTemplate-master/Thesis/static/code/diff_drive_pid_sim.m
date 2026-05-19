@@ -202,6 +202,11 @@ figure('Name','双轮差速PID控制仿真','NumberTitle','off',...  % 创建图
 subplot(2,3,1);  hold on;  grid on;  axis equal;  % 第1子图：轨迹
 
 switch SCENARIO  % 根据场景绘制不同轨迹
+    case 1  % 阶跃响应轨迹
+        plot(x, y, 'b-', 'LineWidth', 1.5);  % 实际轨迹蓝色实线
+        plot(x(1), y(1), 'ko', 'MarkerSize', 8, 'LineWidth', 1.5);  % 起点黑色圆点
+        legend('实际轨迹','起点','Location','best');  % 图例
+        title('阶跃响应轨迹');  % 标题
     case 2  % 定点镇定轨迹
         plot(x, y, 'b-', 'LineWidth', 1.5);  % 实际轨迹蓝色实线
         plot(x_tgt, y_tgt, 'r*', 'MarkerSize', 12, 'LineWidth', 2);  % 目标点红色星号
