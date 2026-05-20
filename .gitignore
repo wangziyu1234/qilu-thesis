@@ -37,6 +37,27 @@ slprj/
 # Temporary/unnamed files
 untitled*.slx
 
+# PPT working files (only track final .pptx)
+ppt_debug/
+ppt_unpacked/
+*_fixed.pdf
+fix_pptx*.py
+create_ppt.js
+analyze_pptx.js
+qa2_slide*.png
+slide_fixed-*.png
+
+# npm (only used for PPT generation scripts)
+node_modules/
+package.json
+package-lock.json
+
+# Claude auto-generated tips
+CLAUDE_TIPS.md
+
+# LibreOffice lock files
+.~lock.*
+
 # OS files
 Thumbs.db
 .DS_Store

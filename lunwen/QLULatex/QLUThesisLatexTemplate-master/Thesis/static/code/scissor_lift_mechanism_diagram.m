@@ -6,7 +6,7 @@ alpha_low  = 19.10;   beta_low  = alpha_low/2;  % 最低位时两臂夹角及半
 alpha_high = 133.49;  beta_high = alpha_high/2;  % 最高位时两臂夹角及半角
 h0 = 49;  % 臂杆两端配件（铰座、滚轮座）的固定高度，单位mm
 
-fig_dir = 'D:/bylw/code/lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/figures';  % 图片输出目录
+fig_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');  % 图片输出目录
 
 for plot_idx = 1:2  % 循环两次，分别绘制最低位和最高位
     if plot_idx == 1  % 第一轮绘制最低位状态
