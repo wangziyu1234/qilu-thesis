@@ -58,6 +58,14 @@ CLAUDE_TIPS.md
 # LibreOffice lock files
 .~lock.*
 
+# Conda environments (local, large)
+bysj/
+.conda/
+bysj_env.yml
+
+# Claude AI (except settings.local.json already ignored above)
+.claude/
+
 # OS files
 Thumbs.db
 .DS_Store
