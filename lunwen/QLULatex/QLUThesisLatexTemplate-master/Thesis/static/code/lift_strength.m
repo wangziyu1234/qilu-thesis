@@ -36,7 +36,7 @@ D_pin = 18;  % 销轴直径(mm)
 %% —— 材料属性(Q235) ——
 fprintf('--- 材料属性 (Q235) ---\n');
 sigma_y = 235;   sigma_b = 375;   tau_y = 0.6*sigma_y;  % 屈服/抗拉/剪切屈服(MPa)
-E_steel = 206000;   sigma_brg = 1.5*sigma_y;  % 弹性模量(MPa), 承压许用应力
+E_steel = 206000;   sigma_brg_allow = 1.5*sigma_y;  % 承压许用应力(MPa)
 n_s = 1.5;   n_buckle = 3.0;  % 安全系数
 sigma_allow = sigma_y/n_s;   tau_allow = tau_y/n_s;  % 许用应力
 fprintf('  [σ] = %.1f MPa,  [τ] = %.1f MPa\n\n', sigma_allow, tau_allow);
@@ -136,13 +136,13 @@ A_pin = pi*(D_pin/2)^2;  % 截面(mm²)
 F_pin = 2 * tau_allow * A_pin;  % 双剪承载力(N)
 Q_pin = F_pin / 9.81;  % 折合载重(kg)
 
-L_span = H_arm + 6;  % 销轴跨度 = 臂宽+间隙(mm)
+L_span = 27;  % 耳板内间距(mm)，对应论文 L_s=27mm
+t_ear = 6;  % 耳板厚度(mm)
 M_pin = F_arm * L_span / 4;  % 简支梁跨中弯矩
-I_pin = pi*(D_pin/2)^4/4;  % 圆截面惯性矩
-W_pin = I_pin/(D_pin/2);  % 截面模量
+W_pin = pi*D_pin^3/32;  % 截面模量，对应论文 W=πD³/32
 sigma_pin = M_pin / W_pin;  % 弯曲应力
 
-sigma_brg = F_arm / (D_pin * B_arm);  % 耳板承压应力
+sigma_brg = F_arm / (D_pin * t_ear);  % 耳板承压应力，对应论文 σ=F/(D·t)
 
 fprintf('  双剪承载力: %.1f kN (%.0f kg)\n', F_pin/1000, Q_pin);
 fprintf('  销轴弯曲: %.1f MPa\n', sigma_pin);
