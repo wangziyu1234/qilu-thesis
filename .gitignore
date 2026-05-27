@@ -46,6 +46,10 @@ create_ppt.js
 analyze_pptx.js
 qa2_slide*.png
 slide_fixed-*.png
+beautify*.py
+check_layout.py
+*_unpacked/
+*_副本*.pptx
 
 # npm (only used for PPT generation scripts)
 node_modules/
