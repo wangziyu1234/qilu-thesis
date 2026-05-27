@@ -191,7 +191,7 @@ ylabel('应力 (MPa)'); title('各部件最大应力'); grid on;  % 标签和标
 
 % (e) 屈曲安全系数对比
 subplot(2,3,5);  % 2行3列第5个子图
-bar(categorical({'无支撑(n='+string(round(n_buckle,1))+')','加隔套(n='+string(round(n_braced,1))+')'}), ...  % 横轴标签
+bar(categorical({['无支撑(n=',num2str(round(n_buckle,1)),')'],['加隔套(n=',num2str(round(n_braced,1)),')']}), ...  % 横轴标签
     [n_buckle, n_braced]);  % 两种情况的屈曲安全系数
 hold on; yline(3, 'r--', 'LineWidth', 1.5);  % 绘制安全系数要求线n=3
 ylabel('安全系数 n'); title('弱轴屈曲: 无支撑 vs 加隔套'); grid on;  % 标签和标题
