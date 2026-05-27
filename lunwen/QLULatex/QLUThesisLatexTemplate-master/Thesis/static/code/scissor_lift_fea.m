@@ -116,14 +116,20 @@ fprintf('  弱轴屈曲: lambda=%.0f, Fcr=%.0fN, n=%.1f\n', lam, F_cr_weak, n_bu
 fprintf('  加支撑后: Leff=%.0fmm, Fcr=%.0fN, n=%.1f', L_braced, F_cr_braced, n_braced);  % 打印加支撑屈曲结果
 if n_braced >= 3, fprintf('  OK\n\n'); else, fprintf('  FAIL\n\n'); end  % 判定屈曲是否合格
 
-%% ===== Part 3: 销轴强度校核 =====
-fprintf('--- Part 3: 销轴 D=%.0fmm ---\n', D_pin);  % 打印销轴直径
+%% ===== Part 3: 销轴强度校核(45#钢) =====
+fprintf('--- Part 3: 销轴 D=%.0fmm (45#钢) ---\n', D_pin);  % 打印销轴直径
+sigma_y_pin = 355;  % 45#钢屈服强度(MPa)
+tau_y_pin = 0.6 * sigma_y_pin;  % 剪切屈服(MPa)
+tau_allow_pin = tau_y_pin / 1.5;  % 许用剪应力(MPa)
 L_span = 27;  % 耳板内间距(mm)，对应论文 L_s=27mm
 t_ear = 6;  % 耳板厚度(mm)
+A_pin = pi*(D_pin/2)^2;  % 销轴截面积(mm²)
+F_pin = 2 * tau_allow_pin * A_pin;  % 双剪承载力(N)
 M_pin = F_arm * L_span / 4;  % 销轴最大弯矩（简支梁跨中集中力）
 W_pin = pi*D_pin^3/32;  % 销轴圆截面抗弯截面模量，对应论文 W=πD³/32
 sigma_pin = M_pin / W_pin;  % 销轴最大弯曲应力
 sigma_brg = F_arm/(D_pin*t_ear);  % 耳板承压应力，对应论文 σ=F/(D·t)
+fprintf('  双剪承载力: %.1f kN\n', F_pin/1000);
 fprintf('  弯曲=%.0fMPa, 承压=%.1fMPa  OK\n\n', sigma_pin, sigma_brg);  % 打印销轴校核结果
 
 %% ===== Part 4: 结果可视化 =====

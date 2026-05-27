@@ -36,7 +36,7 @@ D_pin = 18;  % 销轴直径(mm)
 %% —— 材料属性(Q235) ——
 fprintf('--- 材料属性 (Q235) ---\n');
 sigma_y = 235;   sigma_b = 375;   tau_y = 0.6*sigma_y;  % 屈服/抗拉/剪切屈服(MPa)
-E_steel = 206000;   sigma_brg_allow = 1.5*sigma_y;  % 承压许用应力(MPa)
+E_steel = 206000;  % 弹性模量(MPa)
 n_s = 1.5;   n_buckle = 3.0;  % 安全系数
 sigma_allow = sigma_y/n_s;   tau_allow = tau_y/n_s;  % 许用应力
 fprintf('  [σ] = %.1f MPa,  [τ] = %.1f MPa\n\n', sigma_allow, tau_allow);
@@ -131,9 +131,12 @@ end
 
 %% —— 销轴强度(45#钢) ——
 fprintf('\n--- 销轴强度 (D=%.0fmm, 45#钢) ---\n', D_pin);
+sigma_y_pin = 355;  % 45#钢屈服强度(MPa)
+tau_y_pin = 0.6 * sigma_y_pin;  % 45#钢剪切屈服(MPa)
+tau_allow_pin = tau_y_pin / n_s;  % 45#钢许用剪应力(MPa)
 
 A_pin = pi*(D_pin/2)^2;  % 截面(mm²)
-F_pin = 2 * tau_allow * A_pin;  % 双剪承载力(N)
+F_pin = 2 * tau_allow_pin * A_pin;  % 双剪承载力(N)
 Q_pin = F_pin / 9.81;  % 折合载重(kg)
 
 L_span = 27;  % 耳板内间距(mm)，对应论文 L_s=27mm
