@@ -40,11 +40,20 @@ for SCENARIO = 1:4
     fprintf('已保存: %s\n', fullfile(out_dir, fig_names{SCENARIO}));
 end
 
-fprintf('\n========== 控制性能指标 ==========' + "\n");
-fprintf('阶跃响应: 速度稳态误差 约为 0 m/s\n');
-fprintf('定点镇定: 终点位置误差 (0.022, -0.007) m, 终点航向误差 -0.89 deg\n');
-fprintf('直线跟踪: 角速度 RMSE 0.0023 rad/s\n');
-fprintf('圆形跟踪: 线速度 RMSE 0.0086 m/s, 角速度 RMSE 0.0031 rad/s, 轨迹圆度 RMSE 0.020 m\n');
+fprintf('\n========== 控制性能指标 ==========\n');
+for i = 1:4
+    m = metrics(i);
+    switch i
+        case 1
+            fprintf('场景%d 阶跃响应: 速度稳态误差 = %.4f m/s\n', i, m.value1);
+        case 2
+            fprintf('场景%d 定点镇定: 终点位置误差 (%.4f, %.4f) m, 航向误差 %.2f deg\n', i, m.value1, m.value2, m.value3);
+        case 3
+            fprintf('场景%d 直线跟踪: 角速度 RMSE = %.4f rad/s\n', i, m.value1);
+        case 4
+            fprintf('场景%d 圆形跟踪: 线速度 RMSE = %.4f m/s, 角速度 RMSE = %.4f rad/s, 圆度 RMSE = %.4f m\n', i, m.value1, m.value2, m.value3);
+    end
+end
 fprintf('================================\n');
 
 %% ==================== 局部函数 ====================

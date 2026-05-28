@@ -1,5 +1,5 @@
 %% 双轮差速AGV双环PID控制仿真
-clearvars -except SCENARIO; close all; clc;  % 保留SCENARIO变量
+clear; close all; clc;
 
 %% —— 系统参数 ——
 
@@ -25,7 +25,14 @@ Kd_theta = 0.4;  % 航向Kd
 v_max     = 0.5;  % 线速度上限(m/s)
 omega_max = 2.5;  % 角速度上限(rad/s)
 
-%% —— 状态预分配 ——
+%% —— 主循环: 四种场景 ——
+
+scenario_names = {'阶跃响应','定点镇定','直线跟踪','圆形跟踪'};
+
+for SCENARIO = 1:4
+fprintf('\n===== 场景%d: %s =====\n', SCENARIO, scenario_names{SCENARIO});
+
+%% —— 状态预分配(每场景重置) ——
 
 x = zeros(1,N);  y = zeros(1,N);
 theta_act = zeros(1,N);
@@ -39,10 +46,6 @@ wL_act(1) = 0;  wR_act(1) = 0;  % 初始静止
 
 int_theta  = 0;  % 航向积分
 err_theta_prev = 0;  % 上拍航向偏差
-
-%% —— 四种参考轨迹 ——
-
-if ~exist('SCENARIO', 'var'), SCENARIO = 4; end  % 默认场景4
 
 switch SCENARIO
     case 1  % 阶跃响应: 2.5s时给0.3m/s
@@ -264,7 +267,6 @@ title('航向角响应');
 sgtitle('双轮差速AGV 双环PID控制仿真结果','FontSize',14,'FontWeight','bold');
 
 out_dir = fileparts(mfilename('fullpath'));
-scenario_names = {'阶跃响应','定点镇定','直线跟踪','圆形跟踪'};
 fname = fullfile(out_dir, ['仿真结果_场景' num2str(SCENARIO) '_' scenario_names{SCENARIO} '.png']);
 saveas(gcf, fname);
 fprintf('图片已保存: %s\n', fname);
@@ -296,5 +298,7 @@ switch SCENARIO
             fprintf('轨迹圆度 RMSE: %.4f m\n', sqrt(mean(dist_to_center(idx_ss).^2)));
         end
 end
+
+end  % for SCENARIO = 1:4
 
 fprintf('================================\n');
