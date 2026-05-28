@@ -51,5 +51,12 @@
     ],
     "latex-workshop.latex.recipe.default": "Full build (xelatex+bibtex)",
     "latex-workshop.view.pdf.viewer": "tab",
-    "python.defaultInterpreterPath": "C:/Users/23720/miniconda3/python.exe"
+    "python.defaultInterpreterPath": "C:/Users/23720/miniconda3/python.exe",
+    "python-envs.pythonProjects": [
+        {
+            "path": ".",
+            "envManager": "ms-python.python:conda",
+            "packageManager": "ms-python.python:conda"
+        }
+    ]
 }
