@@ -1,6 +1,7 @@
 %% Hybrid A* 路径规划算法
 function path = hybrid_astar()
-clear; clc; close all;  % 初始化
+%  注：作为函数被 run_all 调用时，不执行 close all 以免关闭已有图形窗口
+if nargout == 0, clear; clc; close all; end  % 仅独立运行时清屏关图
 
 %% —— 地图构建 ——
 map_w = 10;  map_h = 8;  % 地图尺寸(m)

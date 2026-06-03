@@ -152,8 +152,8 @@ for k = 1:N-1
     eL = wL_ref(k) - wL_act(k);  % 左轮偏差
     eR = wR_ref(k) - wR_act(k);  % 右轮偏差
 
-    if abs(eL) < 8.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离
-    if abs(eR) < 8.0, int_R = int_R + eR * Ts; else int_R = 0; end
+    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值=最高轮速≈5.6rad/s)
+    if abs(eR) < 5.0, int_R = int_R + eR * Ts; else int_R = 0; end
 
     uL(k) = Kp_v * eL + Ki_v * int_L;  % 左PI
     uR(k) = Kp_v * eR + Ki_v * int_R;  % 右PI
