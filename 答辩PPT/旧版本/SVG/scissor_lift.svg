@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 780" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrowS" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <pattern id="gridS" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eee" stroke-width="0.5"/>
+    </pattern>
+    <pattern id="groundHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#bbb" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="700" height="780" fill="#fafafa"/>
+  <rect width="700" height="780" fill="url(#gridS)"/>
+
+  <!-- Title -->
+  <text x="350" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">剪叉式升降机构运动简图（侧视图）</text>
+  <text x="350" y="48" text-anchor="middle" font-size="11" fill="#888">单层剪叉 · 臂长 L = 600 mm · 升程 ≈ 452 mm</text>
+
+  <!-- ==================== (a) 最低位状态 ==================== -->
+  <text x="200" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">（a）最低位</text>
+
+  <!-- 地面 -->
+  <rect x="60" y="370" width="280" height="8" fill="url(#groundHatch)" stroke="#999" stroke-width="1"/>
+
+  <!-- 底座导轨 -->
+  <rect x="80" y="350" width="240" height="20" rx="2" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="2"/>
+  <text x="200" y="393" text-anchor="middle" font-size="10" fill="#616161">底座导轨</text>
+
+  <!-- 左侧固定铰座 A (底部) -->
+  <circle cx="110" cy="350" r="8" fill="#fff" stroke="#333" stroke-width="2.5"/>
+  <circle cx="110" cy="350" r="3" fill="#333"/>
+  <text x="110" y="415" text-anchor="middle" font-size="9" fill="#555">固定铰 A</text>
+
+  <!-- 右侧滑动铰座 B (底部) -->
+  <rect x="262" y="338" width="36" height="24" rx="4" fill="#ff8f00" stroke="#e65100" stroke-width="2"/>
+  <circle cx="280" cy="350" r="5" fill="#fff" stroke="#e65100" stroke-width="1.5"/>
+  <text x="280" y="415" text-anchor="middle" font-size="9" fill="#e65100">滑动铰 B</text>
+  <line x1="268" y1="370" x2="292" y2="370" stroke="#e65100" stroke-width="2"/>
+
+  <!-- 臂杆 A（左下→右上） -->
+  <line x1="110" y1="350" x2="280" y2="200" stroke="#1565c0" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- 臂杆 B（右下→左上） -->
+  <line x1="280" y1="350" x2="110" y2="200" stroke="#c62828" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- 中心铰轴 O -->
+  <circle cx="195" cy="275" r="10" fill="#fff" stroke="#333" stroke-width="2.5"/>
+  <circle cx="195" cy="275" r="4" fill="#333"/>
+  <text x="195" y="258" text-anchor="middle" font-size="9" fill="#555">中心铰 O</text>
+
+  <!-- 臂杆标注（偏移到杆外侧） -->
+  <text x="155" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0" transform="rotate(-32,155,315)">臂杆 A</text>
+  <text x="240" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828" transform="rotate(32,240,315)">臂杆 B</text>
+
+  <!-- 顶部承载平台 -->
+  <rect x="80" y="178" width="240" height="18" rx="3" fill="#66bb6a" stroke="#2e7d32" stroke-width="2"/>
+  <text x="200" y="192" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">承载平台</text>
+
+  <!-- 顶部固定铰座 D (左) -->
+  <circle cx="110" cy="200" r="7" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="110" cy="200" r="3" fill="#333"/>
+  <text x="110" y="170" text-anchor="middle" font-size="9" fill="#555">铰 D</text>
+
+  <!-- 顶部滚轮 C (右) -->
+  <circle cx="280" cy="200" r="7" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="280" cy="200" r="3" fill="#333"/>
+  <text x="280" y="170" text-anchor="middle" font-size="9" fill="#555">滚轮 C</text>
+
+  <!-- 角度标注 α -->
+  <path d="M 135,345 Q 148,310 160,290" fill="none" stroke="#ff6d00" stroke-width="1.5" marker-end="url(#arrowS)"/>
+  <text x="125" y="325" font-size="11" font-weight="bold" fill="#ff6d00">α</text>
+
+  <!-- 台面高度 H 标注 -->
+  <line x1="55" y1="186" x2="55" y2="370" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="45" y1="186" x2="65" y2="186" stroke="#e53935" stroke-width="1.5"/>
+  <line x1="45" y1="370" x2="65" y2="370" stroke="#e53935" stroke-width="1.5"/>
+  <text x="50" y="285" text-anchor="middle" font-size="12" font-weight="bold" fill="#e53935" transform="rotate(-90,50,285)">H ≈ 149 mm</text>
+
+  <!-- ==================== (b) 最高位状态 ==================== -->
+  <text x="540" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">（b）最高位</text>
+
+  <!-- 地面 -->
+  <rect x="400" y="370" width="280" height="8" fill="url(#groundHatch)" stroke="#999" stroke-width="1"/>
+
+  <!-- 底座导轨 -->
+  <rect x="420" y="350" width="240" height="20" rx="2" fill="#e0e0e0" stroke="#9e9e9e" stroke-width="2"/>
+  <text x="540" y="393" text-anchor="middle" font-size="10" fill="#616161">底座导轨</text>
+
+  <!-- 左侧固定铰座 A (底部) -->
+  <circle cx="450" cy="350" r="8" fill="#fff" stroke="#333" stroke-width="2.5"/>
+  <circle cx="450" cy="350" r="3" fill="#333"/>
+  <text x="450" y="415" text-anchor="middle" font-size="9" fill="#555">固定铰 A</text>
+
+  <!-- 右侧滑动铰座 B (底部) - 靠中间 -->
+  <rect x="572" y="338" width="36" height="24" rx="4" fill="#ff8f00" stroke="#e65100" stroke-width="2"/>
+  <circle cx="590" cy="350" r="5" fill="#fff" stroke="#e65100" stroke-width="1.5"/>
+  <text x="590" y="415" text-anchor="middle" font-size="9" fill="#e65100">滑动铰 B</text>
+  <line x1="578" y1="370" x2="602" y2="370" stroke="#e65100" stroke-width="2"/>
+
+  <!-- 臂杆 A（左下→右上）- 更陡 -->
+  <line x1="450" y1="350" x2="590" y2="110" stroke="#1565c0" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- 臂杆 B（右下→左上）- 更陡 -->
+  <line x1="590" y1="350" x2="450" y2="110" stroke="#c62828" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- 中心铰轴 O -->
+  <circle cx="520" cy="230" r="10" fill="#fff" stroke="#333" stroke-width="2.5"/>
+  <circle cx="520" cy="230" r="4" fill="#333"/>
+  <text x="520" y="213" text-anchor="middle" font-size="9" fill="#555">中心铰 O</text>
+
+  <!-- 臂杆标注（偏移到杆外侧） -->
+  <text x="490" y="300" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0" transform="rotate(-60,490,300)">臂杆 A</text>
+  <text x="560" y="300" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828" transform="rotate(60,560,300)">臂杆 B</text>
+
+  <!-- 顶部承载平台 -->
+  <rect x="420" y="88" width="240" height="18" rx="3" fill="#66bb6a" stroke="#2e7d32" stroke-width="2"/>
+  <text x="540" y="102" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">承载平台</text>
+
+  <!-- 顶部固定铰座 D (左) -->
+  <circle cx="450" cy="110" r="7" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="450" cy="110" r="3" fill="#333"/>
+  <text x="450" y="80" text-anchor="middle" font-size="9" fill="#555">铰 D</text>
+
+  <!-- 顶部滚轮 C (右) -->
+  <circle cx="590" cy="110" r="7" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="590" cy="110" r="3" fill="#333"/>
+  <text x="590" y="80" text-anchor="middle" font-size="9" fill="#555">滚轮 C</text>
+
+  <!-- 角度标注 α -->
+  <path d="M 478,345 Q 493,300 505,265" fill="none" stroke="#ff6d00" stroke-width="1.5" marker-end="url(#arrowS)"/>
+  <text x="465" y="315" font-size="11" font-weight="bold" fill="#ff6d00">α</text>
+
+  <!-- 台面高度 H 标注 -->
+  <line x1="395" y1="96" x2="395" y2="370" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="385" y1="96" x2="405" y2="96" stroke="#e53935" stroke-width="1.5"/>
+  <line x1="385" y1="370" x2="405" y2="370" stroke="#e53935" stroke-width="1.5"/>
+  <text x="390" y="240" text-anchor="middle" font-size="12" font-weight="bold" fill="#e53935" transform="rotate(-90,390,240)">H ≈ 600 mm</text>
+
+  <!-- ==================== 结构标注框 ==================== -->
+  <g transform="translate(50, 430)">
+    <rect x="0" y="0" width="600" height="150" rx="8" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <text x="20" y="22" font-size="13" font-weight="bold" fill="#333">结构组成：</text>
+
+    <!-- 臂杆A -->
+    <line x1="20" y1="40" x2="45" y2="40" stroke="#1565c0" stroke-width="4" stroke-linecap="round"/>
+    <text x="55" y="44" font-size="11" fill="#333">臂杆 A — 36×4.8 mm Q235 扁钢，长 600 mm</text>
+
+    <!-- 臂杆B -->
+    <line x1="20" y1="62" x2="45" y2="62" stroke="#c62828" stroke-width="4" stroke-linecap="round"/>
+    <text x="55" y="66" font-size="11" fill="#333">臂杆 B — 与臂杆 A 等长，中点交叉铰接</text>
+
+    <!-- 固定铰 -->
+    <circle cx="32" cy="84" r="5" fill="#fff" stroke="#333" stroke-width="2"/>
+    <circle cx="32" cy="84" r="2" fill="#333"/>
+    <text x="55" y="88" font-size="11" fill="#333">固定铰座 — 底部左侧(A)、顶部右侧(D)</text>
+
+    <!-- 滑动铰 -->
+    <rect x="22" y="102" width="20" height="12" rx="3" fill="#ff8f00" stroke="#e65100" stroke-width="1.5"/>
+    <text x="55" y="112" font-size="11" fill="#333">滑动铰座 — 底部右侧(B)、顶部左侧(C) 滚轮</text>
+
+    <!-- 参数 -->
+    <text x="340" y="30" font-size="12" fill="#555">工作角度：α = 19.10° ~ 133.49°</text>
+    <text x="340" y="50" font-size="12" fill="#555">台面高度：H = 149 ~ 600 mm</text>
+    <text x="340" y="70" font-size="12" fill="#555">理论升程：ΔH ≈ 452 mm</text>
+    <text x="340" y="90" font-size="12" fill="#555">中心铰轴：φ18 mm，45 号钢</text>
+    <text x="340" y="110" font-size="12" fill="#555">承载平台：660×312×3 mm Q235</text>
+    <text x="340" y="135" font-size="12" fill="#555">额定载重：50 kg</text>
+  </g>
+
+  <!-- ==================== 运动学公式 ==================== -->
+  <g transform="translate(50, 595)">
+    <rect x="0" y="0" width="600" height="110" rx="8" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <text x="20" y="22" font-size="13" font-weight="bold" fill="#333">运动学关系：</text>
+
+    <text x="30" y="48" font-size="12" fill="#333">台面高度：</text>
+    <text x="115" y="48" font-size="13" font-weight="bold" fill="#1565c0">H = L · sin(α/2) + h₀</text>
+    <text x="360" y="48" font-size="11" fill="#888">（h₀ ≈ 49 mm 为端部配件高度）</text>
+
+    <text x="30" y="74" font-size="12" fill="#333">滑块位移：</text>
+    <text x="115" y="74" font-size="13" font-weight="bold" fill="#e65100">xₛ = L · cos(α/2)</text>
+
+    <text x="30" y="100" font-size="12" fill="#333">消除角度：</text>
+    <text x="115" y="100" font-size="13" font-weight="bold" fill="#7b1fa2">H = √(L² − xₛ²) + h₀</text>
+  </g>
+
+</svg>
