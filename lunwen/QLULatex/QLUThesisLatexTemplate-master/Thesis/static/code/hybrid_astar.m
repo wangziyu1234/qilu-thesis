@@ -200,44 +200,45 @@ end
 
 %% 均值平滑(3点加权)
 function sp = smooth_path(p, n)
-    sp = p;
-    for pass = 1:n
-        tmp = sp;
-        for i = 2:size(sp,1)-1  % 内部点加权平均
-            tmp(i,1) = 0.25*sp(i-1,1) + 0.5*sp(i,1) + 0.25*sp(i+1,1);
-            tmp(i,2) = 0.25*sp(i-1,2) + 0.5*sp(i,2) + 0.25*sp(i+1,2);
+    sp = p;  % 初始化平滑路径为原始路径
+    for pass = 1:n  % 多次平滑迭代
+        tmp = sp;  % 暂存上一轮结果
+        for i = 2:size(sp,1)-1  % 内部点加权平均(跳过首尾)
+            tmp(i,1) = 0.25*sp(i-1,1) + 0.5*sp(i,1) + 0.25*sp(i+1,1);  % X坐标三点加权平滑
+            tmp(i,2) = 0.25*sp(i-1,2) + 0.5*sp(i,2) + 0.25*sp(i+1,2);  % Y坐标三点加权平滑
         end
-        sp = tmp;
+        sp = tmp;  % 更新平滑结果
     end
-    for i = 1:size(sp,1)-1  % 差分求航向
-        sp(i,3) = atan2(sp(i+1,2)-sp(i,2), sp(i+1,1)-sp(i,1));
+    for i = 1:size(sp,1)-1  % 由平滑后位置差分计算航向角
+        sp(i,3) = atan2(sp(i+1,2)-sp(i,2), sp(i+1,1)-sp(i,1));  % 差分求航向 atan2(dy,dx)
     end
-    sp(end,3) = sp(end-1,3);
+    sp(end,3) = sp(end-1,3);  % 终点航向复制前一点
 end
 
 %% 规划结果可视化
 function draw_map(obstacles, path, sp, gp, mw, mh)
-    figure('Color','w','Position',[100,100,800,500]);
-    hold on;
-    for i = 1:size(obstacles,1)
-        x1=obstacles(i,1); y1=obstacles(i,2);
-        x2=obstacles(i,3); y2=obstacles(i,4);
-        fill([x1 x2 x2 x1],[y1 y1 y2 y2],[0.85 0.85 0.85],'EdgeColor','k');  % 灰色货架
+    figure('Color','w','Position',[100,100,800,500]);  % 创建白色背景图窗
+    hold on;  % 开启图形保持
+    for i = 1:size(obstacles,1)  % 遍历所有障碍物(货架)
+        x1=obstacles(i,1); y1=obstacles(i,2);  % 货架左下角坐标
+        x2=obstacles(i,3); y2=obstacles(i,4);  % 货架右上角坐标
+        fill([x1 x2 x2 x1],[y1 y1 y2 y2],[0.85 0.85 0.85],'EdgeColor','k');  % 灰色填充货架矩形
     end
-    plot(path(:,1),path(:,2),'r-','LineWidth',2.5);
-    plot(sp(1),sp(2),'go','MarkerSize',12,'LineWidth',2);
-    plot(gp(1),gp(2),'rx','MarkerSize',12,'LineWidth',2);
-    for i = 1:5:size(path,1)  % 每5点标航向
-        quiver(path(i,1),path(i,2),0.2*cos(path(i,3)),0.2*sin(path(i,3)), ...
+    plot(path(:,1),path(:,2),'r-','LineWidth',2.5);  % 红色粗线: 规划路径
+    plot(sp(1),sp(2),'go','MarkerSize',12,'LineWidth',2);  % 绿色圆圈: 起点
+    plot(gp(1),gp(2),'rx','MarkerSize',12,'LineWidth',2);  % 红色叉号: 终点
+    for i = 1:5:size(path,1)  % 每5个路径点标注航向箭头
+        quiver(path(i,1),path(i,2),0.2*cos(path(i,3)),0.2*sin(path(i,3)), ...  % 绘制航向箭头
             'b','LineWidth',1,'MaxHeadSize',0.8);
     end
-    grid on; axis equal; xlim([0 mw]); ylim([0 mh]);
-    xlabel('X (m)'); ylabel('Y (m)');
-    title('Hybrid A* 路径规划结果');
-    legend('货架','规划路径','起点','终点','航向','Location','best');
-    out_dir = fullfile(fileparts(mfilename('fullpath')), 'figures');
-    if ~exist(out_dir, 'dir'), mkdir(out_dir); end
-    fname = fullfile(out_dir, 'hybrid_astar_result.png');
-    saveas(gcf, fname);
-    fprintf('已保存: %s\n', fname);
+    grid on; axis equal;  % 开启网格、等比例坐标轴
+    xlim([0 mw]); ylim([0 mh]);  % 坐标轴范围限制在地图尺寸内
+    xlabel('X (m)'); ylabel('Y (m)');  % 坐标轴标签
+    title('Hybrid A* 路径规划结果');  % 图标题
+    legend('货架','规划路径','起点','终点','航向','Location','best');  % 图例
+    out_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');  % 图片输出目录(向上一级)
+    if ~exist(out_dir, 'dir'), mkdir(out_dir); end  % 如目录不存在则创建
+    fname = fullfile(out_dir, 'hybrid_astar_result.png');  % 拼接输出文件名
+    saveas(gcf, fname);  % 保存当前图窗为PNG
+    fprintf('已保存: %s\n', fname);  % 打印保存路径
 end

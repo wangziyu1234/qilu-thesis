@@ -203,69 +203,69 @@ fprintf('\n  最大安全载重: %.0f kg  (控制因素: %s)\n', Q_max, names{id
 fprintf('  额定 %.0f kg,  安全裕度 %.0f%%\n', Q_rated, (Q_max/Q_rated-1)*100);
 
 %% —— 结果可视化 ——
-figure('Position', [50, 50, 1400, 800], 'Color', 'w');
+figure('Position', [50, 50, 1400, 800], 'Color', 'w');  % 创建大尺寸白色图窗
 
-beta_plot = linspace(beta_low, beta_high, 200);  % 半角扫描
+beta_plot = linspace(beta_low, beta_high, 200);  % 半角扫描范围(200个采样点)
 
-subplot(2,3,1);
-plot(beta_plot, L_arm*sind(beta_plot), 'b-', 'LineWidth', 2);
-xlabel('水平半角 β (°)'); ylabel('台面高度 (mm)');
-title(sprintf('台面高度 vs β (%.0f~%.0f mm)', L_arm*sind(beta_low), L_arm*sind(beta_high)));
-grid on;
+subplot(2,3,1);  % 子图1: 台面高度 vs β
+plot(beta_plot, L_arm*sind(beta_plot), 'b-', 'LineWidth', 2);  % 蓝色曲线: H=L·sinβ
+xlabel('水平半角 β (°)'); ylabel('台面高度 (mm)');  % 坐标轴标签
+title(sprintf('台面高度 vs β (%.0f~%.0f mm)', L_arm*sind(beta_low), L_arm*sind(beta_high)));  % 动态标题
+grid on;  % 开启网格
 
-subplot(2,3,2);
-F_arm_plot = F_load ./ (4 * sind(beta_plot));
-plot(beta_plot, F_arm_plot, 'r-', 'LineWidth', 2);
-xlabel('水平半角 β (°)'); ylabel('臂轴向力 (N)');
-title(sprintf('F_{arm} vs β (Q=%.0fkg)', Q_rated)); grid on;
+subplot(2,3,2);  % 子图2: 臂轴向力 vs β
+F_arm_plot = F_load ./ (4 * sind(beta_plot));  % 各β下的臂轴向力 F=Q/(4·sinβ)
+plot(beta_plot, F_arm_plot, 'r-', 'LineWidth', 2);  % 红色曲线: 轴向力
+xlabel('水平半角 β (°)'); ylabel('臂轴向力 (N)');  % 坐标轴标签
+title(sprintf('F_{arm} vs β (Q=%.0fkg)', Q_rated)); grid on;  % 动态标题+网格
 
-subplot(2,3,3);
-bar(categorical(names), Qs, 'FaceColor', [0.3 0.5 0.8]);
-hold on; yline(Q_rated, 'k--', 'LineWidth', 1.5);
-ylabel('载荷 (kg)'); title('各失效模式限制载荷'); grid on;
+subplot(2,3,3);  % 子图3: 各失效模式限制载荷柱状图
+bar(categorical(names), Qs, 'FaceColor', [0.3 0.5 0.8]);  % 蓝色柱状图
+hold on; yline(Q_rated, 'k--', 'LineWidth', 1.5);  % 黑色虚线: 额定载荷参考线
+ylabel('载荷 (kg)'); title('各失效模式限制载荷'); grid on;  % 标签和标题
 
-subplot(2,3,4);
-bar(categorical({'轴向','弯曲','组合'}), [sigma_axial, sigma_bend, sigma_comb]);
-hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);
-ylabel('应力 (MPa)'); title(sprintf('臂应力分量 (%.0fkg)', Q_rated)); grid on;
+subplot(2,3,4);  % 子图4: 臂应力分量柱状图
+bar(categorical({'轴向','弯曲','组合'}), [sigma_axial, sigma_bend, sigma_comb]);  % 三组柱状
+hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);  % 红色虚线: 许用应力线
+ylabel('应力 (MPa)'); title(sprintf('臂应力分量 (%.0fkg)', Q_rated)); grid on;  % 标签和标题
 
-subplot(2,3,5);
-Q_sweep = linspace(10, 200, 100);  % 载荷扫描
-n_sweep = zeros(size(Q_sweep));
-for i = 1:length(Q_sweep)
-    Fa = Q_sweep(i)*9.81/(4*sind(beta_worst));
-    n_sweep(i) = F_cr_b / Fa;  % 屈曲安全系数
+subplot(2,3,5);  % 子图5: 屈曲安全系数 vs 载荷
+Q_sweep = linspace(10, 200, 100);  % 载荷扫描范围 10~200kg(100点)
+n_sweep = zeros(size(Q_sweep));  % 初始化安全系数数组
+for i = 1:length(Q_sweep)  % 逐载荷计算屈曲安全系数
+    Fa = Q_sweep(i)*9.81/(4*sind(beta_worst));  % 对应臂轴向力
+    n_sweep(i) = F_cr_b / Fa;  % 屈曲安全系数(加支撑后)
 end
-plot(Q_sweep, n_sweep, 'm-', 'LineWidth', 2);
-hold on; yline(n_buckle, 'k--'); yline(1, 'r:');
-xlabel('载荷 (kg)'); ylabel('屈曲安全系数');
-title('屈曲安全系数 vs 载荷 (加支撑后)'); grid on;
+plot(Q_sweep, n_sweep, 'm-', 'LineWidth', 2);  % 品红色曲线: 安全系数
+hold on; yline(n_buckle, 'k--'); yline(1, 'r:');  % 要求安全线(n=3)和临界线(n=1)
+xlabel('载荷 (kg)'); ylabel('屈曲安全系数');  % 坐标轴标签
+title('屈曲安全系数 vs 载荷 (加支撑后)'); grid on;  % 标题+网格
 
-subplot(2,3,6);
-sigma_sweep = zeros(size(Q_sweep));
-for i = 1:length(Q_sweep)
-    qs = Q_sweep(i)*9.81/(platform_length*platform_width);
-    sigma_sweep(i) = qs*platform_width^2/8 / W_plt;
+subplot(2,3,6);  % 子图6: 台面弯曲应力 vs 载荷
+sigma_sweep = zeros(size(Q_sweep));  % 初始化应力数组
+for i = 1:length(Q_sweep)  % 逐载荷计算台面应力
+    qs = Q_sweep(i)*9.81/(platform_length*platform_width);  % 换算均布载荷
+    sigma_sweep(i) = qs*platform_width^2/8 / W_plt;  % 简支板最大弯曲应力
 end
-plot(Q_sweep, sigma_sweep, 'b-', 'LineWidth', 2);
-hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);
-xlabel('载荷 (kg)'); ylabel('台面应力 (MPa)');
-title('台面弯曲应力 vs 载荷'); grid on;
+plot(Q_sweep, sigma_sweep, 'b-', 'LineWidth', 2);  % 蓝色曲线: 台面应力
+hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);  % 红色虚线: 许用应力线
+xlabel('载荷 (kg)'); ylabel('台面应力 (MPa)');  % 坐标轴标签
+title('台面弯曲应力 vs 载荷'); grid on;  % 标题+网格
 
-sgtitle(sprintf('剪叉升降台强度校核 | %.0f×%.0fmm扁钢 L=%.0fmm | 额定%.0fkg 最大%.0fkg', ...
+sgtitle(sprintf('剪叉升降台强度校核 | %.0f×%.0fmm扁钢 L=%.0fmm | 额定%.0fkg 最大%.0fkg', ...  % 总标题
     B_arm, H_arm, L_arm, Q_rated, Q_max), 'FontSize', 14, 'FontWeight', 'bold');
 
 %% —— 校核结果汇总 ——
-fprintf('\n========== 剪叉升降台强度校核报告 (%.0fkg) ==========\n', Q_rated);
-fprintf('  臂: %.0f x %.0f mm扁钢, L = %.0f mm\n', B_arm, H_arm, L_arm);
-fprintf('  台面: %d x %d x %d mm, 销轴 D = %.0f mm\n', ...
+fprintf('\n========== 剪叉升降台强度校核报告 (%.0fkg) ==========\n', Q_rated);  % 打印报告标题
+fprintf('  臂: %.0f x %.0f mm扁钢, L = %.0f mm\n', B_arm, H_arm, L_arm);  % 臂杆参数
+fprintf('  台面: %d x %d x %d mm, 销轴 D = %.0f mm\n', ...  % 台面和销轴参数
     platform_length, platform_width, platform_thick, D_pin);
-fprintf('  beta: %.1f ~ %.1f deg, H: %.0f ~ %.0f mm\n', beta_low, beta_high, H_min, H_max);
-fprintf('------------------------------------------------------\n');
-fprintf('  臂压弯: %5.1f / %.0f MPa (%.0f%%)\n', sigma_comb, sigma_allow, sigma_comb/sigma_allow*100);
-fprintf('  屈曲(支撑): n = %.0f (需 >= %.0f)\n', n_b, n_buckle);
-fprintf('  销轴: 弯曲 %.0f, 承压 %.0f MPa\n', sigma_pin, sigma_brg);
-fprintf('  台面: sigma = %.0f MPa, w = %.2f mm\n', sigma_plt, w_max);
-fprintf('------------------------------------------------------\n');
-fprintf('  最大安全载重: %.0f kg\n', Q_max);
-fprintf('======================================================\n');
+fprintf('  beta: %.1f ~ %.1f deg, H: %.0f ~ %.0f mm\n', beta_low, beta_high, H_min, H_max);  % 角度和高度范围
+fprintf('------------------------------------------------------\n');  % 分隔线
+fprintf('  臂压弯: %5.1f / %.0f MPa (%.0f%%)\n', sigma_comb, sigma_allow, sigma_comb/sigma_allow*100);  % 压弯利用率
+fprintf('  屈曲(支撑): n = %.0f (需 >= %.0f)\n', n_b, n_buckle);  % 屈曲安全系数
+fprintf('  销轴: 弯曲 %.0f, 承压 %.0f MPa\n', sigma_pin, sigma_brg);  % 销轴应力
+fprintf('  台面: sigma = %.0f MPa, w = %.2f mm\n', sigma_plt, w_max);  % 台面应力和挠度
+fprintf('------------------------------------------------------\n');  % 分隔线
+fprintf('  最大安全载重: %.0f kg\n', Q_max);  % 最大安全载重
+fprintf('======================================================\n');  % 结束线
