@@ -1,4 +1,6 @@
 %% 红外传感器PID循迹仿真
+%  5路红外传感器横向排布, 检测黑线偏移量, PID输出角速度纠偏
+%  以Hybrid A*规划路径为参考，5路红外检测横向偏移，PID纠偏输出角速度
 function tracking_pid(ref_path)
 if nargin < 1  % 无输入时用默认椭圆路径
     t = linspace(0, 3.5*pi, 200);
@@ -108,8 +110,11 @@ grid on; axis equal;
 xlabel('X (m)'); ylabel('Y (m)');
 title('参考路径 vs 循迹轨迹');
 legend('参考', '循迹', '起点', '终点', 'Location', 'best');
-saveas(gcf, 'line_following_traj.png');
-fprintf('已保存: line_following_traj.png\n');
+out_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');
+if ~exist(out_dir, 'dir'), mkdir(out_dir); end
+fname1 = fullfile(out_dir, 'line_following_traj.png');
+saveas(gcf, fname1);
+fprintf('已保存: %s\n', fname1);
 
 figure('Color', 'w', 'Position', [100, 100, 800, 450]);
 plot(log(:,1), log(:,7)*100, 'r-', 'LineWidth', 1); hold on;
@@ -119,8 +124,9 @@ yline( line_width*100, 'g:');
 yline(-line_width*100, 'g:');
 grid on; xlabel('时间 (s)'); ylabel('误差 (cm)');
 title('循迹横向误差');
-saveas(gcf, 'line_following_error.png');
-fprintf('已保存: line_following_error.png\n');
+fname2 = fullfile(out_dir, 'line_following_error.png');
+saveas(gcf, fname2);
+fprintf('已保存: %s\n', fname2);
 
 figure('Color', 'w', 'Position', [150, 120, 800, 450]);
 omg_rms = sqrt(mean(log(:,6).^2));
@@ -131,8 +137,9 @@ yline(0, 'k:');
 grid on; xlabel('时间 (s)'); ylabel('\omega (rad/s)');
 title('纠偏角速度指令');
 legend('角速度指令', 'Location', 'best');
-saveas(gcf, 'line_following_omega.png');
-fprintf('已保存: line_following_omega.png\n');
+fname3 = fullfile(out_dir, 'line_following_omega.png');
+saveas(gcf, fname3);
+fprintf('已保存: %s\n', fname3);
 
 figure('Color', 'w', 'Position', [200, 140, 400, 350]);
 hold on; grid on; axis equal;
@@ -144,8 +151,9 @@ end
 plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);
 xlabel('横向 (m)'); ylabel('纵向 (m)');
 title('5路红外传感器布局');
-saveas(gcf, 'sensor_layout.png');
-fprintf('已保存: sensor_layout.png\n');
+fname4 = fullfile(out_dir, 'sensor_layout.png');
+saveas(gcf, fname4);
+fprintf('已保存: %s\n', fname4);
 end
 
 %% 点到多段线最短距离

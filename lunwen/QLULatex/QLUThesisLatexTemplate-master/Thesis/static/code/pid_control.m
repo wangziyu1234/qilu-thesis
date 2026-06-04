@@ -1,4 +1,7 @@
 %% 双轮差速AGV双环PID控制仿真
+%  外环(位姿环): 根据位置/航向偏差计算速度指令 v_cmd, ω_cmd
+%  内环(轮速环): PI控制左右轮跟踪逆运动学解算的轮速指令
+%  四种场景：阶跃响应、定点镇定、直线跟踪、圆形轨迹跟踪
 clear; close all; clc;
 
 %% —— 系统参数 ——
@@ -152,7 +155,7 @@ for k = 1:N-1
     eL = wL_ref(k) - wL_act(k);  % 左轮偏差
     eR = wR_ref(k) - wR_act(k);  % 右轮偏差
 
-    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值=最高轮速≈5.6rad/s)
+    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值≈最高轮速5.6rad/s)
     if abs(eR) < 5.0, int_R = int_R + eR * Ts; else int_R = 0; end
 
     uL(k) = Kp_v * eL + Ki_v * int_L;  % 左PI
@@ -266,7 +269,8 @@ title('航向角响应');
 
 sgtitle('双轮差速AGV 双环PID控制仿真结果','FontSize',14,'FontWeight','bold');
 
-out_dir = fileparts(mfilename('fullpath'));
+out_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');
+if ~exist(out_dir, 'dir'), mkdir(out_dir); end
 fname = fullfile(out_dir, ['仿真结果_场景' num2str(SCENARIO) '_' scenario_names{SCENARIO} '.png']);
 saveas(gcf, fname);
 fprintf('图片已保存: %s\n', fname);

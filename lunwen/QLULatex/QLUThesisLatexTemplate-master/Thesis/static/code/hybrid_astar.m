@@ -1,6 +1,8 @@
 %% Hybrid A* 路径规划算法
+%  与标准A*的区别: 状态空间从(x,y)扩展为(x,y,θ),
+%  后继节点用差速运动基元(5种曲率×进退)生成, 路径天然满足转弯约束
 function path = hybrid_astar()
-%  注：作为函数被 run_all 调用时，不执行 close all 以免关闭已有图形窗口
+%  注：被 run_all 调用时不执行 close all 以免关闭已有图窗
 if nargout == 0, clear; clc; close all; end  % 仅独立运行时清屏关图
 
 %% —— 地图构建 ——
@@ -17,7 +19,7 @@ obstacles = [  % 货架障碍物 [x1,y1,x2,y2]
     3.0, 5.5, 6.0, 5.9;  % 中部横梁
     ];
 
-obs_map = false(rows, cols);  % 占据栅格(false=空闲)
+obs_map = false(rows, cols);  % 栅格地图，false为空闲
 for i = 1:size(obstacles, 1)
     c1 = max(1,   round(obstacles(i,1)/res)+1);
     r1 = max(1,   round(obstacles(i,2)/res)+1);
@@ -93,7 +95,7 @@ for iter = 1:max_iter
 
         g = cg + step_len;
         if dir == -1
-            g = g + step_len * 0.5;  % 倒车惩罚+50%
+            g = g + step_len * 0.5;  % 倒车加50%代价
         end
         if abs(kappa) > 1e-6
             g = g + 0.1;  % 转弯惩罚
@@ -233,6 +235,9 @@ function draw_map(obstacles, path, sp, gp, mw, mh)
     xlabel('X (m)'); ylabel('Y (m)');
     title('Hybrid A* 路径规划结果');
     legend('货架','规划路径','起点','终点','航向','Location','best');
-    saveas(gcf, 'hybrid_astar_result.png');
-    fprintf('已保存: hybrid_astar_result.png\n');
+    out_dir = fullfile(fileparts(mfilename('fullpath')), 'figures');
+    if ~exist(out_dir, 'dir'), mkdir(out_dir); end
+    fname = fullfile(out_dir, 'hybrid_astar_result.png');
+    saveas(gcf, fname);
+    fprintf('已保存: %s\n', fname);
 end
