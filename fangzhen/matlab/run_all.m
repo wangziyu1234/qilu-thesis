@@ -125,6 +125,9 @@ for SC = 1:4
     plot_pid_comparison(dual, single, SC, fig_dir, scenario_names{SC});
 end
 
+% b_pid_control生成独立结果图 (需手动运行)
+
+
 fprintf('\n========== 3. Hybrid A* 路径规划 + 循迹仿真 ==========\n');
 
 %% ---- 3. Hybrid A* 路径规划 ----
