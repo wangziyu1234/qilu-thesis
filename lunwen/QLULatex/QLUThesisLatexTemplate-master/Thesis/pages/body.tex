@@ -1494,7 +1494,9 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \end{tabular}
     \end{table}
 
-    由表\ref{tab:dual_vs_single}可以看出，双环PID在各项指标上均显著优于单环PID。四种场景下的轨迹对比如图\ref{fig:pid_vs_step}至图\ref{fig:pid_vs_circle}所示，蓝色实线为双环PID轨迹，红色虚线为单环PID轨迹。阶跃响应和定点镇定场景下，双环PID均能准确收敛至目标，而单环PID存在明显偏差。
+    由表\ref{tab:dual_vs_single}可以看出，双环PID在各项指标上均显著优于单环PID。四种场景下的轨迹对比如图\ref{fig:pid_vs_step}至图\ref{fig:pid_vs_circle}所示，蓝色实线为双环PID轨迹，红色虚线为单环PID轨迹。
+
+    阶跃响应场景下，在$2.5\,\mathrm{s}$时施加$0.3\,\mathrm{m/s}$的速度阶跃指令。双环PID的速度稳态误差仅为$0.002\,\mathrm{m/s}$（相对误差$0.6\%$），几乎无差；而单环PID的稳态误差达到$0.093\,\mathrm{m/s}$（相对误差$31\%$），表明单环结构缺乏对电机实际转速的闭环反馈，在负载扰动下无法有效消除速度偏差。
 
     \begin{figure}[htbp]
     \centering
@@ -1503,7 +1505,7 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \label{fig:pid_vs_step}
     \end{figure}
 
-    定点镇定场景下，双环PID平滑收敛至目标点$(2.0, 1.0)$，单环PID则存在较大的位置偏差。
+    定点镇定场景下，目标位姿为$(2.0, 1.0, \pi/4)$。双环PID平滑收敛至目标点，终点位置误差仅$0.020\,\mathrm{m}$；单环PID则因缺乏速度闭环，电机响应延迟完全由外环承担，导致终点位置偏差达$0.072\,\mathrm{m}$，是双环的$3.6$倍。此外，双环PID的航向误差为$0.83^{\circ}$，远优于单环的$18.50^{\circ}$。
 
     \begin{figure}[htbp]
     \centering
@@ -1512,7 +1514,7 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \label{fig:pid_vs_point}
     \end{figure}
 
-    直线跟踪场景下，两者均能收敛至目标直线$y=0.6\,\mathrm{m}$，但双环PID的收敛速度更快。
+    直线跟踪场景下，目标直线为$y=0.6\,\mathrm{m}$，小车以$0.25\,\mathrm{m/s}$的标称速度行驶。两种控制器均能收敛至目标直线，但双环PID的角速度RMSE为$0.0012\,\mathrm{rad/s}$，表明其在直线保持工况下具有更好的稳态精度。该场景下两者的差异相对较小，原因是直线跟踪对速度闭环的依赖程度较低。
 
     \begin{figure}[htbp]
     \centering
@@ -1521,7 +1523,7 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \label{fig:pid_vs_line}
     \end{figure}
 
-    圆形轨迹跟踪场景下，双环PID能紧密跟踪参考圆，单环PID则存在明显的轨迹偏移。
+    圆形轨迹跟踪场景下，参考圆半径$0.8\,\mathrm{m}$、周期$16\,\mathrm{s}$。双环PID能紧密跟踪参考圆，轨迹圆度RMSE为$0.020\,\mathrm{m}$；单环PID则因无法在电机层面抑制负载扰动，轨迹出现明显偏移，圆度RMSE达$0.061\,\mathrm{m}$，是双环的$3$倍。该场景最能体现内环速度闭环对扰动抑制的提升效果。
 
     \begin{figure}[htbp]
     \centering
