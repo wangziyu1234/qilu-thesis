@@ -403,17 +403,13 @@ function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
     xlabel('X (m)'); ylabel('Y (m)');
     title(sprintf('%s — 轨迹对比', sc_name));
     legend('Location','best');
-    % S形和圆形加局部放大
-    if SC==3 || SC==4
+    % S形加局部放大
+    if SC==3
         ax_zoom = axes('Position',[0.15,0.58,0.32,0.32]);
         box on; hold on; grid on;
         plot(dual.x, dual.y, 'b-', 'LineWidth',1.5);
         plot(single.x, single.y, 'r--', 'LineWidth',1.2);
-        if SC==3
-            xlim([0.3,1.0]); ylim([0.6,1.4]);
-        else
-            xlim([-0.15,0.15]); ylim([-0.75,-0.45]);
-        end
+        xlim([0.3,1.0]); ylim([0.6,1.4]);
         title('局部放大');
     end
     saveas(fig1, fullfile(fig_dir, sprintf('pid_%s_1轨迹对比.png', fnames{SC})));
