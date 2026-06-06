@@ -26,7 +26,8 @@
 │       ├── main.tex                 # 主文件
 │       ├── pages/
 │       │   ├── abstract.tex         # 中英文摘要
-│       │   ├── body.tex             # 正文（6章）
+│       │   ├── aop.tex              # 原创性声明
+│       │   ├── body.tex             # 正文（7章）
 │       │   └── tail.tex             # 附录与致谢
 │       ├── setup/                   # 封面、格式、宏包
 │       └── static/
@@ -38,6 +39,10 @@
 │       ├── hybrid_astar.m           # Hybrid A* 路径规划
 │       ├── tracking_pid.m           # 红外传感器PID循迹
 │       ├── traj_sim.m               # 四类轨迹仿真
+│       ├── pid_control.m            # 双环PID vs 单环PID对比
+│       ├── lift_strength.m          # 升降机构强度校核
+│       ├── scissor_lift_fea.m       # 升降机构有限元分析
+│       ├── run_all.m                # 一键运行全部仿真
 │       └── *.png                    # 仿真结果图
 │
 ├── 答辩PPT/                         # 毕业答辩 PPT
