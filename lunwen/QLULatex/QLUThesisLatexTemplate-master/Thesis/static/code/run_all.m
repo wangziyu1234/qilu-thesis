@@ -402,15 +402,35 @@ function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
     saveas(fig1, fullfile(fig_dir, sprintf('pid_%s_1轨迹对比.png', fnames{SC})));
     close(fig1);
 
-    % ---- 图2: 线速度对比 ----
+    % ---- 图2: 线速度对比 (含局部放大) ----
     fig2 = figure('Color','w','Position',[100,100,700,450]);
     hold on; grid on;
     if SC~=2, plot(t, dual.v_ref, 'k:', 'LineWidth',1.5, 'DisplayName','参考'); end
-    plot(t, dual.v, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
-    plot(t, single.v, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
+    h1=plot(t, dual.v, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
+    h2=plot(t, single.v, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
     xlabel('时间 (s)'); ylabel('v (m/s)');
     title(sprintf('%s — 线速度对比', sc_name));
     legend('Location','best');
+    % 局部放大: 放在右上角
+    ax_main = gca;
+    ax_zoom = axes('Position',[0.55,0.52,0.35,0.35]);
+    box on; hold on; grid on;
+    if SC~=2, plot(t, dual.v_ref, 'k:', 'LineWidth',1); end
+    plot(t, dual.v, 'b-', 'LineWidth',1.5);
+    plot(t, single.v, 'r--', 'LineWidth',1.2);
+    if SC==1
+        xlim([3,7]); ylim([-0.05,0.40]);
+        title('稳态段放大');
+    elseif SC==2
+        xlim([0,5]); ylim([-0.02,0.35]);
+        title('收敛段放大');
+    elseif SC==3
+        xlim([2,6]); ylim([-0.1,0.45]);
+        title('跟踪段放大');
+    else
+        xlim([2,6]); ylim([-0.05,0.40]);
+        title('跟踪段放大');
+    end
     saveas(fig2, fullfile(fig_dir, sprintf('pid_%s_2线速度对比.png', fnames{SC})));
     close(fig2);
 
