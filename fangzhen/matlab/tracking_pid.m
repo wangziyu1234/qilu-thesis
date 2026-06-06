@@ -108,6 +108,16 @@ grid on; axis equal;
 xlabel('X (m)'); ylabel('Y (m)');
 title('参考路径 vs 循迹轨迹');
 legend('参考', '循迹', '起点', '终点', 'Location', 'best');
+% 局部放大: 放在右下角
+ax_zoom = axes('Position',[0.55,0.12,0.35,0.35]);
+box on; hold on; grid on;
+plot(ref_x, ref_y, 'b-', 'LineWidth', 1.5);
+plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1);
+% 找路径中段作为放大区域
+mid_idx = floor(length(ref_x)/2);
+xlim([ref_x(mid_idx)-0.3, ref_x(mid_idx)+0.3]);
+ylim([ref_y(mid_idx)-0.3, ref_y(mid_idx)+0.3]);
+title('局部放大');
 saveas(gcf, 'line_following_traj.png');
 fprintf('已保存: line_following_traj.png\n');
 

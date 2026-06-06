@@ -1,6 +1,4 @@
 %% 红外传感器PID循迹仿真
-%  5路红外传感器横向排布, 检测黑线偏移量, PID输出角速度纠偏
-%  以Hybrid A*规划路径为参考，5路红外检测横向偏移，PID纠偏输出角速度
 function tracking_pid(ref_path)
 if nargin < 1  % 无输入时用默认椭圆路径
     t = linspace(0, 3.5*pi, 200);
@@ -101,59 +99,63 @@ fprintf('仿真时长:      %.1f s\n', final_t);
 
 %% —— 结果绘图 ——
 
-figure('Color', 'w', 'Position', [50, 80, 700, 550]);  % 图1: 轨迹对比
-plot(ref_x, ref_y, 'b-', 'LineWidth', 2); hold on;  % 蓝色实线: 参考路径
-plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1.2);  % 红色虚线: 循迹轨迹
-plot(ref_x(1), ref_y(1), 'go', 'MarkerSize', 10, 'LineWidth', 2);  % 绿色圆圈: 起点
-plot(ref_x(end), ref_y(end), 'rx', 'MarkerSize', 10, 'LineWidth', 2);  % 红色叉号: 终点
-grid on; axis equal;  % 开启网格和等比例坐标轴
-xlabel('X (m)'); ylabel('Y (m)');  % 坐标轴标签
-title('参考路径 vs 循迹轨迹');  % 图标题
-legend('参考', '循迹', '起点', '终点', 'Location', 'best');  % 图例
-out_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');  % 图片输出目录
-if ~exist(out_dir, 'dir'), mkdir(out_dir); end  % 如目录不存在则创建
-fname1 = fullfile(out_dir, 'line_following_traj.png');  % 拼接文件名
-saveas(gcf, fname1);  % 保存图窗
-fprintf('已保存: %s\n', fname1);  % 打印保存路径
+figure('Color', 'w', 'Position', [50, 80, 700, 550]);
+plot(ref_x, ref_y, 'b-', 'LineWidth', 2); hold on;
+plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1.2);
+plot(ref_x(1), ref_y(1), 'go', 'MarkerSize', 10, 'LineWidth', 2);
+plot(ref_x(end), ref_y(end), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+grid on; axis equal;
+xlabel('X (m)'); ylabel('Y (m)');
+title('参考路径 vs 循迹轨迹');
+legend('参考', '循迹', '起点', '终点', 'Location', 'best');
+% 局部放大: 放在右下角
+ax_zoom = axes('Position',[0.55,0.12,0.35,0.35]);
+box on; hold on; grid on;
+plot(ref_x, ref_y, 'b-', 'LineWidth', 1.5);
+plot(log(:,2), log(:,3), 'r--', 'LineWidth', 1);
+% 找路径中段作为放大区域
+mid_idx = floor(length(ref_x)/2);
+xlim([ref_x(mid_idx)-0.3, ref_x(mid_idx)+0.3]);
+ylim([ref_y(mid_idx)-0.3, ref_y(mid_idx)+0.3]);
+title('局部放大');
+saveas(gcf, 'line_following_traj.png');
+fprintf('已保存: line_following_traj.png\n');
 
-figure('Color', 'w', 'Position', [100, 100, 800, 450]);  % 图2: 横向误差时程
-plot(log(:,1), log(:,7)*100, 'r-', 'LineWidth', 1); hold on;  % 红色实线: 横向误差(cm)
-yline( rms_err*100, 'b--', sprintf('RMS=%.1fcm', rms_err*100));  % 蓝色虚线: +RMS线
-yline(-rms_err*100, 'b--');  % 蓝色虚线: -RMS线
-yline( line_width*100, 'g:');  % 绿色点线: +黑线宽度
-yline(-line_width*100, 'g:');  % 绿色点线: -黑线宽度
-grid on; xlabel('时间 (s)'); ylabel('误差 (cm)');  % 坐标轴标签
-title('循迹横向误差');  % 图标题
-fname2 = fullfile(out_dir, 'line_following_error.png');  % 拼接文件名
-saveas(gcf, fname2);  % 保存图窗
-fprintf('已保存: %s\n', fname2);  % 打印保存路径
+figure('Color', 'w', 'Position', [100, 100, 800, 450]);
+plot(log(:,1), log(:,7)*100, 'r-', 'LineWidth', 1); hold on;
+yline( rms_err*100, 'b--', sprintf('RMS=%.1fcm', rms_err*100));
+yline(-rms_err*100, 'b--');
+yline( line_width*100, 'g:');
+yline(-line_width*100, 'g:');
+grid on; xlabel('时间 (s)'); ylabel('误差 (cm)');
+title('循迹横向误差');
+saveas(gcf, 'line_following_error.png');
+fprintf('已保存: line_following_error.png\n');
 
-figure('Color', 'w', 'Position', [150, 120, 800, 450]);  % 图3: 角速度指令
-omg_rms = sqrt(mean(log(:,6).^2));  % 角速度RMS
-plot(log(:,1), log(:,6), 'r-', 'LineWidth', 1); hold on;  % 红色实线: 角速度指令
-yline( omg_rms, 'b--', sprintf('RMS=%.2f rad/s', omg_rms));  % 蓝色虚线: +RMS线
-yline(-omg_rms, 'b--');  % 蓝色虚线: -RMS线
-yline(0, 'k:');  % 黑色点线: 零线
-grid on; xlabel('时间 (s)'); ylabel('\omega (rad/s)');  % 坐标轴标签
-title('纠偏角速度指令');  % 图标题
-legend('角速度指令', 'Location', 'best');  % 图例
-fname3 = fullfile(out_dir, 'line_following_omega.png');  % 拼接文件名
-saveas(gcf, fname3);  % 保存图窗
-fprintf('已保存: %s\n', fname3);  % 打印保存路径
+figure('Color', 'w', 'Position', [150, 120, 800, 450]);
+omg_rms = sqrt(mean(log(:,6).^2));
+plot(log(:,1), log(:,6), 'r-', 'LineWidth', 1); hold on;
+yline( omg_rms, 'b--', sprintf('RMS=%.2f rad/s', omg_rms));
+yline(-omg_rms, 'b--');
+yline(0, 'k:');
+grid on; xlabel('时间 (s)'); ylabel('\omega (rad/s)');
+title('纠偏角速度指令');
+legend('角速度指令', 'Location', 'best');
+saveas(gcf, 'line_following_omega.png');
+fprintf('已保存: line_following_omega.png\n');
 
-figure('Color', 'w', 'Position', [200, 140, 400, 350]);  % 图4: 传感器布局示意
-hold on; grid on; axis equal;  % 开启图形保持、网格、等比例坐标轴
-rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, ...  % 绘制圆角矩形车体
+figure('Color', 'w', 'Position', [200, 140, 400, 350]);
+hold on; grid on; axis equal;
+rectangle('Position', [-0.10,-0.06,0.20,0.12], 'Curvature', 0.2, ...
           'EdgeColor', 'b', 'LineWidth', 2);
-for s = 1:n_sensors  % 绘制5个红外传感器
-    plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');  % 红色方块传感器
+for s = 1:n_sensors
+    plot(sensor_offsets(s), 0.06, 'rs', 'MarkerSize', 12, 'MarkerFaceColor', 'r');
 end
-plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);  % 黑色粗线: 黑线轨迹
-xlabel('横向 (m)'); ylabel('纵向 (m)');  % 坐标轴标签
-title('5路红外传感器布局');  % 图标题
-fname4 = fullfile(out_dir, 'sensor_layout.png');  % 拼接文件名
-saveas(gcf, fname4);  % 保存图窗
-fprintf('已保存: %s\n', fname4);  % 打印保存路径
+plot([-0.08, 0.08], [0.06, 0.06], 'k-', 'LineWidth', 3);
+xlabel('横向 (m)'); ylabel('纵向 (m)');
+title('5路红外传感器布局');
+saveas(gcf, 'sensor_layout.png');
+fprintf('已保存: sensor_layout.png\n');
 end
 
 %% 点到多段线最短距离
