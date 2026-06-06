@@ -1,7 +1,8 @@
-%% 双轮差速AGV双环PID控制仿真
+%% 双轮差速AGV双环PID控制仿真 + 单环PID对比实验
 %  外环(位姿环): 根据位置/航向偏差计算速度指令 v_cmd, ω_cmd
 %  内环(轮速环): PI控制左右轮跟踪逆运动学解算的轮速指令
 %  四种场景：阶跃响应、定点镇定、直线跟踪、圆形轨迹跟踪
+%  对比实验：双环PID vs 单环PID（无内环速度闭环）
 clear; close all; clc;
 
 %% —— 系统参数 ——
@@ -28,6 +29,10 @@ Kd_theta = 0.4;  % 航向Kd
 v_max     = 0.5;  % 线速度上限(m/s)
 omega_max = 2.5;  % 角速度上限(rad/s)
 
+% 图片输出目录
+fig_dir = fullfile(fileparts(mfilename('fullpath')), 'figures');
+if ~exist(fig_dir, 'dir'), mkdir(fig_dir); end
+
 %% —— 主循环: 四种场景 ——
 
 scenario_names = {'阶跃响应','定点镇定','直线跟踪','圆形跟踪'};
@@ -35,283 +40,315 @@ scenario_names = {'阶跃响应','定点镇定','直线跟踪','圆形跟踪'};
 for SCENARIO = 1:4
 fprintf('\n===== 场景%d: %s =====\n', SCENARIO, scenario_names{SCENARIO});
 
-%% —— 状态预分配(每场景重置) ——
+%% —— 双环PID仿真 ——
+dual = run_dual_pid(SCENARIO, r, L, tau, K_motor, Ts, T_sim, ...
+    Kp_v, Ki_v, u_sat, Kp_dist, Kp_theta, Ki_theta, Kd_theta, v_max, omega_max);
 
-x = zeros(1,N);  y = zeros(1,N);
-theta_act = zeros(1,N);
-wL_act = zeros(1,N);  wR_act = zeros(1,N);
-wL_ref = zeros(1,N);  wR_ref = zeros(1,N);
-v_cmd  = zeros(1,N);  w_cmd  = zeros(1,N);
-uL     = zeros(1,N);  uR     = zeros(1,N);
+%% —— 单环PID仿真(对照组) ——
+single = run_single_pid(SCENARIO, r, L, tau, K_motor, Ts, T_sim, ...
+    Kp_dist, Kp_theta, Ki_theta, Kd_theta, u_sat, v_max, omega_max);
 
-x(1) = 0;  y(1) = 0;  theta_act(1) = 0;  % 起点
-wL_act(1) = 0;  wR_act(1) = 0;  % 初始静止
+%% —— 对比图绘制 ——
+plot_pid_comparison(dual, single, SCENARIO, fig_dir, scenario_names{SCENARIO});
 
-int_theta  = 0;  % 航向积分
-err_theta_prev = 0;  % 上拍航向偏差
+end  % for SCENARIO = 1:4
 
-switch SCENARIO
-    case 1  % 阶跃响应: 2.5s时给0.3m/s
-        v_ref = [zeros(1,floor(N/4)), 0.3*ones(1,N-floor(N/4))];
-        w_ref = zeros(1,N);
+fprintf('\n================================\n');
+fprintf('所有场景仿真完成，对比图已保存至: %s\n', fig_dir);
 
-    case 2  % 定点镇定: 目标(2.0, 1.0, 45°)
-        x_tgt = 2.0;  y_tgt = 1.0;
-        theta_tgt = pi/4;
-        v_ref = zeros(1,N);  w_ref = zeros(1,N);
+%% ===== 局部函数: 双环PID仿真 =====
+function res = run_dual_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
+    Kp_v, Ki_v, u_sat, Kp_dist, Kp_theta, Ki_theta, Kd_theta, ~, omega_max)
+    t = 0:Ts:T_sim; N = length(t);
 
-    case 3  % 直线跟踪: y=0.6
-        v_ref = 0.25 * ones(1,N);
-        w_ref = zeros(1,N);
+    x = zeros(1,N); y = zeros(1,N); th = zeros(1,N);
+    wL = zeros(1,N); wR = zeros(1,N);
+    v_cmd = zeros(1,N); w_cmd = zeros(1,N);
+    uL = zeros(1,N); uR = zeros(1,N);
+    int_th = 0; e_th_prev = 0; int_L = 0; int_R = 0;
 
-    case 4  % 圆形轨迹: R=0.8m, T=16s
-        R_c = 0.8;
-        w_c = 2*pi/16;
-        v_ref = R_c * w_c * ones(1,N);
-        w_ref = w_c * ones(1,N);
-end
-
-%% —— 主仿真循环 ——
-
-int_L = 0;  int_R = 0;  % 左右轮速积分
-
-for k = 1:N-1
-
-    v_cur  = r/2 * (wL_act(k) + wR_act(k));  % 实际线速度(反馈)
-    w_cur  = r/L * (wR_act(k) - wL_act(k));  % 实际角速度(反馈)
-
-    switch SCENARIO
-        case 1  % 阶跃响应
-            v_cmd(k) = v_ref(k);
-            w_cmd(k) = 0;
-
-        case 2  % 定点镇定
-            ex = x_tgt - x(k);  ey = y_tgt - y(k);
-            dist_err = sqrt(ex^2 + ey^2);
-
-            if dist_err > 0.08  % 远: 指向目标
-                theta_des = atan2(ey, ex);
-            else  % 近: 对准目标角度
-                theta_des = theta_tgt;
-            end
-            e_theta = theta_des - theta_act(k);
-            e_theta = atan2(sin(e_theta), cos(e_theta));  % 归一化
-
-            int_theta = int_theta + e_theta * Ts;
-            d_theta = (e_theta - err_theta_prev) / Ts;
-            w_cmd(k) = Kp_theta*e_theta + Ki_theta*int_theta + Kd_theta*d_theta;
-            err_theta_prev = e_theta;
-
-            v_cmd(k) = Kp_dist * dist_err;  % 距离→速度
-            if abs(e_theta) > pi/3  % 大角度先转向
-                v_cmd(k) = v_cmd(k) * 0.2;
-            end
-            if dist_err < 0.08
-                v_cmd(k) = v_cmd(k) * (dist_err / 0.08);
-            end
-            if dist_err < 0.01 && abs(e_theta) < 0.03  % 到位(1cm+1.7°)
-                v_cmd(k) = 0;  w_cmd(k) = 0;
-            end
-
-        case 3  % 直线跟踪
-            v_cmd(k) = v_ref(k);
-            e_lat = 0.6 - y(k);
-            e_theta = -theta_act(k);
-            e_theta = atan2(sin(e_theta), cos(e_theta));
-
-            int_theta = int_theta + e_theta * Ts;
-            d_theta = (e_theta - err_theta_prev) / Ts;
-            w_cmd(k) = Kp_theta*e_theta + Ki_theta*int_theta ...
-                       + 0.5*Kp_dist*e_lat;  % +横向偏差前馈
-            err_theta_prev = e_theta;
-
-        case 4  % 圆形跟踪
-            theta_ref = w_c * t(k);
-            x_ref = R_c * cos(theta_ref);  y_ref = R_c * sin(theta_ref);
-
-            ex = x_ref - x(k);  ey = y_ref - y(k);
-            theta_path = theta_ref + pi/2;  % 切线方向
-
-            cross_track = -sin(theta_path)*ex + cos(theta_path)*ey;  % 横向偏差
-            theta_des = theta_path + atan(cross_track / 0.6);
-            e_theta = theta_des - theta_act(k);
-            e_theta = atan2(sin(e_theta), cos(e_theta));
-
-            int_theta = int_theta + e_theta * Ts;
-            d_theta = (e_theta - err_theta_prev) / Ts;
-            w_cmd(k) = Kp_theta*e_theta + Ki_theta*int_theta + Kd_theta*d_theta;
-            err_theta_prev = e_theta;
-
-            along_track = cos(theta_path)*ex + sin(theta_path)*ey;  % 纵向偏差
-            v_cmd(k) = v_ref(k) + Kp_dist * along_track;
+    switch SC
+        case 1
+            v_ref = [zeros(1,floor(N/4)), 0.3*ones(1,N-floor(N/4))];
+            w_ref = zeros(1,N);
+        case 2
+            x_tgt=2.0; y_tgt=1.0; th_tgt=pi/4;
+            v_ref=zeros(1,N); w_ref=zeros(1,N);
+        case 3
+            v_ref=0.25*ones(1,N); w_ref=zeros(1,N);
+        case 4
+            R_c=0.8; w_c=2*pi/16;
+            v_ref=R_c*w_c*ones(1,N); w_ref=w_c*ones(1,N);
     end
 
-    v_cmd(k) = max(-v_max, min(v_max, v_cmd(k)));  % 限幅
-    w_cmd(k) = max(-omega_max, min(omega_max, w_cmd(k)));
-
-    wL_ref(k) = v_cmd(k)/r - w_cmd(k)*L/(2*r);  % 逆运动学→左轮指令
-    wR_ref(k) = v_cmd(k)/r + w_cmd(k)*L/(2*r);  % 逆运动学→右轮指令
-
-    eL = wL_ref(k) - wL_act(k);  % 左轮偏差
-    eR = wR_ref(k) - wR_act(k);  % 右轮偏差
-
-    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值≈最高轮速5.6rad/s)
-    if abs(eR) < 5.0, int_R = int_R + eR * Ts; else int_R = 0; end
-
-    uL(k) = Kp_v * eL + Ki_v * int_L;  % 左PI
-    uR(k) = Kp_v * eR + Ki_v * int_R;  % 右PI
-
-    if uL(k) > u_sat  % 遇限削弱积分
-        uL(k) = u_sat;  int_L = int_L - eL * Ts;
-    elseif uL(k) < -u_sat
-        uL(k) = -u_sat;  int_L = int_L - eL * Ts;
-    end
-    if uR(k) > u_sat
-        uR(k) = u_sat;  int_R = int_R - eR * Ts;
-    elseif uR(k) < -u_sat
-        uR(k) = -u_sat;  int_R = int_R - eR * Ts;
-    end
-
-    wL_ss = K_motor * uL(k);  % 左轮稳态角速度
-    wR_ss = K_motor * uR(k);  % 右轮稳态角速度
-    dwL = (wL_ss - wL_act(k)) / tau;  % 一阶惯性环节
-    dwR = (wR_ss - wR_act(k)) / tau;
-    wL_act(k+1) = wL_act(k) + dwL * Ts;
-    wR_act(k+1) = wR_act(k) + dwR * Ts;
-
-    v_now  = r/2 * (wL_act(k+1) + wR_act(k+1));
-    w_now  = r/L * (wR_act(k+1) - wL_act(k+1));
-
-    x(k+1) = x(k) + v_now * cos(theta_act(k)) * Ts;
-    y(k+1) = y(k) + v_now * sin(theta_act(k)) * Ts;
-    theta_act(k+1) = theta_act(k) + w_now * Ts;
-
-end
-fprintf('仿真完成。\n');
-
-%% —— 结果可视化 (每张图独立保存) ——
-
-out_dir = fullfile(fileparts(mfilename('fullpath')), 'figures');  % 图片输出目录
-if ~exist(out_dir, 'dir'), mkdir(out_dir); end
-v_cur_all = r/2 * (wL_act + wR_act);  % 由轮速反算实际线速度
-w_cur_all = r/L * (wR_act - wL_act);  % 由轮速反算实际角速度
-prefix = sprintf('仿真结果_场景%d_%s', SCENARIO, scenario_names{SCENARIO});
-
-% ---- 图1: XY轨迹 ----
-fig1 = figure('Color','w','Position',[50,50,650,500]);
-hold on; grid on; axis equal;
-switch SCENARIO
-    case 1
-        plot(x, y, 'b-', 'LineWidth', 1.5);
-        plot(x(1), y(1), 'ko', 'MarkerSize', 8, 'LineWidth', 1.5);
-        legend('实际轨迹','起点','Location','best');
-    case 2
-        plot(x, y, 'b-', 'LineWidth', 1.5);
-        plot(x_tgt, y_tgt, 'r*', 'MarkerSize', 12, 'LineWidth', 2);
-        plot(x(1), y(1), 'ko', 'MarkerSize', 8, 'LineWidth', 1.5);
-        legend('实际轨迹','目标点','起点','Location','best');
-    case 3
-        plot(x, y, 'b-', 'LineWidth', 1.5);
-        yline(0.6, 'r--', 'LineWidth', 1.5);
-        legend('实际轨迹','目标直线','Location','best');
-    case 4
-        plot(x, y, 'b-', 'LineWidth', 1.2);
-        th_plot = linspace(0, 2*pi, 200);
-        plot(R_c*cos(th_plot), R_c*sin(th_plot), 'r--', 'LineWidth', 1.5);
-        legend('实际轨迹','参考圆','Location','best');
-end
-xlabel('X [m]'); ylabel('Y [m]');
-title(sprintf('%s — 轨迹', scenario_names{SCENARIO}));
-saveas(fig1, fullfile(out_dir, [prefix '_1轨迹.png'])); close(fig1);
-
-% ---- 图2: 线速度跟踪 ----
-fig2 = figure('Color','w','Position',[100,100,650,420]);
-hold on; grid on;
-plot(t, v_ref, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 v');
-plot(t, v_cur_all, 'b-', 'LineWidth', 1.5, 'DisplayName','实际 v');
-xlabel('时间 [s]'); ylabel('线速度 [m/s]');
-title(sprintf('%s — 线速度跟踪', scenario_names{SCENARIO}));
-legend('Location','best');
-saveas(fig2, fullfile(out_dir, [prefix '_2线速度.png'])); close(fig2);
-
-% ---- 图3: 角速度跟踪 ----
-fig3 = figure('Color','w','Position',[150,150,650,420]);
-hold on; grid on;
-plot(t, w_ref, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 \omega');
-plot(t, w_cur_all, 'b-', 'LineWidth', 1.5, 'DisplayName','实际 \omega');
-xlabel('时间 [s]'); ylabel('角速度 [rad/s]');
-title(sprintf('%s — 角速度跟踪', scenario_names{SCENARIO}));
-legend('Location','best');
-saveas(fig3, fullfile(out_dir, [prefix '_3角速度.png'])); close(fig3);
-
-% ---- 图4: 左右轮速跟踪 ----
-fig4 = figure('Color','w','Position',[200,200,650,420]);
-hold on; grid on;
-plot(t, wL_act, 'b-', 'LineWidth', 1.0, 'DisplayName','\omega_L 实际');
-plot(t, wR_act, 'r-', 'LineWidth', 1.0, 'DisplayName','\omega_R 实际');
-plot(t, wL_ref, 'b--', 'LineWidth', 0.8, 'DisplayName','\omega_L 指令');
-plot(t, wR_ref, 'r--', 'LineWidth', 0.8, 'DisplayName','\omega_R 指令');
-xlabel('时间 [s]'); ylabel('轮速 [rad/s]');
-title(sprintf('%s — 左右轮速跟踪', scenario_names{SCENARIO}));
-legend('Location','best');
-saveas(fig4, fullfile(out_dir, [prefix '_4轮速.png'])); close(fig4);
-
-% ---- 图5: 电机电压 ----
-fig5 = figure('Color','w','Position',[250,250,650,420]);
-hold on; grid on;
-plot(t, uL, 'b-', 'LineWidth', 1.0, 'DisplayName','u_L');
-plot(t, uR, 'r-', 'LineWidth', 1.0, 'DisplayName','u_R');
-yline(u_sat, 'k--', 'DisplayName','饱和限');
-yline(-u_sat, 'k--', 'HandleVisibility','off');
-xlabel('时间 [s]'); ylabel('电压 [V]');
-title(sprintf('%s — 电机控制电压', scenario_names{SCENARIO}));
-legend('Location','best');
-saveas(fig5, fullfile(out_dir, [prefix '_5电压.png'])); close(fig5);
-
-% ---- 图6: 航向角 ----
-fig6 = figure('Color','w','Position',[300,300,650,420]);
-hold on; grid on;
-plot(t, theta_act * 180/pi, 'b-', 'LineWidth', 1.2, 'DisplayName','实际 \theta');
-if SCENARIO == 4
-    plot(t, w_c * t * 180/pi, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 \theta');
-elseif SCENARIO == 2
-    yline(theta_tgt*180/pi, 'r--', 'LineWidth', 1.2, 'DisplayName','目标 \theta');
-end
-xlabel('时间 [s]'); ylabel('航向角 [deg]');
-title(sprintf('%s — 航向角响应', scenario_names{SCENARIO}));
-legend('Location','best');
-saveas(fig6, fullfile(out_dir, [prefix '_6航向角.png'])); close(fig6);
-
-fprintf('图片已保存: %s_1~6*.png\n', prefix);
-
-%% —— 控制性能指标 ——
-
-fprintf('\n========== 控制性能指标 ==========\n');  % 打印指标表头
-
-idx_ss = floor(0.75*N):N;  % 稳态段索引(后1/4数据用于计算稳态指标)
-switch SCENARIO  % 根据场景计算不同指标
-    case 1  % 阶跃响应: 速度稳态误差
-        v_err_ss = mean(abs(v_ref(idx_ss) - v_cur_all(idx_ss)));  % 稳态段速度偏差均值
-        fprintf('速度稳态误差: %.4f m/s\n', v_err_ss);  % 打印速度稳态误差
-
-    case 2  % 定点镇定: 终点位置和航向误差
-        x_err = x_tgt - x(end);  y_err = y_tgt - y(end);  % X和Y方向终点误差
-        t_err = theta_tgt - theta_act(end);  % 航向角终点误差
-        t_err = atan2(sin(t_err), cos(t_err));  % 航向误差归一化到[-π,π]
-        fprintf('终点位置误差: (%.4f, %.4f) m\n', x_err, y_err);  % 打印位置误差
-        fprintf('终点航向误差: %.2f deg\n', t_err * 180/pi);  % 打印航向误差(°)
-
-    case {3, 4}  % 直线/圆形跟踪: 线速度和角速度RMSE
-        v_err_rmse = sqrt(mean((v_ref(idx_ss) - v_cur_all(idx_ss)).^2));  % 线速度RMSE
-        w_err_rmse = sqrt(mean((w_ref(idx_ss) - w_cur_all(idx_ss)).^2));  % 角速度RMSE
-        fprintf('线速度 RMSE: %.4f m/s\n', v_err_rmse);  % 打印线速度RMSE
-        fprintf('角速度 RMSE: %.4f rad/s\n', w_err_rmse);  % 打印角速度RMSE
-        if SCENARIO == 4  % 圆形跟踪额外计算轨迹圆度
-            dist_to_center = abs(sqrt(x.^2 + y.^2) - R_c);  % 各点到圆心的距离与半径之差
-            fprintf('轨迹圆度 RMSE: %.4f m\n', sqrt(mean(dist_to_center(idx_ss).^2)));  % 打印圆度RMSE
+    for k = 1:N-1
+        switch SC
+            case 1
+                v_cmd(k)=v_ref(k); w_cmd(k)=0;
+            case 2
+                ex=x_tgt-x(k); ey=y_tgt-y(k); d_err=sqrt(ex^2+ey^2);
+                if d_err>0.08, th_des=atan2(ey,ex); else, th_des=th_tgt; end
+                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                int_th=int_th+e_th*Ts;
+                d_th=(e_th-e_th_prev)/Ts;
+                w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
+                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
+                v_cmd(k)=max(0,Kp_dist*d_err);
+                if abs(e_th)>pi/3, v_cmd(k)=v_cmd(k)*0.2; end
+                if d_err<0.02, v_cmd(k)=0; end
+                e_th_prev=e_th;
+            case 3
+                lat_err=0.6-y(k);
+                th_des=atan2(Kp_dist*lat_err,v_ref(k)+1e-6);
+                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                int_th=int_th+e_th*Ts;
+                d_th=(e_th-e_th_prev)/Ts;
+                w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
+                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
+                v_cmd(k)=v_ref(k);
+                e_th_prev=e_th;
+            case 4
+                theta_ref = w_c * t(k);
+                x_ref = R_c * cos(theta_ref);  y_ref = R_c * sin(theta_ref);
+                theta_path = theta_ref + pi/2;
+                ex = x_ref - x(k);  ey = y_ref - y(k);
+                cross_track = -sin(theta_path)*ex + cos(theta_path)*ey;
+                theta_des = theta_path + atan(cross_track / 0.6);
+                e_th = atan2(sin(theta_des-th(k)), cos(theta_des-th(k)));
+                int_th = int_th + e_th*Ts;
+                d_th = (e_th - e_th_prev)/Ts;
+                w_cmd(k) = Kp_theta*e_th + Ki_theta*int_th + Kd_theta*d_th;
+                e_th_prev = e_th;
+                along_track = cos(theta_path)*ex + sin(theta_path)*ey;
+                v_cmd(k) = v_ref(k) + Kp_dist * along_track;
         end
+
+        % 逆运动学 → 内环速度PI
+        wL_ref = (2*v_cmd(k)-w_cmd(k)*L)/(2*r);
+        wR_ref = (2*v_cmd(k)+w_cmd(k)*L)/(2*r);
+        eL=wL_ref-wL(k); eR=wR_ref-wR(k);
+        if abs(eL)>5, int_L=0; else, int_L=int_L+eL*Ts; end
+        if abs(eR)>5, int_R=0; else, int_R=int_R+eR*Ts; end
+        uL(k)=Kp_v*eL+Ki_v*int_L; uR(k)=Kp_v*eR+Ki_v*int_R;
+        if abs(uL(k))>u_sat&&sign(uL(k))==sign(eL), uL(k)=sign(uL(k))*u_sat; int_L=int_L-eL*Ts; end
+        if abs(uR(k))>u_sat&&sign(uR(k))==sign(eR), uR(k)=sign(uR(k))*u_sat; int_R=int_R-eR*Ts; end
+
+        % 电机动力学 (含负载扰动)
+        dist = 1.5*sin(0.8*t(k));  % 正弦摩擦扰动
+        wL(k+1)=wL(k)+(K_motor*uL(k)-wL(k)+dist)/tau*Ts;
+        wR(k+1)=wR(k)+(K_motor*uR(k)-wR(k)+dist)/tau*Ts;
+        v_next=r/2*(wL(k+1)+wR(k+1));
+        w_next=r/L*(wR(k+1)-wL(k+1));
+        th(k+1)=th(k)+w_next*Ts;
+        x(k+1)=x(k)+v_next*cos(th(k+1))*Ts;
+        y(k+1)=y(k)+v_next*sin(th(k+1))*Ts;
+    end
+
+    res.t=t; res.x=x; res.y=y; res.th=th;
+    res.v=r/2*(wL+wR); res.w=r/L*(wR-wL);
+    res.v_ref=v_ref; res.w_ref=w_ref;
+    res.uL=uL; res.uR=uR;
+    res.wL_act=wL; res.wR_act=wR;
+    res.name='双环PID'; res.SC=SC;
+    if SC==2, res.x_tgt=x_tgt; res.y_tgt=y_tgt; res.th_tgt=th_tgt; end
+    if SC==4, res.R_c=R_c; end
 end
 
-end  % for SCENARIO = 1:4 (四种场景循环结束)
+%% ===== 局部函数: 单环PID仿真(对照组) =====
+function res = run_single_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
+    Kp_dist, Kp_theta, Ki_theta, Kd_theta, u_sat, v_max, omega_max)
+    t = 0:Ts:T_sim; N = length(t);
+    % 单环PID: 与双环相同的外环参数, 但没有内环PI反馈
+    % 外环PID输出速度指令, 直接转电压(无轮速闭环)
 
-fprintf('================================\n');  % 打印结束分隔线
+    x = zeros(1,N); y = zeros(1,N); th = zeros(1,N);
+    wL = zeros(1,N); wR = zeros(1,N);
+    v_cmd = zeros(1,N); w_cmd = zeros(1,N);
+    uL = zeros(1,N); uR = zeros(1,N);
+    int_th = 0; e_th_prev = 0;
+
+    switch SC
+        case 1
+            v_ref = [zeros(1,floor(N/4)), 0.3*ones(1,N-floor(N/4))];
+            w_ref = zeros(1,N);
+        case 2
+            x_tgt=2.0; y_tgt=1.0; th_tgt=pi/4;
+            v_ref=zeros(1,N); w_ref=zeros(1,N);
+        case 3
+            v_ref=0.25*ones(1,N); w_ref=zeros(1,N);
+        case 4
+            R_c=0.8; w_c=2*pi/16;
+            v_ref=R_c*w_c*ones(1,N); w_ref=w_c*ones(1,N);
+    end
+
+    for k = 1:N-1
+        switch SC
+            case 1
+                v_cmd(k)=v_ref(k); w_cmd(k)=0;
+            case 2
+                ex=x_tgt-x(k); ey=y_tgt-y(k); d_err=sqrt(ex^2+ey^2);
+                if d_err>0.08, th_des=atan2(ey,ex); else, th_des=th_tgt; end
+                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                int_th=int_th+e_th*Ts;
+                d_th=(e_th-e_th_prev)/Ts;
+                w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
+                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
+                v_cmd(k)=max(0,Kp_dist*d_err);
+                if abs(e_th)>pi/3, v_cmd(k)=v_cmd(k)*0.2; end
+                if d_err<0.02, v_cmd(k)=0; end
+                e_th_prev=e_th;
+            case 3
+                lat_err=0.6-y(k);
+                th_des=atan2(Kp_dist*lat_err,v_ref(k)+1e-6);
+                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                int_th=int_th+e_th*Ts;
+                d_th=(e_th-e_th_prev)/Ts;
+                w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
+                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
+                v_cmd(k)=v_ref(k);
+                e_th_prev=e_th;
+            case 4
+                theta_ref = w_c * t(k);
+                x_ref = R_c * cos(theta_ref);  y_ref = R_c * sin(theta_ref);
+                theta_path = theta_ref + pi/2;
+                ex_r = x_ref - x(k);  ey_r = y_ref - y(k);
+                cross_track = -sin(theta_path)*ex_r + cos(theta_path)*ey_r;
+                along_track = cos(theta_path)*ex_r + sin(theta_path)*ey_r;
+                theta_des = theta_path + atan(cross_track / 0.6);
+                e_th = atan2(sin(theta_des-th(k)), cos(theta_des-th(k)));
+                int_th = int_th + e_th*Ts;
+                d_th = (e_th - e_th_prev)/Ts;
+                w_cmd(k) = Kp_theta*e_th + Ki_theta*int_th + Kd_theta*d_th;
+                e_th_prev = e_th;
+                v_cmd(k) = v_ref(k) + Kp_dist * along_track;
+        end
+
+        v_cmd(k) = max(-v_max, min(v_max, v_cmd(k)));
+        w_cmd(k) = max(-omega_max, min(omega_max, w_cmd(k)));
+
+        % 单环: 逆运动学→直接转电压 (没有内环PI跟踪轮速)
+        wL_des = (2*v_cmd(k)-w_cmd(k)*L)/(2*r);
+        wR_des = (2*v_cmd(k)+w_cmd(k)*L)/(2*r);
+        uL(k) = wL_des / K_motor;
+        uR(k) = wR_des / K_motor;
+        uL(k) = max(-u_sat, min(u_sat, uL(k)));
+        uR(k) = max(-u_sat, min(u_sat, uR(k)));
+
+        % 电机动力学 (含相同负载扰动)
+        dist = 1.5*sin(0.8*t(k));
+        wL(k+1) = wL(k) + (K_motor*uL(k)-wL(k)+dist)/tau*Ts;
+        wR(k+1) = wR(k) + (K_motor*uR(k)-wR(k)+dist)/tau*Ts;
+        v_next = r/2*(wL(k+1)+wR(k+1));
+        w_next = r/L*(wR(k+1)-wL(k+1));
+        th(k+1) = th(k) + w_next*Ts;
+        x(k+1) = x(k) + v_next*cos(th(k+1))*Ts;
+        y(k+1) = y(k) + v_next*sin(th(k+1))*Ts;
+    end
+
+    res.t=t; res.x=x; res.y=y; res.th=th;
+    res.v=r/2*(wL+wR); res.w=r/L*(wR-wL);
+    res.v_ref=v_ref; res.w_ref=w_ref;
+    res.uL=uL; res.uR=uR;
+    res.name='单环PID'; res.SC=SC;
+    if SC==2, res.x_tgt=x_tgt; res.y_tgt=y_tgt; res.th_tgt=th_tgt; end
+    if SC==4, res.R_c=R_c; end
+end
+
+%% ===== 局部函数: 对比图 (每个场景拆成独立图片) =====
+function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
+    t = dual.t;
+    fnames = {'step','point','line','circle'};
+    prefix = sprintf('pid_%s', fnames{SC});
+
+    % ---- 图1: 轨迹对比 ----
+    fig1 = figure('Color','w','Position',[50,50,700,550]);
+    hold on; grid on; axis equal;
+    plot(dual.x, dual.y, 'b-', 'LineWidth',2, 'DisplayName','双环PID');
+    plot(single.x, single.y, 'r--', 'LineWidth',1.8, 'DisplayName','单环PID');
+    if SC==2
+        plot(dual.x_tgt, dual.y_tgt, 'k*', 'MarkerSize',15, 'LineWidth',2, 'DisplayName','目标点');
+    elseif SC==3
+        yline(0.6, 'k--', 'LineWidth',1.5, 'DisplayName','目标直线');
+    elseif SC==4
+        th_p = linspace(0,2*pi,200);
+        plot(dual.R_c*cos(th_p), dual.R_c*sin(th_p), 'k--', 'LineWidth',1.5, 'DisplayName','参考圆');
+    end
+    xlabel('X (m)'); ylabel('Y (m)');
+    title(sprintf('%s — 轨迹对比', sc_name));
+    legend('Location','best');
+    saveas(fig1, fullfile(fig_dir, [prefix '_1轨迹对比.png']));
+    close(fig1);
+
+    % ---- 图2: 线速度对比 ----
+    fig2 = figure('Color','w','Position',[100,100,700,450]);
+    hold on; grid on;
+    if SC~=2, plot(t, dual.v_ref, 'k:', 'LineWidth',1.5, 'DisplayName','参考'); end
+    plot(t, dual.v, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
+    plot(t, single.v, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
+    xlabel('时间 (s)'); ylabel('v (m/s)');
+    title(sprintf('%s — 线速度对比', sc_name));
+    legend('Location','best');
+    saveas(fig2, fullfile(fig_dir, [prefix '_2线速度对比.png']));
+    close(fig2);
+
+    % ---- 图3: 角速度对比 ----
+    fig3 = figure('Color','w','Position',[150,150,700,450]);
+    hold on; grid on;
+    if SC==4, plot(t, dual.w_ref, 'k:', 'LineWidth',1.5, 'DisplayName','参考'); end
+    plot(t, dual.w, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
+    plot(t, single.w, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
+    xlabel('时间 (s)'); ylabel('\omega (rad/s)');
+    title(sprintf('%s — 角速度对比', sc_name));
+    legend('Location','best');
+    saveas(fig3, fullfile(fig_dir, [prefix '_3角速度对比.png']));
+    close(fig3);
+
+    % ---- 图4: 电机电压对比 ----
+    fig4 = figure('Color','w','Position',[200,200,700,450]);
+    hold on; grid on;
+    plot(t, dual.uL, 'b-', 'LineWidth',1.2, 'DisplayName','双环 左轮');
+    plot(t, dual.uR, 'b--', 'LineWidth',1.2, 'DisplayName','双环 右轮');
+    plot(t, single.uL, 'r-', 'LineWidth',1.0, 'DisplayName','单环 左轮');
+    plot(t, single.uR, 'r--', 'LineWidth',1.0, 'DisplayName','单环 右轮');
+    yline(24, 'k:', 'LineWidth',1); yline(-24, 'k:', 'LineWidth',1);
+    xlabel('时间 (s)'); ylabel('电压 (V)');
+    title(sprintf('%s — 电机电压对比', sc_name));
+    legend('Location','best');
+    saveas(fig4, fullfile(fig_dir, [prefix '_4电压对比.png']));
+    close(fig4);
+
+    % ---- 打印性能指标对比 ----
+    idx_ss = floor(0.75*length(t)):length(t);
+    fprintf('\n  %-10s | %-12s | %-12s\n', '指标', '双环PID', '单环PID');
+    fprintf('  %s\n', repmat('-',1,40));
+    switch SC
+        case 1
+            d_err = mean(abs(dual.v_ref(idx_ss)-dual.v(idx_ss)));
+            s_err = mean(abs(single.v_ref(idx_ss)-single.v(idx_ss)));
+            fprintf('  %-10s | %10.4f   | %10.4f\n', '速度稳态误差', d_err, s_err);
+        case 2
+            d_pos = sqrt((dual.x_tgt-dual.x(end))^2+(dual.y_tgt-dual.y(end))^2);
+            s_pos = sqrt((single.x_tgt-single.x(end))^2+(single.y_tgt-single.y(end))^2);
+            d_th = abs(rad2deg(atan2(sin(dual.th_tgt-dual.th(end)),cos(dual.th_tgt-dual.th(end)))));
+            s_th = abs(rad2deg(atan2(sin(single.th_tgt-single.th(end)),cos(single.th_tgt-single.th(end)))));
+            fprintf('  %-10s | %8.4f m  | %8.4f m\n', '位置误差', d_pos, s_pos);
+            fprintf('  %-10s | %8.2f°    | %8.2f°\n', '航向误差', d_th, s_th);
+        case 3
+            d_rmse = sqrt(mean(dual.w(idx_ss).^2));
+            s_rmse = sqrt(mean(single.w(idx_ss).^2));
+            fprintf('  %-10s | %10.4f   | %10.4f\n', '角速度RMSE', d_rmse, s_rmse);
+        case 4
+            d_vr = sqrt(mean((dual.v_ref(idx_ss)-dual.v(idx_ss)).^2));
+            s_vr = sqrt(mean((single.v_ref(idx_ss)-single.v(idx_ss)).^2));
+            d_wr = sqrt(mean((dual.w_ref(idx_ss)-dual.w(idx_ss)).^2));
+            s_wr = sqrt(mean((single.w_ref(idx_ss)-single.w(idx_ss)).^2));
+            d_dist = abs(sqrt(dual.x.^2+dual.y.^2)-dual.R_c);
+            s_dist = abs(sqrt(single.x.^2+single.y.^2)-single.R_c);
+            fprintf('  %-10s | %10.4f   | %10.4f\n', '线速度RMSE', d_vr, s_vr);
+            fprintf('  %-10s | %10.4f   | %10.4f\n', '角速度RMSE', d_wr, s_wr);
+            fprintf('  %-10s | %10.4f   | %10.4f\n', '轨迹圆度RMSE', ...
+                sqrt(mean(d_dist(idx_ss).^2)), sqrt(mean(s_dist(idx_ss).^2)));
+    end
+
+    fprintf('图片已保存: %s_1~4对比.png\n', prefix);
+end

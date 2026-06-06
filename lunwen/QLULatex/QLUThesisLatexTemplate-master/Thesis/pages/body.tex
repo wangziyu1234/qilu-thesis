@@ -1436,7 +1436,34 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \end{tabular}
     \end{table}
 
-    为进一步验证双环级联结构相较于传统单环控制的优越性，本文设计了单环PID对照组进行对比实验。单环PID采用与双环相同的外环PID参数，但不含内环速度PI环节，外环输出的速度指令经逆运动学后直接转换为电机电压，省去了轮速闭环跟踪过程。两种控制器作用于相同的被控对象（差速底盘加电机一阶惯性模型），并在电机动力学中加入了正弦负载扰动（模拟地面摩擦变化），在四种场景下分别运行仿真，定量对比结果见表\ref{tab:dual_vs_single}。
+    为进一步验证双环级联结构相较于传统单环控制的优越性，本文设计了单环PID对照组进行对比实验。两种控制器的外环参数完全一致，唯一区别在于是否包含内环速度PI反馈环节。
+
+    双环PID的控制律为：外环根据位置偏差和航向偏差计算期望速度，经逆运动学分解为左右轮速指令后，由内环PI跟踪并输出电机电压：
+
+    \begin{equation}
+    \begin{cases}
+    v_{\mathrm{cmd}} = f_{\mathrm{outer}}(e_x, e_y, e_\theta) \\
+    \omega_{\mathrm{cmd}} = K_p^\theta e_\theta + K_i^\theta \int e_\theta\,dt + K_d^\theta \dot{e}_\theta \\
+    u = K_p^v e_\omega + K_i^v \int e_\omega\,dt
+    \end{cases}
+    \label{eq:dual_loop}
+    \end{equation}
+
+    其中$e_x$、$e_y$为位置偏差，$e_\theta$为航向偏差，$e_\omega = \omega^* - \omega_{\mathrm{act}}$为轮速偏差。
+
+    单环PID省去内环PI环节，外环输出的速度指令经逆运动学后直接转换为电机电压：
+
+    \begin{equation}
+    u = \frac{\omega^*}{K_m} = \frac{1}{K_m}\left(\frac{v_{\mathrm{cmd}}}{r} \pm \frac{\omega_{\mathrm{cmd}} L}{2r}\right)
+    \label{eq:single_loop}
+    \end{equation}
+
+    两种控制器作用于相同的被控对象（差速底盘加电机一阶惯性模型），并在电机动力学中加入了正弦负载扰动$d(t)=1.5\sin(0.8t)\,\mathrm{N}$（模拟地面摩擦变化），在四种场景下分别运行仿真，定量对比结果见表\ref{tab:dual_vs_single}。性能评价采用速度稳态误差、终点位置误差和轨迹圆度RMSE三项指标，其中RMSE定义为：
+
+    \begin{equation}
+    \mathrm{RMSE} = \sqrt{\frac{1}{N}\sum_{k=1}^{N}\left(r_k - R_{\mathrm{ref}}\right)^2}
+    \label{eq:rmse}
+    \end{equation}
 
     \begin{table}[htbp]
     \wuhao
