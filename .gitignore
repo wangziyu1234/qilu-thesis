@@ -7,6 +7,7 @@
 *.synctex.gz
 *.synctex\(busy\)
 *.pdf
+!lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.pdf
 *.thm
 *.toc
 *.lof
