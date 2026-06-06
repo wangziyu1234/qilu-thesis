@@ -35,7 +35,7 @@ if ~exist(fig_dir, 'dir'), mkdir(fig_dir); end
 
 %% —— 主循环: 四种场景 ——
 
-scenario_names = {'阶跃响应','定点镇定','直线跟踪','圆形跟踪'};
+scenario_names = {'阶跃响应','定点镇定','S形轨迹','圆形跟踪'};
 
 for SCENARIO = 1:4
 fprintf('\n===== 场景%d: %s =====\n', SCENARIO, scenario_names{SCENARIO});
@@ -75,7 +75,7 @@ function res = run_dual_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
             x_tgt=2.0; y_tgt=1.0; th_tgt=pi/4;
             v_ref=zeros(1,N); w_ref=zeros(1,N);
         case 3
-            v_ref=0.25*ones(1,N); w_ref=zeros(1,N);
+            v_ref=0.30*ones(1,N); w_ref=0.5*sin(0.5*t);
         case 4
             R_c=0.8; w_c=2*pi/16;
             v_ref=R_c*w_c*ones(1,N); w_ref=w_c*ones(1,N);
@@ -98,15 +98,26 @@ function res = run_dual_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
                 if d_err<0.02, v_cmd(k)=0; end
                 e_th_prev=e_th;
             case 3
-                lat_err=0.6-y(k);
-                th_des=atan2(Kp_dist*lat_err,v_ref(k)+1e-6);
-                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                % 预计算S形参考轨迹
+                if k==1
+                    x_ref_s = zeros(1,N); y_ref_s = zeros(1,N); th_ref_s = zeros(1,N);
+                    for kk=1:N-1
+                        x_ref_s(kk+1)=x_ref_s(kk)+v_ref(kk)*cos(th_ref_s(kk))*Ts;
+                        y_ref_s(kk+1)=y_ref_s(kk)+v_ref(kk)*sin(th_ref_s(kk))*Ts;
+                        th_ref_s(kk+1)=th_ref_s(kk)+w_ref(kk)*Ts;
+                    end
+                end
+                ex_s=x_ref_s(k)-x(k); ey_s=y_ref_s(k)-y(k);
+                theta_path_s=th_ref_s(k);
+                cross_track_s=-sin(theta_path_s)*ex_s+cos(theta_path_s)*ey_s;
+                theta_des_s=theta_path_s+atan(cross_track_s/0.6);
+                e_th=atan2(sin(theta_des_s-th(k)),cos(theta_des_s-th(k)));
                 int_th=int_th+e_th*Ts;
                 d_th=(e_th-e_th_prev)/Ts;
                 w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
-                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
-                v_cmd(k)=v_ref(k);
                 e_th_prev=e_th;
+                along_track_s=cos(theta_path_s)*ex_s+sin(theta_path_s)*ey_s;
+                v_cmd(k)=v_ref(k)+Kp_dist*along_track_s;
             case 4
                 theta_ref = w_c * t(k);
                 x_ref = R_c * cos(theta_ref);  y_ref = R_c * sin(theta_ref);
@@ -175,7 +186,7 @@ function res = run_single_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
             x_tgt=2.0; y_tgt=1.0; th_tgt=pi/4;
             v_ref=zeros(1,N); w_ref=zeros(1,N);
         case 3
-            v_ref=0.25*ones(1,N); w_ref=zeros(1,N);
+            v_ref=0.30*ones(1,N); w_ref=0.5*sin(0.5*t);
         case 4
             R_c=0.8; w_c=2*pi/16;
             v_ref=R_c*w_c*ones(1,N); w_ref=w_c*ones(1,N);
@@ -198,15 +209,26 @@ function res = run_single_pid(SC, r, L, tau, K_motor, Ts, T_sim, ...
                 if d_err<0.02, v_cmd(k)=0; end
                 e_th_prev=e_th;
             case 3
-                lat_err=0.6-y(k);
-                th_des=atan2(Kp_dist*lat_err,v_ref(k)+1e-6);
-                e_th=atan2(sin(th_des-th(k)),cos(th_des-th(k)));
+                % 预计算S形参考轨迹
+                if k==1
+                    x_ref_s = zeros(1,N); y_ref_s = zeros(1,N); th_ref_s = zeros(1,N);
+                    for kk=1:N-1
+                        x_ref_s(kk+1)=x_ref_s(kk)+v_ref(kk)*cos(th_ref_s(kk))*Ts;
+                        y_ref_s(kk+1)=y_ref_s(kk)+v_ref(kk)*sin(th_ref_s(kk))*Ts;
+                        th_ref_s(kk+1)=th_ref_s(kk)+w_ref(kk)*Ts;
+                    end
+                end
+                ex_s=x_ref_s(k)-x(k); ey_s=y_ref_s(k)-y(k);
+                theta_path_s=th_ref_s(k);
+                cross_track_s=-sin(theta_path_s)*ex_s+cos(theta_path_s)*ey_s;
+                theta_des_s=theta_path_s+atan(cross_track_s/0.6);
+                e_th=atan2(sin(theta_des_s-th(k)),cos(theta_des_s-th(k)));
                 int_th=int_th+e_th*Ts;
                 d_th=(e_th-e_th_prev)/Ts;
                 w_cmd(k)=Kp_theta*e_th+Ki_theta*int_th+Kd_theta*d_th;
-                w_cmd(k)=max(-omega_max,min(omega_max,w_cmd(k)));
-                v_cmd(k)=v_ref(k);
                 e_th_prev=e_th;
+                along_track_s=cos(theta_path_s)*ex_s+sin(theta_path_s)*ey_s;
+                v_cmd(k)=v_ref(k)+Kp_dist*along_track_s;
             case 4
                 theta_ref = w_c * t(k);
                 x_ref = R_c * cos(theta_ref);  y_ref = R_c * sin(theta_ref);
