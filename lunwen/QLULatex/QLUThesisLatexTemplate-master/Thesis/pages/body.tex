@@ -1538,25 +1538,7 @@ PID控制器的输出信号$u(t)$由三部分组成：
     \label{fig:pid_vs_circle}
     \end{figure}
 
-    其核心原因在于：双环结构的内环速度PI以约$5\,\mathrm{ms}$的控制周期快速跟踪逆运动学解算的轮速指令，能够在电机层面及时抑制负载扰动，而单环PID将速度指令直接转换为电压，缺乏对电机实际转速的闭环反馈，负载扰动完全由外环承担，导致跟踪精度下降。以阶跃响应为例，图\ref{fig:step_velocity}的局部放大图清晰展示了两者在稳态段的差异：双环PID稳稳收敛至参考速度$0.3\,\mathrm{m/s}$，而单环PID因扰动持续振荡，无法稳定。
-
-    \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{pid_step_2线速度对比.png}
-    \caption{阶跃响应线速度对比（含局部放大）}
-    \label{fig:step_velocity}
-    \end{figure}
-
-    S形轨迹场景下，角速度持续按$\omega(t)=0.8\sin(t)$变化，图\ref{fig:scurve_velocity}的局部放大图显示双环PID能紧密跟踪参考速度，而单环PID的跟踪偏差明显更大。
-
-    \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{pid_scurve_2线速度对比.png}
-    \caption{S形轨迹线速度对比（含局部放大）}
-    \label{fig:scurve_velocity}
-    \end{figure}
-
-    以圆形轨迹跟踪为例，在加入正弦负载扰动后，双环PID的轨迹圆度RMSE为$0.020\,\mathrm{m}$，仅为单环PID（$0.061\,\mathrm{m}$）的$33\%$，充分体现了内环速度闭环对扰动抑制的提升效果。
+    其核心原因在于：双环结构的内环速度PI以约$5\,\mathrm{ms}$的控制周期快速跟踪逆运动学解算的轮速指令，能够在电机层面及时抑制负载扰动，而单环PID将速度指令直接转换为电压，缺乏对电机实际转速的闭环反馈，负载扰动完全由外环承担，导致跟踪精度下降。以S形轨迹为例，图\ref{fig:pid_vs_scurve}的局部放大图清晰展示了两者在弯道处的差异：双环PID紧密跟随参考轨迹，而单环PID在转弯段出现明显偏移。以圆形轨迹跟踪为例，在加入正弦负载扰动后，双环PID的轨迹圆度RMSE为$0.020\,\mathrm{m}$，仅为单环PID（$0.061\,\mathrm{m}$）的$33\%$，充分体现了内环速度闭环对扰动抑制的提升效果。
 
     需要指出的是，本文仿真在理想地面条件下完成，未引入轮地摩擦系数扰动、电机死区、传感器噪声和通信延迟等因素。实际应用中小车在负载变化、地面不平整等工况下的控制性能尚需通过实物实验进一步检验。此外，PID参数在仿真前整定后保持不变，对工况变化的适应能力有限，后续可引入模糊PID或模型预测控制等策略以提升鲁棒性。
     }

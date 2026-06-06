@@ -261,6 +261,7 @@ function res = run_dual_pid(SC)
     res.wL_act=wL; res.wR_act=wR;
     res.name='双环PID'; res.SC=SC;
     if SC==2, res.x_tgt=x_tgt; res.y_tgt=y_tgt; res.th_tgt=th_tgt; end
+    if SC==3, res.x_ref_s=x_ref_s; res.y_ref_s=y_ref_s; end
     if SC==4, res.R_c=R_c; end
 end
 
@@ -383,7 +384,7 @@ function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
     t = dual.t;
     fnames = {'step','point','scurve','circle'};
 
-    % ---- 图1: 轨迹对比 ----
+    % ---- 图1: 轨迹对比 (S形和圆形加局部放大) ----
     fig1 = figure('Color','w','Position',[50,50,700,550]);
     hold on; grid on; axis equal;
     plot(dual.x, dual.y, 'b-', 'LineWidth',2, 'DisplayName','双环PID');
@@ -391,7 +392,10 @@ function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
     if SC==2
         plot(dual.x_tgt, dual.y_tgt, 'k*', 'MarkerSize',15, 'LineWidth',2, 'DisplayName','目标点');
     elseif SC==3
-        yline(0.6, 'k--', 'LineWidth',1.5, 'DisplayName','目标直线');
+        % 绘制S形参考轨迹
+        if isfield(dual,'x_ref_s')
+            plot(dual.x_ref_s, dual.y_ref_s, 'k:', 'LineWidth',1.5, 'DisplayName','参考轨迹');
+        end
     elseif SC==4
         th_p = linspace(0,2*pi,200);
         plot(dual.R_c*cos(th_p), dual.R_c*sin(th_p), 'k--', 'LineWidth',1.5, 'DisplayName','参考圆');
@@ -399,38 +403,31 @@ function plot_pid_comparison(dual, single, SC, fig_dir, sc_name)
     xlabel('X (m)'); ylabel('Y (m)');
     title(sprintf('%s — 轨迹对比', sc_name));
     legend('Location','best');
+    % S形和圆形加局部放大
+    if SC==3 || SC==4
+        ax_zoom = axes('Position',[0.15,0.58,0.32,0.32]);
+        box on; hold on; grid on;
+        plot(dual.x, dual.y, 'b-', 'LineWidth',1.5);
+        plot(single.x, single.y, 'r--', 'LineWidth',1.2);
+        if SC==3
+            xlim([0.3,1.0]); ylim([0.6,1.4]);
+        else
+            xlim([-0.15,0.15]); ylim([-0.75,-0.45]);
+        end
+        title('局部放大');
+    end
     saveas(fig1, fullfile(fig_dir, sprintf('pid_%s_1轨迹对比.png', fnames{SC})));
     close(fig1);
 
-    % ---- 图2: 线速度对比 (含局部放大) ----
+    % ---- 图2: 线速度对比 ----
     fig2 = figure('Color','w','Position',[100,100,700,450]);
     hold on; grid on;
     if SC~=2, plot(t, dual.v_ref, 'k:', 'LineWidth',1.5, 'DisplayName','参考'); end
-    h1=plot(t, dual.v, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
-    h2=plot(t, single.v, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
+    plot(t, dual.v, 'b-', 'LineWidth',1.8, 'DisplayName','双环PID');
+    plot(t, single.v, 'r--', 'LineWidth',1.5, 'DisplayName','单环PID');
     xlabel('时间 (s)'); ylabel('v (m/s)');
     title(sprintf('%s — 线速度对比', sc_name));
     legend('Location','best');
-    % 局部放大: 放在右上角
-    ax_main = gca;
-    ax_zoom = axes('Position',[0.55,0.52,0.35,0.35]);
-    box on; hold on; grid on;
-    if SC~=2, plot(t, dual.v_ref, 'k:', 'LineWidth',1); end
-    plot(t, dual.v, 'b-', 'LineWidth',1.5);
-    plot(t, single.v, 'r--', 'LineWidth',1.2);
-    if SC==1
-        xlim([3,7]); ylim([-0.05,0.40]);
-        title('稳态段放大');
-    elseif SC==2
-        xlim([0,5]); ylim([-0.02,0.35]);
-        title('收敛段放大');
-    elseif SC==3
-        xlim([2,6]); ylim([-0.1,0.45]);
-        title('跟踪段放大');
-    else
-        xlim([2,6]); ylim([-0.05,0.40]);
-        title('跟踪段放大');
-    end
     saveas(fig2, fullfile(fig_dir, sprintf('pid_%s_2线速度对比.png', fnames{SC})));
     close(fig2);
 
