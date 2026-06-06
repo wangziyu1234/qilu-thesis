@@ -203,57 +203,68 @@ fprintf('\n  最大安全载重: %.0f kg  (控制因素: %s)\n', Q_max, names{id
 fprintf('  额定 %.0f kg,  安全裕度 %.0f%%\n', Q_rated, (Q_max/Q_rated-1)*100);
 
 %% —— 结果可视化 ——
-figure('Position', [50, 50, 1400, 800], 'Color', 'w');  % 创建大尺寸白色图窗
+out_dir = fileparts(mfilename('fullpath'));
+fig_dir_str = fullfile(out_dir, 'figures');
+if ~exist(fig_dir_str, 'dir'), mkdir(fig_dir_str); end
 
-beta_plot = linspace(beta_low, beta_high, 200);  % 半角扫描范围(200个采样点)
+beta_plot = linspace(beta_low, beta_high, 200);
 
-subplot(2,3,1);  % 子图1: 台面高度 vs β
-plot(beta_plot, L_arm*sind(beta_plot), 'b-', 'LineWidth', 2);  % 蓝色曲线: H=L·sinβ
-xlabel('水平半角 β (°)'); ylabel('台面高度 (mm)');  % 坐标轴标签
-title(sprintf('台面高度 vs β (%.0f~%.0f mm)', L_arm*sind(beta_low), L_arm*sind(beta_high)));  % 动态标题
-grid on;  % 开启网格
+% 图1: 台面高度 vs β
+fig1=figure('Color','w','Position',[50,50,600,420]);
+plot(beta_plot, L_arm*sind(beta_plot), 'b-', 'LineWidth', 2);
+xlabel('水平半角 β (°)'); ylabel('台面高度 (mm)');
+title(sprintf('台面高度 vs β (%.0f~%.0f mm)', L_arm*sind(beta_low), L_arm*sind(beta_high)));
+grid on;
+saveas(fig1, fullfile(fig_dir_str, 'lift_1台面高度.png')); close(fig1);
 
-subplot(2,3,2);  % 子图2: 臂轴向力 vs β
-F_arm_plot = F_load ./ (4 * sind(beta_plot));  % 各β下的臂轴向力 F=Q/(4·sinβ)
-plot(beta_plot, F_arm_plot, 'r-', 'LineWidth', 2);  % 红色曲线: 轴向力
-xlabel('水平半角 β (°)'); ylabel('臂轴向力 (N)');  % 坐标轴标签
-title(sprintf('F_{arm} vs β (Q=%.0fkg)', Q_rated)); grid on;  % 动态标题+网格
+% 图2: 臂轴向力 vs β
+F_arm_plot = F_load ./ (4 * sind(beta_plot));
+fig2=figure('Color','w','Position',[100,100,600,420]);
+plot(beta_plot, F_arm_plot, 'r-', 'LineWidth', 2);
+xlabel('水平半角 β (°)'); ylabel('臂轴向力 (N)');
+title(sprintf('F_{arm} vs β (Q=%.0fkg)', Q_rated)); grid on;
+saveas(fig2, fullfile(fig_dir_str, 'lift_2臂轴向力.png')); close(fig2);
 
-subplot(2,3,3);  % 子图3: 各失效模式限制载荷柱状图
-bar(categorical(names), Qs, 'FaceColor', [0.3 0.5 0.8]);  % 蓝色柱状图
-hold on; yline(Q_rated, 'k--', 'LineWidth', 1.5);  % 黑色虚线: 额定载荷参考线
-ylabel('载荷 (kg)'); title('各失效模式限制载荷'); grid on;  % 标签和标题
+% 图3: 各失效模式限制载荷
+fig3=figure('Color','w','Position',[150,150,600,420]);
+bar(categorical(names), Qs, 'FaceColor', [0.3 0.5 0.8]);
+hold on; yline(Q_rated, 'k--', 'LineWidth', 1.5);
+ylabel('载荷 (kg)'); title('各失效模式限制载荷'); grid on;
+saveas(fig3, fullfile(fig_dir_str, 'lift_3限制载荷.png')); close(fig3);
 
-subplot(2,3,4);  % 子图4: 臂应力分量柱状图
-bar(categorical({'轴向','弯曲','组合'}), [sigma_axial, sigma_bend, sigma_comb]);  % 三组柱状
-hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);  % 红色虚线: 许用应力线
-ylabel('应力 (MPa)'); title(sprintf('臂应力分量 (%.0fkg)', Q_rated)); grid on;  % 标签和标题
+% 图4: 臂应力分量
+fig4=figure('Color','w','Position',[200,200,600,420]);
+bar(categorical({'轴向','弯曲','组合'}), [sigma_axial, sigma_bend, sigma_comb]);
+hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);
+ylabel('应力 (MPa)'); title(sprintf('臂应力分量 (%.0fkg)', Q_rated)); grid on;
+saveas(fig4, fullfile(fig_dir_str, 'lift_4应力分量.png')); close(fig4);
 
-subplot(2,3,5);  % 子图5: 屈曲安全系数 vs 载荷
-Q_sweep = linspace(10, 200, 100);  % 载荷扫描范围 10~200kg(100点)
-n_sweep = zeros(size(Q_sweep));  % 初始化安全系数数组
-for i = 1:length(Q_sweep)  % 逐载荷计算屈曲安全系数
-    Fa = Q_sweep(i)*9.81/(4*sind(beta_worst));  % 对应臂轴向力
-    n_sweep(i) = F_cr_b / Fa;  % 屈曲安全系数(加支撑后)
+% 图5: 屈曲安全系数 vs 载荷
+Q_sweep = linspace(10, 200, 100);
+n_sweep = zeros(size(Q_sweep));
+for i = 1:length(Q_sweep)
+    Fa = Q_sweep(i)*9.81/(4*sind(beta_worst));
+    n_sweep(i) = F_cr_b / Fa;
 end
-plot(Q_sweep, n_sweep, 'm-', 'LineWidth', 2);  % 品红色曲线: 安全系数
-hold on; yline(n_buckle, 'k--'); yline(1, 'r:');  % 要求安全线(n=3)和临界线(n=1)
-xlabel('载荷 (kg)'); ylabel('屈曲安全系数');  % 坐标轴标签
-title('屈曲安全系数 vs 载荷 (加支撑后)'); grid on;  % 标题+网格
+fig5=figure('Color','w','Position',[250,250,600,420]);
+plot(Q_sweep, n_sweep, 'm-', 'LineWidth', 2);
+hold on; yline(n_buckle, 'k--'); yline(1, 'r:');
+xlabel('载荷 (kg)'); ylabel('屈曲安全系数');
+title('屈曲安全系数 vs 载荷 (加支撑后)'); grid on;
+saveas(fig5, fullfile(fig_dir_str, 'lift_5屈曲安全系数.png')); close(fig5);
 
-subplot(2,3,6);  % 子图6: 台面弯曲应力 vs 载荷
-sigma_sweep = zeros(size(Q_sweep));  % 初始化应力数组
-for i = 1:length(Q_sweep)  % 逐载荷计算台面应力
-    qs = Q_sweep(i)*9.81/(platform_length*platform_width);  % 换算均布载荷
-    sigma_sweep(i) = qs*platform_width^2/8 / W_plt;  % 简支板最大弯曲应力
+% 图6: 台面弯曲应力 vs 载荷
+sigma_sweep = zeros(size(Q_sweep));
+for i = 1:length(Q_sweep)
+    qs = Q_sweep(i)*9.81/(platform_length*platform_width);
+    sigma_sweep(i) = qs*platform_width^2/8 / W_plt;
 end
-plot(Q_sweep, sigma_sweep, 'b-', 'LineWidth', 2);  % 蓝色曲线: 台面应力
-hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);  % 红色虚线: 许用应力线
-xlabel('载荷 (kg)'); ylabel('台面应力 (MPa)');  % 坐标轴标签
-title('台面弯曲应力 vs 载荷'); grid on;  % 标题+网格
-
-sgtitle(sprintf('剪叉升降台强度校核 | %.0f×%.0fmm扁钢 L=%.0fmm | 额定%.0fkg 最大%.0fkg', ...  % 总标题
-    B_arm, H_arm, L_arm, Q_rated, Q_max), 'FontSize', 14, 'FontWeight', 'bold');
+fig6=figure('Color','w','Position',[300,300,600,420]);
+plot(Q_sweep, sigma_sweep, 'b-', 'LineWidth', 2);
+hold on; yline(sigma_allow, 'r--', 'LineWidth', 1.5);
+xlabel('载荷 (kg)'); ylabel('台面应力 (MPa)');
+title('台面弯曲应力 vs 载荷'); grid on;
+saveas(fig6, fullfile(fig_dir_str, 'lift_6台面应力.png')); close(fig6);
 
 %% —— 校核结果汇总 ——
 fprintf('\n========== 剪叉升降台强度校核报告 (%.0fkg) ==========\n', Q_rated);  % 打印报告标题

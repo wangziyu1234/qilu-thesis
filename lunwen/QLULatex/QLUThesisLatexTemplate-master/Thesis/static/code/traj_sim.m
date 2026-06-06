@@ -45,35 +45,31 @@ for i = 1:Ncase  % 遍历四种轨迹
 end
 legend('Location', 'best');  % 图例自动放置
 
-%% 控制输入与轮速曲线
-figure('Color', 'w', 'Name', '控制输入与轮速曲线');  % 创建图窗
-tiledlayout(3, 1, 'TileSpacing', 'compact', 'Padding', 'compact');  % 3行1列紧凑布局
+%% 控制输入与轮速曲线（独立图片）
+fig_dir_a = fullfile(fileparts(mfilename('fullpath')), '..', 'figures');
+if ~exist(fig_dir_a, 'dir'), mkdir(fig_dir_a); end
 
-nexttile;  % 第1行: 线速度指令
-hold on; grid on;  % 开启图形保持和网格
-for i = 1:Ncase  % 遍历四种轨迹
-    s = results{i};
-    plot(s.t(1:end-1), s.v_cmd, 'LineWidth', 1.5, 'Color', s.color, 'DisplayName', s.name);  % 绘制线速度指令曲线
-end
-ylabel('v (m/s)'); title('线速度指令');  % Y轴标签和图标题
-legend('Location', 'best');  % 图例自动放置
+% 图1: 线速度指令
+fig_v=figure('Color','w','Position',[50,50,650,420]); hold on; grid on;
+for i = 1:Ncase, s = results{i}; plot(s.t(1:end-1), s.v_cmd, 'LineWidth', 1.5, 'Color', s.color, 'DisplayName', s.name); end
+xlabel('时间 (s)'); ylabel('v (m/s)'); title('线速度指令'); legend('Location','best');
+saveas(fig_v, fullfile(fig_dir_a, 'a_线速度指令.png')); close(fig_v);
 
-nexttile;  % 第2行: 角速度指令
-hold on; grid on;  % 开启图形保持和网格
-for i = 1:Ncase  % 遍历四种轨迹
-    s = results{i};
-    plot(s.t(1:end-1), s.omega_cmd, 'LineWidth', 1.5, 'Color', s.color, 'DisplayName', s.name);  % 绘制角速度指令曲线
-end
-ylabel('\omega (rad/s)'); title('角速度指令');  % Y轴标签和图标题
+% 图2: 角速度指令
+fig_w=figure('Color','w','Position',[100,100,650,420]); hold on; grid on;
+for i = 1:Ncase, s = results{i}; plot(s.t(1:end-1), s.omega_cmd, 'LineWidth', 1.5, 'Color', s.color, 'DisplayName', s.name); end
+xlabel('时间 (s)'); ylabel('\omega (rad/s)'); title('角速度指令'); legend('Location','best');
+saveas(fig_w, fullfile(fig_dir_a, 'a_角速度指令.png')); close(fig_w);
 
-nexttile;  % 第3行: 左右轮角速度
-hold on; grid on;  % 开启图形保持和网格
-for i = 1:Ncase  % 遍历四种轨迹
+% 图3: 左右轮角速度
+fig_wr=figure('Color','w','Position',[150,150,650,420]); hold on; grid on;
+for i = 1:Ncase
     s = results{i};
-    plot(s.t(1:end-1), s.wr, '-', 'LineWidth', 1.1, 'Color', s.color, 'DisplayName', [s.name, ' 右轮']);  % 右轮角速度(实线)
-    plot(s.t(1:end-1), s.wl, '--', 'LineWidth', 1.1, 'Color', s.color, 'DisplayName', [s.name, ' 左轮']);  % 左轮角速度(虚线)
+    plot(s.t(1:end-1), s.wr, '-', 'LineWidth', 1.1, 'Color', s.color, 'DisplayName', [s.name, ' 右轮']);
+    plot(s.t(1:end-1), s.wl, '--', 'LineWidth', 1.1, 'Color', s.color, 'DisplayName', [s.name, ' 左轮']);
 end
-xlabel('时间 (s)'); ylabel('轮角速度 (rad/s)'); title('左右轮角速度');  % 坐标轴标签和图标题
+xlabel('时间 (s)'); ylabel('轮角速度 (rad/s)'); title('左右轮角速度'); legend('Location','best','FontSize',7);
+saveas(fig_wr, fullfile(fig_dir_a, 'a_左右轮角速度.png')); close(fig_wr);
 
 %% 瞬时曲率对比
 figure('Color', 'w', 'Name', '曲率变化曲线');  % 创建图窗

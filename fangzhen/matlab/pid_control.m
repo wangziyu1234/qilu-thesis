@@ -1,4 +1,7 @@
 %% 双轮差速AGV双环PID控制仿真
+%  外环(位姿环): 根据位置/航向偏差计算速度指令 v_cmd, ω_cmd
+%  内环(轮速环): PI控制左右轮跟踪逆运动学解算的轮速指令
+%  四种场景：阶跃响应、定点镇定、直线跟踪、圆形轨迹跟踪
 clear; close all; clc;
 
 %% —— 系统参数 ——
@@ -152,7 +155,7 @@ for k = 1:N-1
     eL = wL_ref(k) - wL_act(k);  % 左轮偏差
     eR = wR_ref(k) - wR_act(k);  % 右轮偏差
 
-    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值=最高轮速≈5.6rad/s)
+    if abs(eL) < 5.0, int_L = int_L + eL * Ts; else int_L = 0; end  % 积分分离(阈值≈最高轮速5.6rad/s)
     if abs(eR) < 5.0, int_R = int_R + eR * Ts; else int_R = 0; end
 
     uL(k) = Kp_v * eL + Ki_v * int_L;  % 左PI
@@ -186,119 +189,129 @@ for k = 1:N-1
 end
 fprintf('仿真完成。\n');
 
-%% —— 结果可视化 ——
+%% —— 结果可视化 (每张图独立保存) ——
 
-figure('Name','双轮差速PID控制仿真','NumberTitle','off',...
-       'Position',[100 60 1200 750]);
+out_dir = fullfile(fileparts(mfilename('fullpath')), 'figures');  % 图片输出目录
+if ~exist(out_dir, 'dir'), mkdir(out_dir); end
+v_cur_all = r/2 * (wL_act + wR_act);  % 由轮速反算实际线速度
+w_cur_all = r/L * (wR_act - wL_act);  % 由轮速反算实际角速度
+prefix = sprintf('仿真结果_场景%d_%s', SCENARIO, scenario_names{SCENARIO});
 
-subplot(2,3,1);  hold on;  grid on;  axis equal;  % XY轨迹
-
+% ---- 图1: XY轨迹 ----
+fig1 = figure('Color','w','Position',[50,50,650,500]);
+hold on; grid on; axis equal;
 switch SCENARIO
-    case 1  % 阶跃响应
+    case 1
         plot(x, y, 'b-', 'LineWidth', 1.5);
         plot(x(1), y(1), 'ko', 'MarkerSize', 8, 'LineWidth', 1.5);
         legend('实际轨迹','起点','Location','best');
-        title('阶跃响应轨迹');
-    case 2  % 定点镇定
+    case 2
         plot(x, y, 'b-', 'LineWidth', 1.5);
         plot(x_tgt, y_tgt, 'r*', 'MarkerSize', 12, 'LineWidth', 2);
         plot(x(1), y(1), 'ko', 'MarkerSize', 8, 'LineWidth', 1.5);
         legend('实际轨迹','目标点','起点','Location','best');
-        title('定点镇定轨迹');
-    case 3  % 直线跟踪
+    case 3
         plot(x, y, 'b-', 'LineWidth', 1.5);
         yline(0.6, 'r--', 'LineWidth', 1.5);
         legend('实际轨迹','目标直线','Location','best');
-        title('直线跟踪轨迹');
-    case 4  % 圆形跟踪
+    case 4
         plot(x, y, 'b-', 'LineWidth', 1.2);
-        theta_plot = linspace(0, 2*pi, 200);
-        plot(R_c*cos(theta_plot), R_c*sin(theta_plot), 'r--', 'LineWidth', 1.5);
+        th_plot = linspace(0, 2*pi, 200);
+        plot(R_c*cos(th_plot), R_c*sin(th_plot), 'r--', 'LineWidth', 1.5);
         legend('实际轨迹','参考圆','Location','best');
-        title('圆形轨迹跟踪');
 end
-xlabel('X [m]');  ylabel('Y [m]');
+xlabel('X [m]'); ylabel('Y [m]');
+title(sprintf('%s — 轨迹', scenario_names{SCENARIO}));
+saveas(fig1, fullfile(out_dir, [prefix '_1轨迹.png'])); close(fig1);
 
-subplot(2,3,2);  hold on;  grid on;  % 线速度
-v_cur_all = r/2 * (wL_act + wR_act);
-plot(t, v_cur_all, 'b-', 'LineWidth', 1.2);
-plot(t, v_ref, 'r--', 'LineWidth', 1.2);
-xlabel('时间 [s]');  ylabel('线速度 [m/s]');
-legend('实际 v','参考 v','Location','best');
-title('线速度跟踪');
+% ---- 图2: 线速度跟踪 ----
+fig2 = figure('Color','w','Position',[100,100,650,420]);
+hold on; grid on;
+plot(t, v_ref, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 v');
+plot(t, v_cur_all, 'b-', 'LineWidth', 1.5, 'DisplayName','实际 v');
+xlabel('时间 [s]'); ylabel('线速度 [m/s]');
+title(sprintf('%s — 线速度跟踪', scenario_names{SCENARIO}));
+legend('Location','best');
+saveas(fig2, fullfile(out_dir, [prefix '_2线速度.png'])); close(fig2);
 
-subplot(2,3,3);  hold on;  grid on;  % 角速度
-w_cur_all = r/L * (wR_act - wL_act);
-plot(t, w_cur_all, 'b-', 'LineWidth', 1.2);
-plot(t, w_ref, 'r--', 'LineWidth', 1.2);
-xlabel('时间 [s]');  ylabel('角速度 [rad/s]');
-legend('实际 \omega','参考 \omega','Location','best');
-title('角速度跟踪');
+% ---- 图3: 角速度跟踪 ----
+fig3 = figure('Color','w','Position',[150,150,650,420]);
+hold on; grid on;
+plot(t, w_ref, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 \omega');
+plot(t, w_cur_all, 'b-', 'LineWidth', 1.5, 'DisplayName','实际 \omega');
+xlabel('时间 [s]'); ylabel('角速度 [rad/s]');
+title(sprintf('%s — 角速度跟踪', scenario_names{SCENARIO}));
+legend('Location','best');
+saveas(fig3, fullfile(out_dir, [prefix '_3角速度.png'])); close(fig3);
 
-subplot(2,3,4);  hold on;  grid on;  % 轮速跟踪
-plot(t, wL_act, 'b-', 'LineWidth', 1.0);
-plot(t, wR_act, 'r-', 'LineWidth', 1.0);
-plot(t, wL_ref, 'b--', 'LineWidth', 0.8);
-plot(t, wR_ref, 'r--', 'LineWidth', 0.8);
-xlabel('时间 [s]');  ylabel('轮速 [rad/s]');
-legend('\omega_L 实际','\omega_R 实际','\omega_L 指令','\omega_R 指令','Location','best');
-title('左右轮速跟踪');
+% ---- 图4: 左右轮速跟踪 ----
+fig4 = figure('Color','w','Position',[200,200,650,420]);
+hold on; grid on;
+plot(t, wL_act, 'b-', 'LineWidth', 1.0, 'DisplayName','\omega_L 实际');
+plot(t, wR_act, 'r-', 'LineWidth', 1.0, 'DisplayName','\omega_R 实际');
+plot(t, wL_ref, 'b--', 'LineWidth', 0.8, 'DisplayName','\omega_L 指令');
+plot(t, wR_ref, 'r--', 'LineWidth', 0.8, 'DisplayName','\omega_R 指令');
+xlabel('时间 [s]'); ylabel('轮速 [rad/s]');
+title(sprintf('%s — 左右轮速跟踪', scenario_names{SCENARIO}));
+legend('Location','best');
+saveas(fig4, fullfile(out_dir, [prefix '_4轮速.png'])); close(fig4);
 
-subplot(2,3,5);  hold on;  grid on;  % 电机电压
-plot(t, uL, 'b-', 'LineWidth', 1.0);
-plot(t, uR, 'r-', 'LineWidth', 1.0);
-yline(u_sat, 'k--');  yline(-u_sat, 'k--');
-xlabel('时间 [s]');  ylabel('电压 [V]');
-legend('u_L','u_R','饱和限','Location','best');
-title('电机控制电压');
+% ---- 图5: 电机电压 ----
+fig5 = figure('Color','w','Position',[250,250,650,420]);
+hold on; grid on;
+plot(t, uL, 'b-', 'LineWidth', 1.0, 'DisplayName','u_L');
+plot(t, uR, 'r-', 'LineWidth', 1.0, 'DisplayName','u_R');
+yline(u_sat, 'k--', 'DisplayName','饱和限');
+yline(-u_sat, 'k--', 'HandleVisibility','off');
+xlabel('时间 [s]'); ylabel('电压 [V]');
+title(sprintf('%s — 电机控制电压', scenario_names{SCENARIO}));
+legend('Location','best');
+saveas(fig5, fullfile(out_dir, [prefix '_5电压.png'])); close(fig5);
 
-subplot(2,3,6);  hold on;  grid on;  % 航向角
-plot(t, theta_act * 180/pi, 'b-', 'LineWidth', 1.2);
+% ---- 图6: 航向角 ----
+fig6 = figure('Color','w','Position',[300,300,650,420]);
+hold on; grid on;
+plot(t, theta_act * 180/pi, 'b-', 'LineWidth', 1.2, 'DisplayName','实际 \theta');
 if SCENARIO == 4
-    plot(t, w_c * t * 180/pi, 'r--', 'LineWidth', 1.2);
-    legend('实际 \theta','参考 \theta','Location','best');
+    plot(t, w_c * t * 180/pi, 'r--', 'LineWidth', 1.2, 'DisplayName','参考 \theta');
 elseif SCENARIO == 2
-    yline(theta_tgt*180/pi, 'r--', 'LineWidth', 1.2);
-    legend('实际 \theta','目标 \theta','Location','best');
+    yline(theta_tgt*180/pi, 'r--', 'LineWidth', 1.2, 'DisplayName','目标 \theta');
 end
-xlabel('时间 [s]');  ylabel('航向角 [deg]');
-title('航向角响应');
+xlabel('时间 [s]'); ylabel('航向角 [deg]');
+title(sprintf('%s — 航向角响应', scenario_names{SCENARIO}));
+legend('Location','best');
+saveas(fig6, fullfile(out_dir, [prefix '_6航向角.png'])); close(fig6);
 
-sgtitle('双轮差速AGV 双环PID控制仿真结果','FontSize',14,'FontWeight','bold');
-
-out_dir = fileparts(mfilename('fullpath'));
-fname = fullfile(out_dir, ['仿真结果_场景' num2str(SCENARIO) '_' scenario_names{SCENARIO} '.png']);
-saveas(gcf, fname);
-fprintf('图片已保存: %s\n', fname);
+fprintf('图片已保存: %s_1~6*.png\n', prefix);
 
 %% —— 控制性能指标 ——
 
-fprintf('\n========== 控制性能指标 ==========\n');
+fprintf('\n========== 控制性能指标 ==========\n');  % 打印指标表头
 
-idx_ss = floor(0.75*N):N;  % 稳态段(后1/4数据)
-switch SCENARIO
-    case 1  % 速度稳态误差
-        v_err_ss = mean(abs(v_ref(idx_ss) - v_cur_all(idx_ss)));
-        fprintf('速度稳态误差: %.4f m/s\n', v_err_ss);
+idx_ss = floor(0.75*N):N;  % 稳态段索引(后1/4数据用于计算稳态指标)
+switch SCENARIO  % 根据场景计算不同指标
+    case 1  % 阶跃响应: 速度稳态误差
+        v_err_ss = mean(abs(v_ref(idx_ss) - v_cur_all(idx_ss)));  % 稳态段速度偏差均值
+        fprintf('速度稳态误差: %.4f m/s\n', v_err_ss);  % 打印速度稳态误差
 
-    case 2  % 终点误差
-        x_err = x_tgt - x(end);  y_err = y_tgt - y(end);
-        t_err = theta_tgt - theta_act(end);
-        t_err = atan2(sin(t_err), cos(t_err));
-        fprintf('终点位置误差: (%.4f, %.4f) m\n', x_err, y_err);
-        fprintf('终点航向误差: %.2f deg\n', t_err * 180/pi);
+    case 2  % 定点镇定: 终点位置和航向误差
+        x_err = x_tgt - x(end);  y_err = y_tgt - y(end);  % X和Y方向终点误差
+        t_err = theta_tgt - theta_act(end);  % 航向角终点误差
+        t_err = atan2(sin(t_err), cos(t_err));  % 航向误差归一化到[-π,π]
+        fprintf('终点位置误差: (%.4f, %.4f) m\n', x_err, y_err);  % 打印位置误差
+        fprintf('终点航向误差: %.2f deg\n', t_err * 180/pi);  % 打印航向误差(°)
 
-    case {3, 4}  % 连续跟踪RMSE
-        v_err_rmse = sqrt(mean((v_ref(idx_ss) - v_cur_all(idx_ss)).^2));
-        w_err_rmse = sqrt(mean((w_ref(idx_ss) - w_cur_all(idx_ss)).^2));
-        fprintf('线速度 RMSE: %.4f m/s\n', v_err_rmse);
-        fprintf('角速度 RMSE: %.4f rad/s\n', w_err_rmse);
-        if SCENARIO == 4
-            dist_to_center = abs(sqrt(x.^2 + y.^2) - R_c);
-            fprintf('轨迹圆度 RMSE: %.4f m\n', sqrt(mean(dist_to_center(idx_ss).^2)));
+    case {3, 4}  % 直线/圆形跟踪: 线速度和角速度RMSE
+        v_err_rmse = sqrt(mean((v_ref(idx_ss) - v_cur_all(idx_ss)).^2));  % 线速度RMSE
+        w_err_rmse = sqrt(mean((w_ref(idx_ss) - w_cur_all(idx_ss)).^2));  % 角速度RMSE
+        fprintf('线速度 RMSE: %.4f m/s\n', v_err_rmse);  % 打印线速度RMSE
+        fprintf('角速度 RMSE: %.4f rad/s\n', w_err_rmse);  % 打印角速度RMSE
+        if SCENARIO == 4  % 圆形跟踪额外计算轨迹圆度
+            dist_to_center = abs(sqrt(x.^2 + y.^2) - R_c);  % 各点到圆心的距离与半径之差
+            fprintf('轨迹圆度 RMSE: %.4f m\n', sqrt(mean(dist_to_center(idx_ss).^2)));  % 打印圆度RMSE
         end
 end
 
-end  % for SCENARIO = 1:4
+end  % for SCENARIO = 1:4 (四种场景循环结束)
 
-fprintf('================================\n');
+fprintf('================================\n');  % 打印结束分隔线
