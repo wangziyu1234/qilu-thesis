@@ -5,6 +5,8 @@ node_modules/
 .conda/
 __pycache__/
 *.pyc
+package.json
+package-lock.json
 
 # 编译产物
 *.aux
@@ -21,6 +23,8 @@ __pycache__/
 *.nav
 *.snm
 *.vrb
+*.xdv
+*.thm
 
 # 系统文件
 .DS_Store
@@ -31,6 +35,14 @@ desktop.ini
 *.swp
 *.swo
 *~
+.vscode/
+
+# IDE配置
+.claude/
+CLAUDE_TIPS.md
+
+# SolidWorks备份
+*.bak
 
 # Git备份
 .git.bak/
