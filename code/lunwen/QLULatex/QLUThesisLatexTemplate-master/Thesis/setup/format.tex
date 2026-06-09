@@ -267,6 +267,7 @@
 \def\cauthor#1{\def\@cauthor{#1}}\def\@cauthor{}
 \def\cnumber#1{\def\@cnumber{#1}}\def\@cnumber{}
 \def\csupervisor#1{\def\@csupervisor{#1}}\def\@csupervisor{}
+\def\csecondsupervisor#1{\def\@csecondsupervisor{#1}}\def\@csecondsupervisor{}
 \def\crank#1{\def\@crank{#1}}\def\@crank{}
 \def\cdate#1{\def\@cdate{#1}}\def\@cdate{}
 \long\def\cabstract#1{\long\def\@cabstract{#1}}\long\def\@cabstract{}
@@ -294,7 +295,8 @@
     \heiti\sihao{{专\quad 业\quad 班\quad 级}} &  \underline{\makebox[\@title@width][c]{\@csubject}} \\[0.34em]
     \heiti\sihao{{学\quad 生\quad 姓\quad 名}}  &  \underline{\makebox[\@title@width][c]{\@cauthor}}\\[0.34em]
     \heiti\sihao{{学\qquad\qquad\ \ \  号}} &  \underline{\makebox[\@title@width][c]{\@cnumber}} \\[0.34em]
-    \heiti\sihao{{导\quad 师\quad 姓\quad 名}} &  \underline{\makebox[\@title@width][c]{\@csupervisor}} \\
+    \heiti\sihao{{导\quad 师\quad 姓\quad 名}} &  \underline{\makebox[\@title@width][c]{\@csupervisor}} \\[0.34em]
+    \heiti\sihao{{第二导师姓名}} &  \underline{\makebox[\@title@width][c]{\@csecondsupervisor}} \\
     \end{tabular}
     }
 }
