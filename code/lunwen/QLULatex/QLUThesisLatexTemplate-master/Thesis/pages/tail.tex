@@ -1,0 +1,62 @@
+% !Mode:: "TeX:UTF-8"
+
+%? ************************************************************* %?
+%?                                                               %?
+%?                   您将在此处完成致谢和附录内容                     %?
+%?                                                               %?
+%? ************************************************************* %?
+
+% ====================== 致谢 ======================
+
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{致\qquad 谢}}{致谢}}
+
+\chapter*{\sanhao\heiti\textbf{致\qquad 谢}}
+
+本论文的完成离不开众多师长和亲友的关心与帮助，在此谨致以诚挚的谢意。
+
+首先感谢我的指导老师刘鹏博老师。从选题方向的确定到总体方案的论证，从剪叉机构的力学分析到Hybrid A*算法的调试优化，刘老师始终给予我悉心的指导和严格的要求。刘老师严谨的治学态度和对技术问题深入钻研的精神，使我在本科阶段受益匪浅，也为今后的学习和工作树立了榜样。
+
+感谢仪效哲学长在论文撰写过程中给予的宝贵帮助。学长在MATLAB仿真调试和理论推导方面提供了许多切实的建议，尤其在PID参数整定和路径规划算法优化方面使我获益良多。
+
+感谢我的同学们。四年的共同学习和生活，彼此之间的讨论与鼓励，是我完成学业的重要动力。
+
+感谢我的父母多年来的养育之恩和默默支持。你们的理解与关爱，是我求学路上最坚实的后盾。
+
+最后，向所有在本论文研究和撰写过程中给予帮助的人们表示衷心的感谢。
+
+
+% ====================== 附录A：MATLAB仿真程序代码 ======================
+
+\chapter*{\sanhao\heiti\textbf{附录A\quad MATLAB仿真程序代码}}
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao\heiti{附录A\quad MATLAB仿真程序代码}}{附录A}}
+
+\noindent \textbf{附A1}\quad 典型轨迹运动学仿真程序 \texttt{traj\_sim.m}
+
+\lstinputlisting[language=Matlab]{static/code/traj_sim.m}
+
+\vspace{1em}
+
+\noindent \textbf{附A2}\quad Hybrid A*路径规划仿真程序 \texttt{hybrid\_astar.m}
+
+\lstinputlisting[language=Matlab]{static/code/hybrid_astar.m}
+
+\vspace{1em}
+
+\noindent \textbf{附A3}\quad 红外循迹PID仿真程序 \texttt{tracking\_pid.m}
+
+\lstinputlisting[language=Matlab]{static/code/tracking_pid.m}
+
+\vspace{1em}
+
+\noindent \textbf{附A4}\quad 双环PID与单环PID对比仿真程序 \texttt{pid\_control.m}
+
+\lstinputlisting[language=Matlab]{static/code/pid_control.m}
+
+\vspace{1em}
+
+\noindent \textbf{附A5}\quad 剪叉式升降机构强度校核与载重分析程序 \texttt{lift\_strength.m}
+
+\lstinputlisting[language=Matlab]{static/code/lift_strength.m}
+
+
+

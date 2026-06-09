@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eee" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="700" fill="#fafafa"/>
+  <rect width="600" height="700" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="300" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">双轮差速移动机器人模型（俯视图）</text>
+  <text x="300" y="55" text-anchor="middle" font-size="12" fill="#888">2 驱动轮 + 4 万向轮</text>
+
+  <!-- Chassis (main body) -->
+  <rect x="150" y="180" width="300" height="400" rx="20" ry="20" fill="#e8f0fe" stroke="#4285f4" stroke-width="3"/>
+
+  <!-- Internal structure lines -->
+  <line x1="150" y1="380" x2="450" y2="380" stroke="#4285f4" stroke-width="1" stroke-dasharray="8,4" opacity="0.3"/>
+  <line x1="300" y1="180" x2="300" y2="580" stroke="#4285f4" stroke-width="1" stroke-dasharray="8,4" opacity="0.3"/>
+
+  <!-- ============ 左驱动轮 ============ -->
+  <g>
+    <rect x="155" y="345" width="35" height="70" rx="5" fill="#34a853" stroke="#1e7e34" stroke-width="2.5"/>
+    <line x1="163" y1="353" x2="163" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <line x1="172" y1="353" x2="172" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <line x1="181" y1="353" x2="181" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <text x="172" y="435" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e7e34">左驱动轮</text>
+    <!-- Motor symbol -->
+    <circle cx="190" cy="380" r="9" fill="#fbbc04" stroke="#e09800" stroke-width="2"/>
+    <text x="190" y="384" text-anchor="middle" font-size="9" font-weight="bold" fill="#333">M</text>
+  </g>
+
+  <!-- ============ 右驱动轮 ============ -->
+  <g>
+    <rect x="410" y="345" width="35" height="70" rx="5" fill="#34a853" stroke="#1e7e34" stroke-width="2.5"/>
+    <line x1="418" y1="353" x2="418" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <line x1="427" y1="353" x2="427" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <line x1="436" y1="353" x2="436" y2="407" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+    <text x="427" y="435" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e7e34">右驱动轮</text>
+    <!-- Motor symbol -->
+    <circle cx="410" cy="380" r="9" fill="#fbbc04" stroke="#e09800" stroke-width="2"/>
+    <text x="410" y="384" text-anchor="middle" font-size="9" font-weight="bold" fill="#333">M</text>
+  </g>
+
+  <!-- ============ 万向轮 1 (左前) ============ -->
+  <g>
+    <ellipse cx="190" cy="210" rx="22" ry="18" fill="#ea4335" stroke="#c5221f" stroke-width="2"/>
+    <line x1="175" y1="200" x2="205" y2="220" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <line x1="175" y1="220" x2="205" y2="200" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <circle cx="190" cy="210" r="3" fill="#fff"/>
+    <text x="190" y="245" text-anchor="middle" font-size="11" fill="#c5221f">万向轮1</text>
+  </g>
+
+  <!-- ============ 万向轮 2 (右前) ============ -->
+  <g>
+    <ellipse cx="410" cy="210" rx="22" ry="18" fill="#ea4335" stroke="#c5221f" stroke-width="2"/>
+    <line x1="395" y1="200" x2="425" y2="220" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <line x1="395" y1="220" x2="425" y2="200" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <circle cx="410" cy="210" r="3" fill="#fff"/>
+    <text x="410" y="245" text-anchor="middle" font-size="11" fill="#c5221f">万向轮2</text>
+  </g>
+
+  <!-- ============ 万向轮 3 (左后) ============ -->
+  <g>
+    <ellipse cx="190" cy="555" rx="22" ry="18" fill="#ea4335" stroke="#c5221f" stroke-width="2"/>
+    <line x1="175" y1="545" x2="205" y2="565" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <line x1="175" y1="565" x2="205" y2="545" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <circle cx="190" cy="555" r="3" fill="#fff"/>
+    <text x="190" y="590" text-anchor="middle" font-size="11" fill="#c5221f">万向轮3</text>
+  </g>
+
+  <!-- ============ 万向轮 4 (右后) ============ -->
+  <g>
+    <ellipse cx="410" cy="555" rx="22" ry="18" fill="#ea4335" stroke="#c5221f" stroke-width="2"/>
+    <line x1="395" y1="545" x2="425" y2="565" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <line x1="395" y1="565" x2="425" y2="545" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+    <circle cx="410" cy="555" r="3" fill="#fff"/>
+    <text x="410" y="590" text-anchor="middle" font-size="11" fill="#c5221f">万向轮4</text>
+  </g>
+
+  <!-- ============ 坐标系 ============ -->
+  <g transform="translate(300, 380)">
+    <!-- X axis -->
+    <line x1="0" y1="0" x2="60" y2="0" stroke="#d93025" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="68" y="5" font-size="14" font-weight="bold" fill="#d93025">X</text>
+    <!-- Y axis (pointing up in robot frame) -->
+    <line x1="0" y1="0" x2="0" y2="-60" stroke="#1a73e8" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="-5" y="-66" font-size="14" font-weight="bold" fill="#1a73e8">Y</text>
+    <!-- Origin -->
+    <circle cx="0" cy="0" r="4" fill="#333"/>
+    <text x="10" y="18" font-size="11" fill="#555">O</text>
+  </g>
+
+  <!-- ============ 尺寸标注 ============ -->
+  <!-- 轮距 L (左右驱动轮间距) -->
+  <line x1="172" y1="380" x2="427" y2="380" stroke="#ff6d00" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="172" y1="370" x2="172" y2="390" stroke="#ff6d00" stroke-width="1.5"/>
+  <line x1="427" y1="370" x2="427" y2="390" stroke="#ff6d00" stroke-width="1.5"/>
+  <text x="300" y="375" text-anchor="middle" font-size="14" font-weight="bold" fill="#ff6d00">L（轮距）</text>
+
+  <!-- 轴距 D (前后万向轮间距) -->
+  <line x1="130" y1="210" x2="130" y2="555" stroke="#9c27b0" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="120" y1="210" x2="140" y2="210" stroke="#9c27b0" stroke-width="1.5"/>
+  <line x1="120" y1="555" x2="140" y2="555" stroke="#9c27b0" stroke-width="1.5"/>
+  <text x="115" y="385" text-anchor="middle" font-size="13" font-weight="bold" fill="#9c27b0" transform="rotate(-90,115,385)">D（轴距）</text>
+
+  <!-- ============ 运动方向箭头 ============ -->
+  <g transform="translate(300, 380)">
+    <line x1="0" y1="20" x2="0" y2="80" stroke="#333" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="15" y="60" font-size="12" fill="#555">前进方向</text>
+  </g>
+
+  <!-- ============ 图例 ============ -->
+  <g transform="translate(60, 640)">
+    <rect x="0" y="0" width="480" height="45" rx="6" fill="#fff" stroke="#ddd" stroke-width="1"/>
+    <!-- 驱动轮图例 -->
+    <rect x="15" y="12" width="20" height="20" rx="3" fill="#34a853" stroke="#1e7e34" stroke-width="1"/>
+    <text x="42" y="27" font-size="12" fill="#333">驱动轮（差速驱动）</text>
+    <!-- 万向轮图例 -->
+    <ellipse cx="210" cy="22" rx="10" ry="8" fill="#ea4335" stroke="#c5221f" stroke-width="1"/>
+    <text x="225" y="27" font-size="12" fill="#333">万向轮（被动随动）</text>
+    <!-- 电机图例 -->
+    <circle cx="385" cy="22" r="8" fill="#fbbc04" stroke="#e09800" stroke-width="1"/>
+    <text x="396" y="27" font-size="11" font-weight="bold" fill="#333">M</text>
+    <text x="410" y="27" font-size="12" fill="#333">= 电机</text>
+  </g>
+</svg>

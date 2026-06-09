@@ -1,0 +1,1956 @@
+<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:cx="http://schemas.microsoft.com/office/drawing/2014/chartex" xmlns:cx1="http://schemas.microsoft.com/office/drawing/2015/9/8/chartex" xmlns:cx2="http://schemas.microsoft.com/office/drawing/2015/10/21/chartex" xmlns:cx3="http://schemas.microsoft.com/office/drawing/2016/5/9/chartex" xmlns:cx4="http://schemas.microsoft.com/office/drawing/2016/5/10/chartex" xmlns:cx5="http://schemas.microsoft.com/office/drawing/2016/5/11/chartex" xmlns:cx6="http://schemas.microsoft.com/office/drawing/2016/5/12/chartex" xmlns:cx7="http://schemas.microsoft.com/office/drawing/2016/5/13/chartex" xmlns:cx8="http://schemas.microsoft.com/office/drawing/2016/5/14/chartex" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:aink="http://schemas.microsoft.com/office/drawing/2016/ink" xmlns:am3d="http://schemas.microsoft.com/office/drawing/2017/model3d" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh wp14">
+  <w:body>
+    <w:p w14:paraId="0A97CC34" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+      <w:pPr>
+        <w:snapToGrid w:val="0"/>
+        <w:jc w:val="center"/>
+        <w:rPr>
+          <w:rFonts w:ascii="黑体" w:eastAsia="黑体" w:hAnsi="黑体" w:cs="黑体"/>
+          <w:b/>
+          <w:bCs/>
+          <w:sz w:val="32"/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+      <w:r>
+        <w:rPr>
+          <w:rFonts w:ascii="黑体" w:eastAsia="黑体" w:hAnsi="黑体" w:cs="黑体" w:hint="eastAsia"/>
+          <w:b/>
+          <w:bCs/>
+          <w:sz w:val="32"/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+        <w:t>齐鲁工业大学本科毕业论文（设计）中期进展报告表</w:t>
+      </w:r>
+    </w:p>
+    <w:p w14:paraId="0A97CC35" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+      <w:pPr>
+        <w:snapToGrid w:val="0"/>
+        <w:jc w:val="center"/>
+        <w:rPr>
+          <w:rFonts w:ascii="黑体" w:eastAsia="黑体" w:hAnsi="黑体" w:cs="黑体"/>
+          <w:b/>
+          <w:bCs/>
+          <w:sz w:val="32"/>
+          <w:szCs w:val="32"/>
+        </w:rPr>
+      </w:pPr>
+    </w:p>
+    <w:tbl>
+      <w:tblPr>
+        <w:tblW w:w="5000" w:type="pct"/>
+        <w:tblBorders>
+          <w:top w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+          <w:left w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+          <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+          <w:right w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+          <w:insideH w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+          <w:insideV w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+        </w:tblBorders>
+        <w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1"/>
+      </w:tblPr>
+      <w:tblGrid>
+        <w:gridCol w:w="1432"/>
+        <w:gridCol w:w="1676"/>
+        <w:gridCol w:w="804"/>
+        <w:gridCol w:w="1656"/>
+        <w:gridCol w:w="1307"/>
+        <w:gridCol w:w="1647"/>
+      </w:tblGrid>
+      <w:tr w:rsidR="00930CD5" w14:paraId="0A97CC3A" w14:textId="77777777">
+        <w:trPr>
+          <w:trHeight w:val="638"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1464" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC36" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>学部（学院）</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="4033" w:type="dxa"/>
+            <w:gridSpan w:val="3"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC37" w14:textId="3C8FB4B4" w:rsidR="008012EC" w:rsidRDefault="000658B3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>机械工程学部</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1346" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC38" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3" w:rsidP="000658B3">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>专业班级</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1679" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC39" w14:textId="1DBCBFD7" w:rsidR="008012EC" w:rsidRDefault="000658B3" w:rsidP="000658B3">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>机器人si</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>22-2</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00930CD5" w14:paraId="0A97CC41" w14:textId="77777777">
+        <w:trPr>
+          <w:trHeight w:val="656"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1464" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC3B" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>学生姓名</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1731" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC3C" w14:textId="07919324" w:rsidR="008012EC" w:rsidRDefault="000658B3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>王子煜</w:t>
+            </w:r>
+            
+            
+            
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="819" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC3D" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>学号</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1483" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC3E" w14:textId="5D85F1D9" w:rsidR="008012EC" w:rsidRDefault="000658B3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>2</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>02201230042</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1346" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC3F" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>导师姓名</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1679" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC40" w14:textId="7FF0BCEA" w:rsidR="008012EC" w:rsidRDefault="000658B3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>刘鹏博</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="00930CD5" w14:paraId="0A97CC44" w14:textId="77777777">
+        <w:trPr>
+          <w:trHeight w:val="623"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="1464" w:type="dxa"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC42" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>课题名称</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="7058" w:type="dxa"/>
+            <w:gridSpan w:val="5"/>
+            <w:vAlign w:val="center"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC43" w14:textId="4985CC93" w:rsidR="008012EC" w:rsidRDefault="00355213" w:rsidP="00355213">
+            <w:pPr>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>智能仓储自主移动机器人结构设计与控制</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="008012EC" w14:paraId="0A97CC5A" w14:textId="77777777">
+        <w:trPr>
+          <w:trHeight w:val="10424"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="8522" w:type="dxa"/>
+            <w:gridSpan w:val="6"/>
+            <w:tcBorders>
+              <w:bottom w:val="single" w:sz="4" w:space="0" w:color="auto"/>
+            </w:tcBorders>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC45" w14:textId="7CB64FD5" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>论文（设计）工作进展情况：</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC46" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>一、已完成的工作</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC47" w14:textId="4CFE90FB" w:rsidR="008012EC" w:rsidRDefault="00476D41">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>截止到毕业设计中期，已完成文献翻译，并查找</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>智能仓储自主移动机器人相关资料和文献，并初步确定了本设计的基本设计思路，同时撰写了开题报告，拟定了设计方案。</w:t>
+            </w:r>
+            
+            
+          </w:p>
+          <w:p w14:paraId="0A97CC4B" w14:textId="5BB697A4" w:rsidR="008012EC" w:rsidRDefault="00FB6BE1" w:rsidP="00A17278">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>设计内容主要是完成了本分代码撰写、本机构机械部分的选型和设计，并在solidworks软件中完成了相关机构的三维模型设计。</w:t>
+            </w:r>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="78871503" w14:textId="77777777" w:rsidR="006324CE" w:rsidRDefault="007F5693" w:rsidP="00A17278">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>主要的代码内容如下：</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="7F9B3874" w14:textId="29404668" w:rsidR="002850FC" w:rsidRPr="00F16EBE" w:rsidRDefault="004606CC" w:rsidP="00F16EBE">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="2"/>
+              </w:numPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>现已编写了三部分的初步代码，mpc控制，黏菌算法，和树莓派主版的编写，包括了循迹，传感器等（如图代码1</w:t>
+            </w:r>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>23</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>所示）。</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="4E3D849C" w14:textId="77777777" w:rsidR="00930CD5" w:rsidRDefault="00F16EBE" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:keepNext/>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:left="840" w:firstLineChars="0" w:firstLine="0"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:noProof/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:drawing>
+                <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="41744318" wp14:editId="4D23A1EA">
+                  <wp:extent cx="1928106" cy="2305050"/>
+                  <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                  <wp:docPr id="1" name="图片 1"/>
+                  <wp:cNvGraphicFramePr>
+                    <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+                  </wp:cNvGraphicFramePr>
+                  <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                    <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                      <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                        <pic:nvPicPr>
+                          <pic:cNvPr id="0" name="Picture 1"/>
+                          <pic:cNvPicPr>
+                            <a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>
+                          </pic:cNvPicPr>
+                        </pic:nvPicPr>
+                        <pic:blipFill>
+                          <a:blip r:embed="rId5" cstate="print">
+                            <a:extLst>
+                              <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+                              </a:ext>
+                            </a:extLst>
+                          </a:blip>
+                          <a:srcRect/>
+                          <a:stretch>
+                            <a:fillRect/>
+                          </a:stretch>
+                        </pic:blipFill>
+                        <pic:spPr bwMode="auto">
+                          <a:xfrm>
+                            <a:off x="0" y="0"/>
+                            <a:ext cx="1962143" cy="2345742"/>
+                          </a:xfrm>
+                          <a:prstGeom prst="rect">
+                            <a:avLst/>
+                          </a:prstGeom>
+                          <a:noFill/>
+                          <a:ln>
+                            <a:noFill/>
+                          </a:ln>
+                        </pic:spPr>
+                      </pic:pic>
+                    </a:graphicData>
+                  </a:graphic>
+                </wp:inline>
+              </w:drawing>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="2915333C" w14:textId="0B55BF88" w:rsidR="00930CD5" w:rsidRDefault="00930CD5" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a8"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:t xml:space="preserve">代码 </w:t>
+            </w:r>
+            
+            <w:r>
+              <w:fldChar w:fldCharType="begin"/>
+            <w:instrText xml:space="preserve"> </w:instrText></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:instrText xml:space="preserve">SEQ </w:instrText>
+            <w:instrText>代码</w:instrText><w:instrText xml:space="preserve"> \* ARABIC</w:instrText></w:r>
+            
+            
+            <w:r>
+              <w:instrText xml:space="preserve"> </w:instrText>
+            <w:fldChar w:fldCharType="separate"/></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>1</w:t>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="end"/>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="32F826C3" w14:textId="77777777" w:rsidR="00930CD5" w:rsidRDefault="00930CD5" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:keepNext/>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:left="840" w:firstLineChars="0" w:firstLine="0"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:noProof/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:lastRenderedPageBreak/>
+              <w:drawing>
+                <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="3AF46B29" wp14:editId="281C6F4E">
+                  <wp:extent cx="2258286" cy="2305050"/>
+                  <wp:effectExtent l="0" t="0" r="8890" b="0"/>
+                  <wp:docPr id="2" name="图片 2"/>
+                  <wp:cNvGraphicFramePr>
+                    <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+                  </wp:cNvGraphicFramePr>
+                  <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                    <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                      <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                        <pic:nvPicPr>
+                          <pic:cNvPr id="0" name="Picture 2"/>
+                          <pic:cNvPicPr>
+                            <a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>
+                          </pic:cNvPicPr>
+                        </pic:nvPicPr>
+                        <pic:blipFill>
+                          <a:blip r:embed="rId6" cstate="print">
+                            <a:extLst>
+                              <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+                              </a:ext>
+                            </a:extLst>
+                          </a:blip>
+                          <a:srcRect/>
+                          <a:stretch>
+                            <a:fillRect/>
+                          </a:stretch>
+                        </pic:blipFill>
+                        <pic:spPr bwMode="auto">
+                          <a:xfrm>
+                            <a:off x="0" y="0"/>
+                            <a:ext cx="2297636" cy="2345215"/>
+                          </a:xfrm>
+                          <a:prstGeom prst="rect">
+                            <a:avLst/>
+                          </a:prstGeom>
+                          <a:noFill/>
+                          <a:ln>
+                            <a:noFill/>
+                          </a:ln>
+                        </pic:spPr>
+                      </pic:pic>
+                    </a:graphicData>
+                  </a:graphic>
+                </wp:inline>
+              </w:drawing>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="74F3C984" w14:textId="04228812" w:rsidR="00930CD5" w:rsidRDefault="00930CD5" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a8"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:t xml:space="preserve">代码 </w:t>
+            </w:r>
+            
+            <w:r>
+              <w:fldChar w:fldCharType="begin"/>
+            <w:instrText xml:space="preserve"> </w:instrText></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:instrText xml:space="preserve">SEQ </w:instrText>
+            <w:instrText>代码</w:instrText><w:instrText xml:space="preserve"> \* ARABIC</w:instrText></w:r>
+            
+            
+            <w:r>
+              <w:instrText xml:space="preserve"> </w:instrText>
+            <w:fldChar w:fldCharType="separate"/></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>2</w:t>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="end"/>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="52D6EC8A" w14:textId="77777777" w:rsidR="00930CD5" w:rsidRDefault="00930CD5" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:keepNext/>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:left="840" w:firstLineChars="0" w:firstLine="0"/>
+              <w:jc w:val="center"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:noProof/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:drawing>
+                <wp:inline distT="0" distB="0" distL="0" distR="0" wp14:anchorId="6382EBA7" wp14:editId="31265025">
+                  <wp:extent cx="2423150" cy="2768600"/>
+                  <wp:effectExtent l="0" t="0" r="0" b="0"/>
+                  <wp:docPr id="3" name="图片 3"/>
+                  <wp:cNvGraphicFramePr>
+                    <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
+                  </wp:cNvGraphicFramePr>
+                  <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+                    <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                      <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
+                        <pic:nvPicPr>
+                          <pic:cNvPr id="0" name="Picture 3"/>
+                          <pic:cNvPicPr>
+                            <a:picLocks noChangeAspect="1" noChangeArrowheads="1"/>
+                          </pic:cNvPicPr>
+                        </pic:nvPicPr>
+                        <pic:blipFill>
+                          <a:blip r:embed="rId7">
+                            <a:extLst>
+                              <a:ext uri="{28A0092B-C50C-407E-A947-70E740481C1C}">
+                                <a14:useLocalDpi xmlns:a14="http://schemas.microsoft.com/office/drawing/2010/main" val="0"/>
+                              </a:ext>
+                            </a:extLst>
+                          </a:blip>
+                          <a:srcRect/>
+                          <a:stretch>
+                            <a:fillRect/>
+                          </a:stretch>
+                        </pic:blipFill>
+                        <pic:spPr bwMode="auto">
+                          <a:xfrm>
+                            <a:off x="0" y="0"/>
+                            <a:ext cx="2441301" cy="2789338"/>
+                          </a:xfrm>
+                          <a:prstGeom prst="rect">
+                            <a:avLst/>
+                          </a:prstGeom>
+                          <a:noFill/>
+                          <a:ln>
+                            <a:noFill/>
+                          </a:ln>
+                        </pic:spPr>
+                      </pic:pic>
+                    </a:graphicData>
+                  </a:graphic>
+                </wp:inline>
+              </w:drawing>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0C2EBF61" w14:textId="57D73117" w:rsidR="00F16EBE" w:rsidRPr="00F16EBE" w:rsidRDefault="00930CD5" w:rsidP="00930CD5">
+            <w:pPr>
+              <w:pStyle w:val="a8"/>
+              <w:jc w:val="center"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:t xml:space="preserve">代码 </w:t>
+            </w:r>
+            
+            <w:r>
+              <w:fldChar w:fldCharType="begin"/>
+            <w:instrText xml:space="preserve"> </w:instrText></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:hint="eastAsia"/>
+              </w:rPr>
+              <w:instrText xml:space="preserve">SEQ </w:instrText>
+            <w:instrText>代码</w:instrText><w:instrText xml:space="preserve"> \* ARABIC</w:instrText></w:r>
+            
+            
+            <w:r>
+              <w:instrText xml:space="preserve"> </w:instrText>
+            <w:fldChar w:fldCharType="separate"/></w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:noProof/>
+              </w:rPr>
+              <w:t>3</w:t>
+            </w:r>
+            <w:r>
+              <w:fldChar w:fldCharType="end"/>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="003EEFBE" w14:textId="77777777" w:rsidR="006324CE" w:rsidRDefault="00175AC0" w:rsidP="00A17278">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>主要的机械部分如下：</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="27823F9B" w14:textId="6AD398FA" w:rsidR="00D460A7" w:rsidRDefault="006324CE" w:rsidP="00A17278">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>(1)</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>设计机器人末端执行器，主要是设计电动式夹爪式机器人末端执行器，用于抓取需要搬运的小型物流件并将其放置于目标地点，绘制末端执行器的三维模型，并设计末端执行器相关的控制方面的相关内容。</w:t>
+            </w:r>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="0CA4DEEE" w14:textId="37106B3A" w:rsidR="006324CE" w:rsidRPr="007536A2" w:rsidRDefault="006324CE" w:rsidP="007536A2">
+            <w:pPr>
+              <w:autoSpaceDE w:val="0"/>
+              <w:autoSpaceDN w:val="0"/>
+              <w:adjustRightInd w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="200" w:firstLine="480"/>
+              <w:jc w:val="left"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>(</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>2)</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>设计机器人底座，主要是一个四轮差速底盘，其可以全方位转向，机动性强。由四台独立驱动电机、减速器、轮毂及传动部件组成，每台车轮对应独立驱动电机，可单独接收转速指令，为差速运动提供动力支撑。</w:t>
+            </w:r>
+            
+            
+            
+            
+            
+            
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>绘制</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>四轮差速底盘</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>的三维模型，并设计</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:kern w:val="0"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>四轮差速底盘</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>相关的控制方面的相关内容。</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC4C" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>二、拟进行的工作及进度安排</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC4D" w14:textId="7DDD5FF0" w:rsidR="008012EC" w:rsidRDefault="00F62F51" w:rsidP="00A95E30">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLine="480"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>四月中旬，该毕业论文已基本完成机械部分的设计，包括三维模型的建立和各个部分的选型。</w:t>
+            </w:r>
+            
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="2EAAED0F" w14:textId="1E3DA267" w:rsidR="002B28B5" w:rsidRDefault="00A95E30" w:rsidP="008E2899">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLine="480"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:lastRenderedPageBreak/>
+              <w:t>接下来的时间安排如下：</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="53690A38" w14:textId="08C28B5B" w:rsidR="002B28B5" w:rsidRPr="002B28B5" w:rsidRDefault="00124C47" w:rsidP="002B28B5">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="1"/>
+              </w:numPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>到1</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>5</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>号，在机械部分完成建模的基础上，绘制装置的装配图还有零件图纸。</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="5A099366" w14:textId="1619AA6A" w:rsidR="008B375E" w:rsidRPr="002B28B5" w:rsidRDefault="002B28B5" w:rsidP="002B28B5">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="1"/>
+              </w:numPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>到四月二十号，完成实际的控制部分，包括具体的控制方案和实现方式，并在此基础上完成论文</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="519A3F42" w14:textId="5F067186" w:rsidR="00633A05" w:rsidRDefault="00633A05" w:rsidP="00633A05">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="1"/>
+              </w:numPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>到四月2</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>8</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>号前，完成电路部分的设计。</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="6E1FDDF2" w14:textId="2BCBB813" w:rsidR="00554B7D" w:rsidRDefault="00554B7D" w:rsidP="00633A05">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="1"/>
+              </w:numPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>到五月5号前完成论文初稿。</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC52" w14:textId="7B07E74B" w:rsidR="008012EC" w:rsidRPr="00D727BB" w:rsidRDefault="00DD150E" w:rsidP="00D727BB">
+            <w:pPr>
+              <w:pStyle w:val="a7"/>
+              <w:numPr>
+                <w:ilvl w:val="0"/>
+                <w:numId w:val="1"/>
+              </w:numPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:ind w:firstLineChars="0"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>到五月1</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>2</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>号，完成所有的论文设计任务，准备答辩。</w:t>
+            </w:r>
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="0A97CC53" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>三、存在的问题及采取措施</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="7EE835B4" w14:textId="4606B735" w:rsidR="002B28B5" w:rsidRDefault="002B28B5">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">  1.</w:t>
+            </w:r>
+            
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> 存在的问题：</w:t>
+            </w:r>
+            
+            
+          </w:p>
+          <w:p w14:paraId="02E9E3D5" w14:textId="7A3451A8" w:rsidR="003C6F12" w:rsidRDefault="003C6F12">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">    </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>（1）论文部分进度缓慢，理论框架构建不够完善且理论支撑不足。</w:t>
+            </w:r>
+            
+            
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="3CD4C88F" w14:textId="059A2A13" w:rsidR="003B4D66" w:rsidRDefault="003B4D66">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">    </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>（2）机构的机械设计部分还未完成，论文的机械方面还未开始写作。</w:t>
+            </w:r>
+            
+            
+          </w:p>
+          <w:p w14:paraId="111F6A4E" w14:textId="064CC1A5" w:rsidR="00E26294" w:rsidRDefault="00E26294">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">    </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>（3）控制部分代码不够完善。</w:t>
+            </w:r>
+            
+            
+            
+          </w:p>
+          <w:p w14:paraId="6C886C38" w14:textId="08ACCDD1" w:rsidR="0079062D" w:rsidRDefault="0079062D">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">  2.</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>解决方法：</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="58F7E5ED" w14:textId="5111E23F" w:rsidR="0079062D" w:rsidRDefault="0079062D">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">    </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>（1）通过网络和书籍搜查资料，加强理论学习，加快论文书写进度。</w:t>
+            </w:r>
+            
+            
+          </w:p>
+          <w:p w14:paraId="3972AD22" w14:textId="44BE3BF6" w:rsidR="007D2F82" w:rsidRDefault="007D2F82">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">    </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>（2）寻找相似机构，学习借鉴可取之处。</w:t>
+            </w:r>
+            
+            
+          </w:p>
+          <w:p w14:paraId="4E956147" w14:textId="427D5914" w:rsidR="00B15871" w:rsidRDefault="00B15871">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">   </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> （3）寻找相似案例，通过ai等工具学习。</w:t>
+            </w:r>
+            
+          </w:p>
+          <w:p w14:paraId="0A97CC59" w14:textId="4A1EE659" w:rsidR="008012EC" w:rsidRDefault="003B4D66">
+            <w:pPr>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:jc w:val="right"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve"> 年     月     日</w:t>
+            </w:r>
+            
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr w:rsidR="008012EC" w14:paraId="0A97CC80" w14:textId="77777777">
+        <w:trPr>
+          <w:trHeight w:val="13227"/>
+        </w:trPr>
+        <w:tc>
+          <w:tcPr>
+            <w:tcW w:w="8522" w:type="dxa"/>
+            <w:gridSpan w:val="6"/>
+          </w:tcPr>
+          <w:p w14:paraId="0A97CC5B" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:lastRenderedPageBreak/>
+              <w:t>指导教师评价意见</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC5C" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>1．论文（设计）进展情况评价</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+                <w:u w:val="single"/>
+              </w:rPr>
+              <w:t xml:space="preserve">                   </w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC5D" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">       （基本完成计划、部分完成计划、没有完成计划）</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC5E" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+                <w:u w:val="single"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>2．学生工作态度情况评价</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+                <w:u w:val="single"/>
+              </w:rPr>
+              <w:t xml:space="preserve">                        </w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC5F" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">　　　 （认真、一般、较差）</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC60" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>3．已完成论文（设计）质量评价</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+                <w:u w:val="single"/>
+              </w:rPr>
+              <w:t xml:space="preserve">                  </w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC61" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">       （较好、一般、较差）</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC62" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:snapToGrid w:val="0"/>
+              <w:spacing w:line="360" w:lineRule="auto"/>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t>4．论文（设计）不足之处及改进意见</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC63" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC64" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC65" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC66" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC67" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC68" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC69" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6A" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6B" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6C" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6D" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6E" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC6F" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC70" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC71" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC72" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC73" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC74" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC75" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC76" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC77" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC78" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC79" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC7A" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC7B" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">                             指导教师签字：</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC7C" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC7D" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="00895AD3">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+            <w:r>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体" w:hint="eastAsia"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+              <w:t xml:space="preserve">                                                  年     月     日</w:t>
+            </w:r>
+          </w:p>
+          <w:p w14:paraId="0A97CC7E" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+          <w:p w14:paraId="0A97CC7F" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC">
+            <w:pPr>
+              <w:rPr>
+                <w:rFonts w:ascii="宋体" w:hAnsi="宋体" w:cs="宋体"/>
+                <w:sz w:val="24"/>
+              </w:rPr>
+            </w:pPr>
+          </w:p>
+        </w:tc>
+      </w:tr>
+    </w:tbl>
+    <w:p w14:paraId="0A97CC81" w14:textId="77777777" w:rsidR="008012EC" w:rsidRDefault="008012EC"/>
+    <w:sectPr w:rsidR="008012EC">
+      <w:pgSz w:w="11906" w:h="16838"/>
+      <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="851" w:footer="992" w:gutter="0"/>
+      <w:cols w:space="720"/>
+      <w:docGrid w:type="lines" w:linePitch="312"/>
+    </w:sectPr>
+  </w:body>
+</w:document>

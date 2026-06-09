@@ -1,74 +1,39 @@
-# LaTeX build artifacts
+# 环境与依赖
+.env
+.env.local
+node_modules/
+.conda/
+__pycache__/
+*.pyc
+
+# 编译产物
 *.aux
-*.bbl
-*.blg
 *.log
-*.out
 *.synctex.gz
-*.synctex\(busy\)
-*.pdf
-!lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/main.pdf
-*.thm
 *.toc
 *.lof
 *.lot
+*.out
+*.bbl
+*.blg
 *.fls
 *.fdb_latexmk
-*.xdv
 *.nav
 *.snm
 *.vrb
 
-# Simulink build cache
-slprj/
-*.slxc
-
-# MATLAB backup files
-*.m~
-
-# Thesis font archives are only distribution helpers and exceed GitHub limits
-1_论文/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip
-
-# IDE local settings
-.vscode/
-
-# Claude local settings
-.claude/settings.local.json
-
-# Temporary/unnamed files
-untitled*.slx
-
-# PPT working files (only track final .pptx)
-ppt_debug/
-ppt_unpacked/
-*_fixed.pdf
-fix_pptx*.py
-create_ppt.js
-analyze_pptx.js
-qa2_slide*.png
-slide_fixed-*.png
-beautify*.py
-check_layout.py
-*_unpacked/
-*_副本*.pptx
-
-# npm (only used for PPT generation scripts)
-node_modules/
-package.json
-package-lock.json
-
-# Claude auto-generated tips
-CLAUDE_TIPS.md
-
-# LibreOffice lock files
-.~lock.*
-
-# Claude AI (except settings.local.json already ignored above)
-.claude/
-
-# OS files
-Thumbs.db
+# 系统文件
 .DS_Store
-lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip
-lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/*.zip
-lunwen/QLULatex/QLUThesisLatexTemplate-master/Thesis/static/font/font-packages/*.zip
+Thumbs.db
+desktop.ini
+
+# 编辑器
+*.swp
+*.swo
+*~
+
+# Git备份
+.git.bak/
+
+# 大文件（字体包，可从网上下载）
+*.zip

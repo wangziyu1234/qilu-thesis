@@ -1,0 +1,59 @@
+% !Mode:: "TeX:UTF-8"
+
+%? ************************************************************* %?
+%?                                                               %?
+%?                   您将在此处完成中英文摘要的填写                   %?
+%?                                                               %?
+%? ************************************************************* %?
+
+% ====================== 摘要 ======================
+
+\chapter*{\texorpdfstring{\centering \heiti \sanhao \textbf{摘\quad 要}}{摘要}}
+\addcontentsline{toc}{chapter}{\texorpdfstring{\sihao{摘\qquad 要}}{摘要}}
+
+\linespread{1.5}\selectfont
+\fangsong\xiaosi
+
+\vspace{1em}
+
+\xfabstract{
+
+    针对中小型仓储场景中物料搬运自动化程度不足的问题，本文设计了一款集成剪叉式举升功能的双轮差速驱动移动机器人。通过多方案对比，确定了"交流伺服电机+行星减速器"的动力方案、ARM单片机嵌入式控制系统，以及Hybrid A*全局路径规划与双环PID运动控制相配合的导航控制策略。
+
+    升降机构运动学建模与强度校核表明，在50\,kg额定载重下，臂杆最危险工况的压弯组合应力仅为5.56\,MPa，承载平台von Mises等效应力为14.1\,MPa，均远低于Q235钢156.7\,MPa的许用应力；增设侧向支撑后，臂杆屈曲安全系数由2.54升至10.1，结构安全裕度充足。
+
+    MATLAB控制仿真覆盖了阶跃响应、定点镇定、S形轨迹跟踪和圆形轨迹跟踪四种典型工况。定点镇定终点位置误差收敛至厘米级，航向偏差小于1$^\circ$；连续轨迹跟踪的线速度与角速度RMSE分别低于0.01\,m/s和0.005\,rad/s。路径规划方面，Hybrid A*算法在含障碍物的仓储地图上生成了长11.04\,m的无碰撞平滑路径，红外循迹PID控制器以1.5\,cm的RMS横向误差实现了对该路径的稳定跟踪。
+
+    研究结果表明，本文所设计的机器人在结构强度、运动控制精度与路径规划可行性方面均达到预期指标，可为同类举升式仓储搬运机器人的工程研制提供参考。
+
+}
+
+\noindent{\heiti\xiaosi\textbf{关键词：}}
+\fangsong{智能仓储移动机器人；差速驱动；路径规划；Hybrid A*；PID运动控制}
+
+% ====================== Abstract ======================
+
+\chapter*{}
+\vspace*{-1.15cm}
+{\centering\bfseries\sanhao ABSTRACT\par}
+\addcontentsline{toc}{chapter}{\sihao{ABSTRACT}}
+\vspace{0.5cm}
+
+\linespread{1.5}\selectfont
+\rmfamily\xiaosi
+
+\xfenabstract{
+    Aiming at the insufficient automation of material handling in small-to-medium warehouse environments, this thesis presents a dual-wheel differential-drive mobile robot with an integrated scissor-type lifting mechanism. Through comparative analysis of multiple design options, an AC servo motor with planetary reducer drive scheme, an ARM Cortex-M microcontroller-based embedded control system, and a navigation strategy combining Hybrid A* global path planning with dual-loop PID motion control are established.
+
+    Kinematic modeling and strength verification of the lifting mechanism demonstrate that, under the rated payload of 50\,kg, the combined compressive-bending stress of the scissor arm in the worst-case condition is merely 5.56\,MPa, and the von Mises equivalent stress of the loading platform is 14.1\,MPa — both far below the 156.7\,MPa allowable stress of Q235 steel. With lateral bracing added, the buckling safety factor of the arm increases from 2.54 to 10.1, providing an ample safety margin.
+
+    MATLAB control simulations cover four typical scenarios: step response, point stabilization, S-curve trajectory tracking, and circular trajectory tracking. The terminal positioning error in point stabilization converges to the centimeter level with heading deviation under 1$^\circ$; the RMSE of linear and angular velocities in continuous trajectory tracking are below 0.01\,m/s and 0.005\,rad/s, respectively. For path planning, the Hybrid A* algorithm generates a collision-free smooth path of 11.04\,m in a warehouse map with obstacles, and an infrared-sensor-based PID line-tracking controller achieves stable tracking with an RMS lateral error of 1.5\,cm.
+
+    The results indicate that the proposed robot meets the design targets in structural strength, motion control accuracy, and path planning feasibility, providing a reference for the engineering development of similar lifting-type warehouse handling robots.
+}
+
+\vspace{1em}
+
+\noindent\textbf{Key words:} intelligent warehouse mobile robot; differential drive; path planning; Hybrid A*; PID motion control
+
+\setcounter{secnumdepth}{2}
