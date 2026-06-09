@@ -1,7 +1,7 @@
 %% Hybrid A* 路径规划算法（优化版）
 %  与标准A*的区别: 状态空间从(x,y)扩展为(x,y,θ),
 %  后继节点用差速运动基元(5种曲率×进退)生成, 路径天然满足转弯约束
-%  优化内容: 障碍物膨胀、3D航向栅格去重、解析扩展、B样条平滑、综合评价
+%  优化内容: 障碍物膨胀、3D航向栅格去重、解析扩展、加权均值平滑、综合评价
 function path = hybrid_astar()
 %  注：被 run_all 调用时不执行 close all 以免关闭已有图窗
 if nargout == 0, clear; clc; close all; end  % 仅独立运行时清屏关图
@@ -117,7 +117,7 @@ for iter = 1:max_iter
             fprintf('找到路径! 迭代 %d, 节点扩展 %d\n', iter, n_expanded);
             path = backtrack(CloseList, start_pos);
             elapsed = toc(t_start);
-            path = bspline_smooth(path);
+            path = weighted_avg_smooth(path, 5);
             print_metrics(path, iter, n_expanded, elapsed, obstacles, r_robot);
             draw_map(obstacles, path, start_pos, goal_pos, map_w, map_h);
             return;
