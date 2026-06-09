@@ -11,7 +11,7 @@ end
 %% —— 小车参数 ——
 r_wheel = 0.09;  % 车轮半径(m)
 L_base  = 0.52;  % 轮距(m)
-v_nom   = 0.3;  % 标称速度(m/s)
+v_nom   = 0.25;  % 标称速度(m/s)
 
 n_sensors  = 5;  % 传感器个数
 sensor_spacing = 0.04;  % 间距(m)
@@ -23,11 +23,46 @@ Kp = 3.0;   Ki = 0.08;   Kd = 1.0;  % PID参数
 dt       = 0.01;  % 步长(s)
 max_time = 80;  % 最大仿真时长(s)
 
-%% —— 参考路径预处理 ——
-ref_x = ref_path(:, 1);
-ref_y = ref_path(:, 2);
-n_ref = size(ref_path, 1);
-path_len = sum(hypot(diff(ref_x), diff(ref_y)));
+%% —— 参考路径预处理(插值加密) ——
+ref_x_orig = ref_path(:, 1);
+ref_y_orig = ref_path(:, 2);
+n_orig = size(ref_path, 1);
+
+% 计算累积弧长
+s_orig = zeros(n_orig, 1);
+for i = 2:n_orig
+    s_orig(i) = s_orig(i-1) + hypot(ref_x_orig(i)-ref_x_orig(i-1), ...
+                                     ref_y_orig(i)-ref_y_orig(i-1));
+end
+
+% 插值：每0.02m一个点
+ds = 0.02;  % 插值间距(m)
+s_interp = 0:ds:s_orig(end);
+ref_x = interp1(s_orig, ref_x_orig, s_interp, 'pchip');
+ref_y = interp1(s_orig, ref_y_orig, s_interp, 'pchip');
+n_ref = length(ref_x);
+
+% 计算每个插值点的切线方向（航向角）
+ref_theta = zeros(1, n_ref);
+for i = 1:n_ref-1
+    ref_theta(i) = atan2(ref_y(i+1)-ref_y(i), ref_x(i+1)-ref_x(i));
+end
+ref_theta(end) = ref_theta(end-1);
+
+% 计算路径曲率(用于前馈控制)
+ref_kappa = zeros(1, n_ref);
+for i = 2:n_ref-1
+    dtheta = ref_theta(i+1) - ref_theta(i);
+    dtheta = atan2(sin(dtheta), cos(dtheta));  % 归一化到[-pi,pi]
+    ref_kappa(i) = dtheta / ds;  % 曲率 = dθ/ds
+end
+ref_kappa(1) = ref_kappa(2);
+ref_kappa(end) = ref_kappa(end-1);
+% 对曲率做平滑,避免噪声
+kappa_smooth = 5;  % 平滑窗口(点数)
+ref_kappa = movmean(ref_kappa, kappa_smooth);
+
+path_len = s_orig(end);  % 路径总长度
 
 fprintf('\n========== PID 循迹仿真 ==========\n');
 fprintf('参考路径: %d 点, %.2f m\n', n_ref, path_len);
@@ -37,15 +72,31 @@ n_steps = ceil(max_time / dt);
 log = zeros(n_steps, 7);  % [t, x, y, θ, v, ω, lat_err]
 
 x = ref_x(1);  y = ref_y(1);  % 初始位置
-theta = ref_path(1, 3);  % 初始航向
+theta = ref_theta(1);  % 初始航向
 e_int = 0;  e_prev = 0;  % 积分和上拍偏差
+
+% omega输出移动平均滤波器
+ma_window = 6;  % 移动平均窗口长度(点数)
+omega_buf = zeros(1, ma_window);  % 环形缓冲区
+ma_idx = 0;  % 缓冲区写入指针
+
+% 软启动参数
+v_ramp_time = 1.0;  % 速度爬升时间(s)
 
 for k = 1:n_steps
     t_now = (k-1) * dt;
 
+    % 软启动: 速度在v_ramp_time内从0线性爬升到v_nom
+    if t_now < v_ramp_time
+        v_now = v_nom * (t_now / v_ramp_time);
+    else
+        v_now = v_nom;
+    end
+
+    % 传感器位置
     fwd = 0.08;  % 传感器距车体前端距离(m)
-    sx = x + fwd*cos(theta) + sensor_offsets * cos(theta + pi/2);  % 5传感器全局X
-    sy = y + fwd*sin(theta) + sensor_offsets * sin(theta + pi/2);  % 5传感器全局Y
+    sx = x + fwd*cos(theta) + sensor_offsets * cos(theta + pi/2);
+    sy = y + fwd*sin(theta) + sensor_offsets * sin(theta + pi/2);
 
     sensor_state = zeros(1, n_sensors);
     for s = 1:n_sensors
@@ -55,33 +106,46 @@ for k = 1:n_steps
         end
     end
 
-    weights = -4:2:4;  % 左侧负、中零、右侧正
     active = find(sensor_state == 1);
 
-    if ~isempty(active)
-        offset = mean(weights(active));  % 加权偏移量
-    else  % 丢线 —— 外推并放大纠偏
-        offset = e_prev * 1.5;
-    end
-
+    % 横向误差计算(始终计算,用于记录、丢线处理和前馈)
     [~, min_i] = min((ref_x - x).^2 + (ref_y - y).^2);  % 路径最近点
-    tang = ref_path(min_i, 3);  % 该点切线方向
+    tang = ref_theta(min_i);  % 该点切线方向
     lat_err = -(x - ref_x(min_i))*sin(tang) + (y - ref_y(min_i))*cos(tang);  % 法向误差
+
+    on_line = ~isempty(active);
+
+    if on_line
+        % 传感器质心偏移: 用检测到的传感器物理位置平均值
+        offset = mean(sensor_offsets(active)) / sensor_spacing;
+    else  % 丢线: 基于横向误差外推
+        offset = sign(lat_err) * min(abs(lat_err) * 15, 3);
+    end
 
     e_int = e_int + offset * dt;
     e_int = max(-2, min(2, e_int));  % 积分限幅防饱和
     e_der = (offset - e_prev) / dt;
     e_prev = offset;
 
-    omega = Kp * offset + Ki * e_int + Kd * e_der;  % PID输出
-    omega = max(-1.5, min(1.5, omega));  % ±1.5rad/s限幅
+    omega_pid = Kp * offset + Ki * e_int + Kd * e_der;  % PID输出
 
-    x     = x + v_nom * cos(theta) * dt;
-    y     = y + v_nom * sin(theta) * dt;
+    % 曲率前馈: omega_ff = v * kappa, 预判弯道
+    omega_ff = v_now * ref_kappa(min_i);
+
+    omega_raw = omega_pid + omega_ff;  % PID + 前馈
+    omega_raw = max(-1.5, min(1.5, omega_raw));  % ±1.5rad/s限幅
+
+    % 移动平均滤波(比IIR更有效地抑制高频毛刺)
+    ma_idx = mod(ma_idx, ma_window) + 1;
+    omega_buf(ma_idx) = omega_raw;
+    omega = mean(omega_buf);
+
+    x     = x + v_now * cos(theta) * dt;
+    y     = y + v_now * sin(theta) * dt;
     theta = theta + omega * dt;
     theta = atan2(sin(theta), cos(theta));  % 归一化航向
 
-    log(k, :) = [t_now, x, y, theta, v_nom, omega, lat_err];
+    log(k, :) = [t_now, x, y, theta, v_now, omega, lat_err];
 
     if hypot(x - ref_x(end), y - ref_y(end)) < 0.2  % 距终点<0.2m
         fprintf('到达终点! t = %.1f s\n', t_now);
