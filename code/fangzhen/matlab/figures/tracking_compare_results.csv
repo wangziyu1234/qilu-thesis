@@ -1,0 +1,4 @@
+算法,RMS_cm,MAX_cm,OmegaRMS_rads,SimTime_s,LostRatio_pct
+PID+前馈,0.7313,1.3293,0.2001,55.78,0.00
+Stanley,3.0108,5.1185,0.1660,56.63,0.00
+Pure Pursuit,0.4057,1.2078,0.1533,55.75,0.00

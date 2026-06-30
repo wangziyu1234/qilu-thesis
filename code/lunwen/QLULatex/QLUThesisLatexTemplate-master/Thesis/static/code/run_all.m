@@ -70,6 +70,12 @@ for i = 1:Ncase
     plot(s.x(1), s.y(1), 'o', 'Color', s.color, 'MarkerFaceColor', s.color);
     plot(s.x(end), s.y(end), 's', 'Color', s.color, 'MarkerFaceColor', s.color);
     xlabel('x (m)'); ylabel('y (m)'); title([s.name '仿真结果']);
+    % 收紧坐标轴范围,减少空白
+    xl = xlim; yl = ylim;
+    xr = xl(2)-xl(1); yr = yl(2)-yl(1);
+    pad = max(xr, yr) * 0.08;  % 8%余量
+    xlim([xl(1)-pad, xl(2)+pad]);
+    ylim([yl(1)-pad, yl(2)+pad]);
     saveas(gcf, fullfile(fig_dir, traj_files{i}));
     close(gcf);
 end
@@ -124,6 +130,28 @@ for SC = 1:4
     % 画对比图 (每个场景拆成独立图片)
     plot_pid_comparison(dual, single, SC, fig_dir, scenario_names{SC});
 end
+
+%% ---- 2.1 阶跃响应: 速度误差收敛图 ----
+% 从最后一次循环中提取dual和single数据(场景1)
+dual_step = run_dual_pid(1);
+single_step = run_single_pid(1);
+t_s = dual_step.t;
+err_dual = dual_step.v_ref - dual_step.v;   % 双环速度误差
+err_single = single_step.v_ref - single_step.v;  % 单环速度误差
+
+fig_err = figure('Color','w','Position',[100,100,750,420]);
+hold on; grid on;
+plot(t_s, err_dual*100, 'b-', 'LineWidth', 2, 'DisplayName', '双环PID');
+plot(t_s, err_single*100, 'r--', 'LineWidth', 1.5, 'DisplayName', '单环PID');
+xline(2.5, 'k:', '阶跃时刻', 'LineWidth', 1, 'LabelVerticalAlignment', 'bottom');
+yline(0, 'k:', 'LineWidth', 0.8);
+xlabel('时间 (s)', 'FontSize', 12);
+ylabel('速度误差 (cm/s)', 'FontSize', 12);
+title('阶跃响应速度误差收敛', 'FontSize', 13);
+legend('Location', 'best', 'FontSize', 11);
+saveas(fig_err, fullfile(fig_dir, 'pid_step_error_convergence.png'));
+close(fig_err);
+fprintf('已保存: pid_step_error_convergence.png\n');
 
 % b_pid_control生成独立结果图 (需手动运行)
 

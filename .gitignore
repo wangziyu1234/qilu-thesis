@@ -43,6 +43,7 @@ CLAUDE_TIPS.md
 
 # SolidWorks备份
 *.bak
+~$*
 
 # Git备份
 .git.bak/
